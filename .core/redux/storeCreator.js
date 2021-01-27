@@ -1,4 +1,4 @@
-import Reactium from 'reactium-core/sdk';
+import Reactium, { isBrowserWindow } from 'reactium-core/sdk';
 import { createStore, combineReducers, compose } from 'redux';
 import { applyMiddleware } from 'redux-super-thunk';
 import { manifest } from 'dependencies';
@@ -13,7 +13,7 @@ let store;
  */
 let localizeState = true;
 let initialState = {};
-if (typeof window !== 'undefined') {
+if (isBrowserWindow()) {
     if ('INITIAL_STATE' in window) {
         initialState = window.INITIAL_STATE;
         delete window.INITIAL_STATE;
@@ -54,7 +54,7 @@ const storeCreator = async ({ server = false } = {}) => {
     let middlewares = loadDependencyStack(manifest.allMiddleware, [], server);
 
     // Get localized state and apply it
-    if (!server && typeof window !== 'undefined') {
+    if (!server && isBrowserWindow()) {
         const {
             save: lsSave,
             load: lsLoad,
@@ -97,12 +97,14 @@ const storeCreator = async ({ server = false } = {}) => {
     // Create the store
     store = compose(...enhancers)(createStore)(rootReducer, initialState);
 
-    // Allow plugins the ability to interact with store directly
-    await Reactium.Hook.run('store-created', {
+    Reactium.Redux = {
         store,
         allReducers: manifest.allReducers,
         middlewares,
-    });
+    };
+
+    // Allow plugins the ability to interact with store directly
+    await Reactium.Hook.run('store-created', Reactium.Redux);
 
     return store;
 };

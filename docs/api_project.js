@@ -1,6 +1,6 @@
 define({
   "name": "reactium",
-  "version": "3.2.0",
+  "version": "3.6.0",
   "description": "Reactium SDK",
   "title": "Reactium SDK",
   "sampleUrl": false,
@@ -8,8 +8,8 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2020-07-15T06:01:03.941Z",
-    "url": "http://apidocjs.com",
-    "version": "0.20.1"
+    "time": "2021-01-26T20:57:45.410Z",
+    "url": "https://apidocjs.com",
+    "version": "0.25.0"
   }
 });

@@ -1,5 +1,140 @@
 [
   {
+    "type": "Async",
+    "url": "Capability.User.get(userID,refresh)",
+    "title": "Capability.User.get()",
+    "version": "3.1.2",
+    "group": "Capability",
+    "name": "Capability.User.get",
+    "description": "<p>Return an Array of capability names granted to the user.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "userID",
+            "description": "<p>The Reactium.User id. If empty the User.current id is used.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "refres",
+            "defaultValue": "false",
+            "description": "<p>Fetch capabilities from the server instead of cache.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example Usage",
+        "content": "const canEditArticle = async userID => {\n    const caps = await Reactium.Capability.User.get(userID);\n    return caps.includes('content.article.update');\n};",
+        "type": "json"
+      }
+    ],
+    "filename": ".core/sdk/capability/index.js",
+    "groupTitle": "Capability"
+  },
+  {
+    "type": "Static",
+    "url": "Capability.autosync",
+    "title": "Capability.autosync",
+    "version": "3.1.2",
+    "group": "Capability",
+    "name": "Capability.autosync",
+    "description": "<p>Time in milliseconds that controls when registered capabilities are propagated to the server. If set to <code>false</code>, manually push registered capabilities with <code>Capability.propagate()</code>. Default: <code>10000</code>.</p>",
+    "filename": ".core/sdk/capability/index.js",
+    "groupTitle": "Capability"
+  },
+  {
+    "type": "Static",
+    "url": "Capability.cache",
+    "title": "Capability.cache",
+    "version": "3.1.2",
+    "group": "Capability",
+    "name": "Capability.cache",
+    "description": "<p>Time in milliseconds that controls how long to cache capability request results. Default: <code>60000</code>.</p>",
+    "filename": ".core/sdk/capability/index.js",
+    "groupTitle": "Capability"
+  },
+  {
+    "type": "Function",
+    "url": "Capability.clearCache()",
+    "title": "Capability.clearCache()",
+    "version": "3.1.2",
+    "group": "Capability",
+    "name": "Capability.clearCache",
+    "description": "<p>Clear Capability related Cache keys.</p>",
+    "filename": ".core/sdk/capability/index.js",
+    "groupTitle": "Capability"
+  },
+  {
+    "type": "Async",
+    "url": "Capability.propagate(force)",
+    "title": "Capability.propagate()",
+    "version": "3.1.2",
+    "group": "Capability",
+    "name": "Capability.propagate",
+    "description": "<p>Propagate registered capabilities to an Actinium server.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "force",
+            "defaultValue": "false",
+            "description": "<p>Execute the propagation regardless of if a current propagation operation is under way. The resolution of the previous propagation operation will be cancelled. If <code>Capability.autosync</code> is <code>true</code>, this function will be called whenever the autosync is initiated.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example Usage",
+        "content": "await Capability.propagate();",
+        "type": "json"
+      }
+    ],
+    "filename": ".core/sdk/capability/index.js",
+    "groupTitle": "Capability"
+  },
+  {
+    "type": "Function",
+    "url": "Capability.register(id)",
+    "title": "Capability.register()",
+    "version": "3.1.2",
+    "group": "Capability",
+    "name": "Capability.register",
+    "description": "<p>Register a new capability.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>String value used when checking for the capability. This function is limited in scope and regularly shouldn't be used. Server-side capability registration is preferred.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example Usage",
+        "content": "Capability.register('my-ui.view')",
+        "type": "json"
+      }
+    ],
+    "filename": ".core/sdk/capability/index.js",
+    "groupTitle": "Capability"
+  },
+  {
     "type": "Hook",
     "url": "Server.AppBindings",
     "title": "Server.AppBindings",
@@ -48,10 +183,10 @@
         "type": "json"
       }
     ],
-    "group": "BootHook",
+    "group": "Hooks",
     "version": "0.0.0",
     "filename": ".core/server/renderer/index.js",
-    "groupTitle": "BootHook"
+    "groupTitle": "Hooks"
   },
   {
     "type": "Hook",
@@ -91,6 +226,13 @@
             "optional": false,
             "field": "value",
             "description": "<p>any javascript value that can be serialized for use in a script tag</p>"
+          },
+          {
+            "group": "global",
+            "type": "Mixed",
+            "optional": true,
+            "field": "serverValue",
+            "description": "<p>optional different value for the server global, useful when value should be used differently on the server code</p>"
           }
         ]
       }
@@ -102,10 +244,10 @@
         "type": "json"
       }
     ],
-    "group": "BootHook",
+    "group": "Hooks",
     "version": "0.0.0",
     "filename": ".core/server/renderer/index.js",
-    "groupTitle": "BootHook"
+    "groupTitle": "Hooks"
   },
   {
     "type": "Hook",
@@ -140,10 +282,10 @@
         "type": "json"
       }
     ],
-    "group": "BootHook",
+    "group": "Hooks",
     "version": "0.0.0",
     "filename": ".core/server/renderer/index.js",
-    "groupTitle": "BootHook"
+    "groupTitle": "Hooks"
   },
   {
     "type": "Hook",
@@ -249,10 +391,10 @@
         "type": "json"
       }
     ],
-    "group": "BootHook",
+    "group": "Hooks",
     "version": "0.0.0",
     "filename": ".core/server/renderer/index.js",
-    "groupTitle": "BootHook"
+    "groupTitle": "Hooks"
   },
   {
     "type": "Hook",
@@ -287,10 +429,10 @@
         "type": "json"
       }
     ],
-    "group": "BootHook",
+    "group": "Hooks",
     "version": "0.0.0",
     "filename": ".core/server/renderer/index.js",
-    "groupTitle": "BootHook"
+    "groupTitle": "Hooks"
   },
   {
     "type": "Hook",
@@ -392,10 +534,10 @@
         "type": "json"
       }
     ],
-    "group": "BootHook",
+    "group": "Hooks",
     "version": "0.0.0",
     "filename": ".core/server/renderer/index.js",
-    "groupTitle": "BootHook"
+    "groupTitle": "Hooks"
   },
   {
     "type": "Hook",
@@ -448,10 +590,86 @@
         "type": "json"
       }
     ],
-    "group": "BootHook",
+    "group": "Hooks",
     "version": "0.0.0",
     "filename": ".core/index.js",
-    "groupTitle": "BootHook"
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "Server.ResponseHeaders",
+    "title": "Server.ResponseHeaders",
+    "name": "Server.ResponseHeaders",
+    "description": "<p>On html template responses on server, this hook is called when HTTP headers are added to the response. Both sync and async hook is called.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "responseHeaders",
+            "description": "<p>object with key pairs (header name =&gt; header value)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "req",
+            "description": "<p>Node/Express request object</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "res",
+            "description": "<p>Node/Express response object</p>"
+          }
+        ]
+      }
+    },
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/server/router.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "Server.ServiceWorkerAllowed",
+    "title": "Server.ServiceWorkerAllowed",
+    "description": "<p>Called on server-side during service-worker-allowed middleware. Used to define the HTTP response header &quot;Service-Worker-Allowed&quot;. By default, this header will allow the document root, &quot;/&quot;. Both sync and async version called.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "responseHeader",
+            "description": "<p>with property 'Service-Worker-Allowed' (case sensitive) and its value.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "req",
+            "description": "<p>Node/Express request object</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "res",
+            "description": "<p>Node/Express response object</p>"
+          }
+        ]
+      }
+    },
+    "name": "Server.ServiceWorkerAllowed",
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/index.js",
+    "groupTitle": "Hooks"
   },
   {
     "type": "Hook",
@@ -479,10 +697,10 @@
         ]
       }
     },
-    "group": "BootHook",
+    "group": "Hooks",
     "version": "0.0.0",
     "filename": ".core/server/renderer/index.js",
-    "groupTitle": "BootHook"
+    "groupTitle": "Hooks"
   },
   {
     "type": "Hook",
@@ -510,10 +728,263 @@
         ]
       }
     },
-    "group": "BootHook",
+    "group": "Hooks",
     "version": "0.0.0",
     "filename": ".core/server/renderer/index.js",
-    "groupTitle": "BootHook"
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "app-bindpoint",
+    "title": "app-bindpoint",
+    "name": "app-bindpoint",
+    "description": "<p>Called after plugin and routing initialization to define the DOM element used for mounting the Single-Page application (SPA). By default, the application will bind to <code>document.getElementById('router')</code>, but this can be changed with this hook. This is related to the HTML template artifacts left by the server-side <code>Server.AppBindings</code> hook. async only - used in front-end application only</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "context",
+            "description": "<p>context.appElement MUST be an HTMLElement where your React appliation will bind to the DOM.</p>"
+          }
+        ],
+        "appElement": [
+          {
+            "group": "appElement",
+            "type": "HTMLElement",
+            "optional": false,
+            "field": "the",
+            "description": "<p>DOM element to bind to - by default <code>document.getElementById('router')</code>.</p>"
+          }
+        ]
+      }
+    },
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/app/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "app-boot-message",
+    "title": "app-boot-message",
+    "name": "app-boot-message",
+    "description": "<p>Called during application binding, this minor hook will allow you to change the format of the of the front-end Javascript console message indicating application start. async only - used in front-end application only</p>",
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/app/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "app-redux-provider",
+    "title": "app-redux-provider",
+    "name": "app-redux-provider",
+    "description": "<p>Called after app-bindpoint to define the registered Redux Provider component (i.e. <code>Reactium.Component.register('ReduxProvider'...)</code>) for all bind points and the SPA. async only - used in front-end application only</p>",
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/app/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "app-router",
+    "title": "app-router",
+    "name": "app-router",
+    "description": "<p>Called after app-redux-provider to define the registered Router component (i.e. <code>Reactium.Component.register('Router'...)</code>). After this hook, the ReactDOM bindings will actually take place. async only - used in front-end application only</p>",
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/app/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "component-bindings",
+    "title": "component-bindings",
+    "name": "component-bindings",
+    "description": "<p>Called after plugin and routing initialization to define element and dynamic component for one-off component bindings to the DOM. e.g. In development mode, used to render Redux Dev tools. async only - used in front-end application only</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "context",
+            "description": "<p>context.bindPoints MUST be an array of binding objects after this hook is called</p>"
+          }
+        ],
+        "binding": [
+          {
+            "group": "binding",
+            "type": "HTMLElement",
+            "optional": false,
+            "field": "the",
+            "description": "<p>DOM element to bind to (e.g. document.getElementById('my-element'))</p>"
+          },
+          {
+            "group": "binding",
+            "type": "String",
+            "optional": false,
+            "field": "string",
+            "description": "<p>matching a React component module in one of the Reactium built-in webpack contexts (src/app/components or src/app/components/common-ui) e.g. 'DevTools' maps to src/app/components/DevTools</p>"
+          }
+        ]
+      }
+    },
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/app/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "dependencies-load",
+    "title": "dependencies-load",
+    "name": "dependencies-load",
+    "description": "<p>Called after init to give an application a change to load async dependencies. Many Domain Driven Design (DDD) artifacts from generated src/manifest.js are loaded on this hook async only - used in front-end or isomorphically when running server-side rendering mode (SSR)</p>",
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/app/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "init",
+    "title": "init",
+    "name": "init",
+    "description": "<p>Called before all other hooks on Reactium application startup. async only - used in front-end or isomorphically when running server-side rendering mode (SSR)</p>",
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/app/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "plugin-dependencies",
+    "title": "plugin-dependencies",
+    "name": "plugin-dependencies",
+    "description": "<p>Called to indicate all bootstrap dependencies should now be loaded, but before application routes have been initialized. There are 2 default registered callback in Reactium core on this hook. 1. (Highest Priority): The generated src/manifest.js dependencies are attached to this hook context (as context.deps). 2. (High Priority): <code>plugin-init</code> hook will be invoked, at which point all Reactium.Plugin registrations will be called.</p> <pre><code> Any hooks that registered after Reactium.Plugin will only be useful if they happen to be invoked during the normal runtime operations of the application.  An important exception to this is `routes-init`, which is deferred until after plugins initialize so they may dynamically add routes before Reactium hands off  control to the Router.  async only - used in front-end or isomorphically when running server-side rendering mode (SSR)</code></pre>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "context",
+            "description": "<p>Core attaches generated manifest loaded dependencies to context.deps</p>"
+          }
+        ]
+      }
+    },
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/app/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "register-route",
+    "title": "register-route",
+    "name": "register-route",
+    "description": "<p>Called on boot after routes-init, and during runtime operation of the front-end application, whenever a new route is registered. Can be used to augment a router object before it is registered to the router. async only - used in front-end or isomorphically when running server-side rendering mode (SSR)</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "route",
+            "description": "<p>the new or updated route, indentified by unique id (route.id)</p>"
+          }
+        ]
+      }
+    },
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/sdk/routing/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "routes-init",
+    "title": "routes-init",
+    "name": "routes-init",
+    "description": "<p>Called after plugin-init, to add React Router routes to Reactium.Routing register before the Router component is initialized and finally the application is bound to the DOM. async only - used in front-end or isomorphically when running server-side rendering mode (SSR)</p>",
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/sdk/routing/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "service-worker-init",
+    "title": "service-worker-init",
+    "name": "service-worker-init",
+    "description": "<p>Called after dependencies-load in Reactium.ServiceWorker to register any webapp service worker code for the app. By default, this hook is implemented to register the customizable Google Workbox implementation that will be compiled (to /assets/js/sw/sw.js). Also, async loads and instantiates a a google workbox-window Workbox object on Reactium.ServiceWorker.worker. async only - used in front-end webapp only</p>",
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/sdk/service-worker/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "store-create",
+    "title": "store-create",
+    "name": "store-create",
+    "description": "<p>Called after dependencies-load to trigger Redux store creator. async only - used in front-end or isomorphically when running server-side rendering mode (SSR)</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "params",
+            "description": "<p>params.server indicate if is store creation on the server, or in the front-end application</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "context",
+            "description": "<p>Core implementation of this hook will create the Redux store and set it to context.store.</p>"
+          }
+        ]
+      }
+    },
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/app/index.js",
+    "groupTitle": "Hooks"
+  },
+  {
+    "type": "Hook",
+    "url": "zone-defaults",
+    "title": "zone-defaults",
+    "name": "zone-defaults",
+    "description": "<p>Called after dependencies-load by Reactium.Zone.init() for loading default component rendering Zone controls and components. async only - used in front-end or isomorphically when running server-side rendering mode (SSR)</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "context",
+            "description": "<p>used to create initial controls and components. controls.filter for default filtering, controls.sort for default sorting, controls.mapper for default mapping and controls.components for initial registered components. zone.js Domain Driven Design (DDD) artifacts from generated src/manifest.js are registered with Reactium.Zone at this time. See Reactium.Zone SDK for runtime operations.</p>"
+          }
+        ]
+      }
+    },
+    "group": "Hooks",
+    "version": "0.0.0",
+    "filename": ".core/app/index.js",
+    "groupTitle": "Hooks"
   },
   {
     "type": "ReactHook",
@@ -718,6 +1189,51 @@
   },
   {
     "type": "ReactHook",
+    "url": "useEventEffect(eventTarget,eventCallbacks,deps)",
+    "title": "useEventEffect()",
+    "version": "1.0.7",
+    "description": "<p>React hook to short hand for addEventListener and removeEventLister for one or more callbacks.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "eventTarget",
+            "description": "<p>Some event target object (implementing addEventListener and removeEventLister)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "eventCallbacks",
+            "description": "<p>Object keys are event names, and Object values are callbacks to be subscribed/unsubscribed.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "useEffectDeps",
+            "optional": false,
+            "field": "deps",
+            "description": "<p>consistent with React useEffect deps list.</p>"
+          }
+        ]
+      }
+    },
+    "name": "useEventEffect",
+    "group": "ReactHook",
+    "examples": [
+      {
+        "title": "EventEffectComponent.js",
+        "content": "import React, { useState } from 'react';\nimport { useEventEffect } from 'reactium-core/sdk';\n\nconst EventEffectComponent = () => {\n    const [size, setSize] = useState({\n        width: window.innerWidth,\n        height: window.innerHeight,\n    });\n\n    const [online, setOnline] = useState(window.onLine);\n\n    const onResize = e => {\n        setSize({\n            width: window.innerWidth,\n            height: window.innerHeight,\n        });\n    };\n\n    const onNetworkChange = e => {\n        setOnline(window.onLine);\n    };\n\n    useEventEffect(\n        window,\n        {\n            resize: onResize,\n            online: onNetworkChange,\n            offline: onNetworkChange,\n        },\n        [],\n    );\n\n    return (\n        <div className='status'>\n            <span className='status-width'>width: {size.width}</span>\n            <span className='status-height'>height: {size.height}</span>\n            <span className={`status-${online ? 'online' : 'offline'}`}></span>\n        </div>\n    );\n};",
+        "type": "json"
+      }
+    ],
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/named-exports/event-handle.js",
+    "groupTitle": "ReactHook"
+  },
+  {
+    "type": "ReactHook",
     "url": "useEventHandle(handle)",
     "title": "useEventHandle()",
     "description": "<p>React hook to create an imperative handle that is also an implementation of EventTarget. Can be used in conjunction with useImperativeHandle (React built-in) or useRegisterHandle/useHandle (Reactium SDK hooks).</p>",
@@ -750,6 +1266,24 @@
     ],
     "version": "0.0.0",
     "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/named-exports/event-handle.js",
+    "groupTitle": "ReactHook"
+  },
+  {
+    "type": "ReactHook",
+    "url": "useEventRefs()",
+    "title": "useEventRefs()",
+    "version": "1.0.7",
+    "group": "ReactHook",
+    "name": "useEventRefs",
+    "description": "<p>Like useRefs, creates a single reference object that can be managed using the <code>get</code>/<code>set</code>/<code>del</code>/<code>clear</code> functions, however also an EventTarget object. <code>set</code>/<code>del</code>/<code>clear</code> methods dispatch <code>before-set</code>/<code>set</code>, <code>before-del</code>/<code>del</code>, and <code>before-clear</code>/<code>clear</code> events respectively.</p>",
+    "examples": [
+      {
+        "title": "Usage",
+        "content": "import React, { useState } from 'react';\nimport { useRefs } from '@atomic-reactor/reactium-sdk-core';\n\nconst MyComponent = () => {\n    const refs = useEventRefs();\n    const [ready, setReady] = useState(false);\n\n    const onChildRefReady = e => {\n        if (e.key === 'my.component') {\n            setReady(refs.get(e.key) !== undefined);\n        }\n    };\n\n    useEffect(() => {\n        refs.addEventListener('set', onChildRefReady);\n        return () => refs.removeEventListener('set', onChildRefReady);\n    }, []);\n\n    return (\n        <MyForwardRefComponent ref={cmp => refs.set('my.component', cmp)} />\n        {ready && <Controller control={refs.get('my.component')} />}\n    );\n};",
+        "type": "json"
+      }
+    ],
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/named-exports/useRefs.js",
     "groupTitle": "ReactHook"
   },
   {
@@ -1022,6 +1556,11 @@
         "title": "Usage",
         "content": "import React, { useEffect, useState } from 'react';\nimport { useRefs } from '@atomic-reactor/reactium-sdk-core';\n\nconst MyComponent = () => {\n    const refs = useRefs();\n    const [state, setState] = useState({ input: null });\n\n    const onClick = () => {\n        const inputElm = refs.get('input');\n        setState({ ...state, input: inputElm.value });\n        inputElm.value = '';\n    };\n\n    return (\n        <div ref={elm => refs.set('container', elm)}>\n            {state.input && <div>{state.input}</div>}\n            <input type='text' ref={elm => refs.set('input', elm)} />\n            <button onClick={onClick}>Update</button>\n        </div>\n    );\n};",
         "type": "json"
+      },
+      {
+        "title": "Proxy Reference Usage",
+        "content": "// sometimes you need a forwarded ref to be a ref object from useRef() or React.createRef()\n// You can create proxy factory for the refs to achieve this.\nimport React, { useEffect, useState } from 'react';\nimport { EventForm } from '@atomic-reactor/reactium-ui';\nimport { useRefs } from '@atomic-reactor/reactium-sdk-core';\n\nconst MyComponent = () => {\n   const refs = useRefs();\n   // creates a factory for React.createRef() object to your refs\n   const refProxy = refs.createProxy('form');\n\n   const [state, setState] = useState({});\n\n   const onSubmit = e => {\n       const formRef = refs.get('form');\n       setState({ ...formRef.getValue() });\n   };\n\n   // EventForm expects a reference object, not a callback function\n   // When EventForm references ref.current, it will actually get refs.get('form').\n   // When EventForm sets the ref.current value, it will actually perform refs.set('form', value);\n   return (\n       <EventForm ref={refProxy} onSubmit={onSubmit}>\n           <input type='text' name=\"foo\" />\n           <button type=\"submit\">Submit the Form</button>\n       </EventForm>\n   );\n};",
+        "type": "json"
       }
     ],
     "version": "0.0.0",
@@ -1103,7 +1642,7 @@
             "type": "Mixed",
             "optional": false,
             "field": "params",
-            "description": "<ol> <li>Callback function taking current state object from Redux store, and returning what you care about, or</li> <li>an Object with <code>select</code> and <code>shouldUpdate</code> props.</li> </ol>"
+            "description": "<ol> <li>Callback function taking current state object from Redux store, and returning what you care about, or</li> <li>an Object with <code>select</code>, <code>shouldUpdate</code> and <code>returnMode</code> props.</li> </ol>"
           },
           {
             "group": "Parameter",
@@ -1118,6 +1657,14 @@
             "optional": true,
             "field": "params.shouldUpdate",
             "description": "<p>Callback function object with 2 properties <code>newState</code> and <code>prevState</code>, containing the current results of the select function, and the previous results of the select function, respectively. Returns true if your component should update, otherwise false. By default, <code>useSelect</code> will do a shallow comparison.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "params.returnMode",
+            "defaultValue": "state",
+            "description": "<p><code>state</code> to get the current state, <code>ref</code> to get the whole React reference object (for more realtime updates), and <code>get</code> for a getter function that takes object-path</p>"
           }
         ]
       }
@@ -1196,7 +1743,7 @@
         ]
       }
     },
-    "description": "<p>Synchronously set a status value that can be checked within a function scope without updating the state of the component. Useful when doing asynchronous activities and the next activity depends on a status of some sort from the previous activity.</p> <p>Returns [status:String, setStatus:Function, isStatus:Function]</p> <h3>status</h3> <p>The current status value.</p> <h3>setStatus(status:String, forceRender:Boolean = false)</h3> <p>Set the status value. If forceRender is true, a rerender will be triggered. <em><strong>Beware:</strong></em> forceRender may have unintended consequence and should be used in last status before re-rendering situations only.</p> <h3>isStatus(statuses:Array)</h3> <p>Check if the current status matches the statuses passed.</p>",
+    "description": "<p>Synchronously set a status value that can be checked within a function scope without updating the state of the component. Useful when doing asynchronous activities and the next activity depends on a status of some sort from the previous activity.</p> <p>Returns [status:String, setStatus:Function, isStatus:Function, getStatus:Function]</p> <h3>status</h3> <p>The current asynchronous status value. (is accurate once per render)</p> <h3>setStatus(status:String, forceRender:Boolean = false)</h3> <p>Set the status value. If forceRender is true, a rerender will be triggered. <em><strong>Beware:</strong></em> forceRender may have unintended consequence and should be used in last status before re-rendering situations only.</p> <h3>isStatus(statuses:Array)</h3> <p>Check if the current status matches the statuses passed.</p> <h3>getStatus()</h3> <p>Get the synchrounous value of the status. This can matter if you need to set and check the value in the same render cycle.</p>",
     "version": "0.0.0",
     "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/named-exports/useStatus.js",
     "groupTitle": "ReactHook"
@@ -1589,10 +2136,12 @@
     "groupTitle": "Reactium.Cache"
   },
   {
-    "type": "Function",
+    "type": "Async",
     "url": "Capability.check(capabilities,strict)",
     "title": "Capability.check",
     "version": "3.2.1",
+    "name": "Capability.check",
+    "group": "Reactium.Capability",
     "description": "<p>Check a list of capabilities on the current user.</p>",
     "parameter": {
       "fields": {
@@ -1611,6 +2160,42 @@
             "field": "strict",
             "defaultValue": "true",
             "description": "<p>When true all capabilities must be allowed for user for check to return true, otherwise only one capability is required to get a true value.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "userID",
+            "description": "<p>The Reactium.User id to check.</p>"
+          }
+        ]
+      }
+    },
+    "filename": ".core/sdk/capability/index.js",
+    "groupTitle": "Reactium.Capability"
+  },
+  {
+    "type": "Async",
+    "url": "Capability.check(capabilities,strict)",
+    "title": "Capability.check",
+    "version": "3.2.1",
+    "description": "<p>Retrieve an enumerated list of capabilities for the specified user.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "capabilities",
+            "description": "<p>list of string capabilities to check, returns true if current user is allowed, false if not allowed.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "userID",
+            "description": "<p>The Actinium.User id value. If empty the current user is used.</p>"
           }
         ]
       }
@@ -1621,7 +2206,7 @@
     "groupTitle": "Reactium.Capability"
   },
   {
-    "type": "Function",
+    "type": "Async",
     "url": "Capability.get(capability)",
     "title": "Capability.get()",
     "version": "3.2.1",
@@ -1639,17 +2224,71 @@
     "groupTitle": "Reactium.Capability"
   },
   {
-    "type": "Function",
-    "url": "Capability.set(capability,perms)",
-    "title": "Capability.set()",
+    "type": "Async",
+    "url": "Capability.grant(capability,role)",
+    "title": "Capability.grant()",
     "version": "3.2.1",
-    "description": "<p>Set permissions on a capability for allowed and excluded roles.</p>",
-    "name": "Capability.set",
+    "description": "<p>Add role(s) to the capability allowed list.</p>",
+    "name": "Capability.grant",
     "group": "Reactium.Capability",
     "examples": [
       {
         "title": "Usage",
-        "content": "import Reactium from 'reactium-core/sdk';\n\nCapability.set('do-something', {\n    allowed: ['contributor'],\n    excluded: ['user']\n})",
+        "content": "Capability.grant('taxonomy.update', 'moderator');\nCapability.grant('taxonomy.update', ['moderator']);",
+        "type": "json"
+      }
+    ],
+    "filename": ".core/sdk/capability/index.js",
+    "groupTitle": "Reactium.Capability"
+  },
+  {
+    "type": "Async",
+    "url": "Capability.restrict(capability,role)",
+    "title": "Capability.restrict()",
+    "version": "3.2.1",
+    "description": "<p>Add role(s) to the capability excluded list.</p>",
+    "name": "Capability.restrict",
+    "group": "Reactium.Capability",
+    "examples": [
+      {
+        "title": "Usage",
+        "content": "Capability.restrict('taxonomy.update', 'moderator');\nCapability.restrict('taxonomy.update', ['moderator']);",
+        "type": "json"
+      }
+    ],
+    "filename": ".core/sdk/capability/index.js",
+    "groupTitle": "Reactium.Capability"
+  },
+  {
+    "type": "Async",
+    "url": "Capability.revoke(capability,role)",
+    "title": "Capability.revoke()",
+    "version": "3.2.1",
+    "description": "<p>Remove role(s) from the capability allowed list.</p>",
+    "name": "Capability.revoke",
+    "group": "Reactium.Capability",
+    "examples": [
+      {
+        "title": "Usage",
+        "content": "Capability.revoke('taxonomy.update', 'moderator');\nCapability.revoke('taxonomy.update', ['moderator']);",
+        "type": "json"
+      }
+    ],
+    "filename": ".core/sdk/capability/index.js",
+    "groupTitle": "Reactium.Capability"
+  },
+  {
+    "type": "Async",
+    "url": "Capability.unrestrict(capability,role)",
+    "title": "Capability.unrestrict()",
+    "version": "3.2.1",
+    "description": "<p>Remove role(s) from the capability excluded list.</p>",
+    "name": "Capability.unrestrict",
+    "group": "Reactium.Capability",
+    "examples": [
+      {
+        "title": "Usage",
+        "content": "Capability.unrestrict('taxonomy.update', 'moderator');\nCapability.unrestrict('taxonomy.update', ['moderator']);",
         "type": "json"
       }
     ],
@@ -1658,11 +2297,11 @@
   },
   {
     "type": "Function",
-    "url": "Component.register(hook,component,order,capabilities,strict)",
+    "url": "Component.register(hook,component,order)",
     "title": "Component.register()",
     "group": "Reactium.Component",
     "name": "Component.register",
-    "description": "<p>Register a React component to be used with a specific useHookComponent hook. This must be called before the useHookComponent that defines the hook.</p>",
+    "description": "<p>Register a React component to be used with a specific useHookComponent React hook. This must be called before the useHookComponent that defines the hook.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1702,30 +2341,6 @@
         "type": "json"
       }
     ],
-    "version": "0.0.0",
-    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/component/index.js",
-    "groupTitle": "Reactium.Component"
-  },
-  {
-    "type": "Function",
-    "url": "Component.unregister(uuid)",
-    "title": "Component.unregister()",
-    "group": "Reactium.Component",
-    "name": "Component.unregister",
-    "description": "<p>Unregister a component used in useHookComponent. This must be performed before useHookComponent is called. Alias for Reactium.Hook.unregister. See Hook.unregister()</p>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "uuid",
-            "description": "<p>the registered component hook id provided to <code>Component.register()</code></p>"
-          }
-        ]
-      }
-    },
     "version": "0.0.0",
     "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/component/index.js",
     "groupTitle": "Reactium.Component"
@@ -2159,7 +2774,7 @@
     "type": "Hook",
     "url": "app-ready",
     "title": "app-ready",
-    "description": "<p>Hook run after the app has been rendered.</p>",
+    "description": "<p>The final hook run after the front-end application has bee bound or hydrated. After this point, the all hooks are runtime hooks.</p>",
     "name": "app-ready",
     "group": "Reactium.Hooks",
     "parameter": {
@@ -2170,7 +2785,7 @@
             "type": "Boolean",
             "optional": false,
             "field": "ssr",
-            "description": "<p>If the app is in server-side rendering mode <code>true</code> is passed to the hook.</p>"
+            "description": "<p>If the app is in server-side rendering mode (SSR) <code>true</code> is passed to the hook.</p>"
           }
         ]
       }
@@ -2224,6 +2839,79 @@
     "version": "0.0.0",
     "filename": ".core/sdk/middleware/index.js",
     "groupTitle": "Reactium.Middleware"
+  },
+  {
+    "type": "Function",
+    "url": "Middleware.unregister(name)",
+    "title": "Middleware.unregister()",
+    "name": "Middleware.unregister",
+    "description": "<p>Unregister a Redux middleware. This should be called only:</p> <ol> <li>within <code>Reactium.Plugin.register()</code> promise callback,</li> <li>or after the <code>plugin-dependencies</code> hook, (e.g. <code>plugin-init</code>)</li> <li>or after <code>Reactium.Plugin.ready === true</code>.</li> </ol>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>the middleware's unique name</p>"
+          }
+        ]
+      }
+    },
+    "group": "Reactium.Middleware",
+    "examples": [
+      {
+        "title": "Example Usage:",
+        "content": "import Reactium from 'reactium-core/sdk';\nReactium.Middleware.unregister('logger');",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": ".core/sdk/middleware/index.js",
+    "groupTitle": "Reactium.Middleware"
+  },
+  {
+    "type": "Function",
+    "url": "Plugin.isActive(ID)",
+    "title": "Plugin.isActive()",
+    "group": "Reactium.Plugin",
+    "name": "Plugin.isActive",
+    "description": "<p>Determine if a plugin ID is active.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>the plugin id.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example Usage:",
+        "content": "Reactium.Plugin.isActive('Media');",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/plugin/index.js",
+    "groupTitle": "Reactium.Plugin"
+  },
+  {
+    "type": "Function",
+    "url": "Plugin.list()",
+    "title": "Plugin.list()",
+    "group": "Reactium.Plugin",
+    "name": "Plugin.list",
+    "description": "<p>Return the list of registered plugins.</p>",
+    "version": "0.0.0",
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/plugin/index.js",
+    "groupTitle": "Reactium.Plugin"
   },
   {
     "type": "Function",
@@ -2952,7 +3640,7 @@
     "url": "Routing.get()",
     "title": "Routing.get()",
     "name": "Routing.get",
-    "description": "<p>Get sorted array of all route objects. This includes the NotFound component. If called prior to the <code>routes-init</code> hook completion, will contain only the NotFound component.</p>",
+    "description": "<p>Get sorted array of all route objects.</p>",
     "group": "Reactium.Routing",
     "version": "0.0.0",
     "filename": ".core/sdk/routing/index.js",
@@ -3007,7 +3695,28 @@
     "url": "Routing.unregister(id)",
     "title": "Routing.unregister()",
     "name": "Routing.unregister",
-    "description": "<p>Unregister an existing route, by id. Note: You can not unregister the 'NotFound' component. You can only replace it using the <code>404-component</code> hook.</p>",
+    "description": "<p>Unregister an existing route, by id. Note: You can not unregister the 'NotFound' component. You can only replace it using the registering a NotFound component with Reactium.Component.register().</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the route id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "update",
+            "defaultValue": "true",
+            "description": "<p>update subscribers</p>"
+          }
+        ]
+      }
+    },
     "group": "Reactium.Routing",
     "version": "0.0.0",
     "filename": ".core/sdk/routing/index.js",
@@ -3731,8 +4440,8 @@
             "group": "Parameter",
             "type": "String",
             "optional": true,
-            "field": "objectId",
-            "description": "<p>The objectId of the user. If empty, the User.current() object is used.</p>"
+            "field": "userID",
+            "description": "<p>The Actinium.User id. If empty, the User.current() id is used.</p>"
           }
         ]
       }
@@ -4234,135 +4943,6 @@
   },
   {
     "type": "Function",
-    "url": "Reactium.Utils.abbreviatedNumber(number)",
-    "title": "Utils.abbreviatedNumber()",
-    "version": "3.1.14",
-    "group": "Reactium.Utilities",
-    "name": "Utils.abbreviatedNumber",
-    "description": "<p>Abbreviate a long number to a string.</p>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "number",
-            "description": "<p>The number to abbreviate.</p>"
-          }
-        ]
-      }
-    },
-    "examples": [
-      {
-        "title": "Example Usage:",
-        "content": "Reactium.Utils.abbreviatedNumber(5000);\n// Returns: 5k\n\nReactium.Utils.abbreviatedNumber(500000);\n// Returns .5m",
-        "type": "json"
-      }
-    ],
-    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
-    "groupTitle": "Reactium.Utilities"
-  },
-  {
-    "type": "Function",
-    "url": "Reactium.Utils.breakpoint(width)",
-    "title": "Utils.breakpoint()",
-    "version": "3.1.14",
-    "group": "Reactium.Utilities",
-    "name": "Utils.breakpoint",
-    "description": "<p>Get the breakpoint of a window width.</p>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": true,
-            "field": "width",
-            "defaultValue": "window.innerWidth",
-            "description": "<p>Custom width to check. Useful if you have a resize event and want to skip the function from looking up the value again. Reactium.Utils.breakpoint(); // Returns: the current window.innerWidth breakpoint.</p> <p>Reactium.Utils.breakpoint(1024); // Returns: sm</p>"
-          }
-        ]
-      }
-    },
-    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
-    "groupTitle": "Reactium.Utilities"
-  },
-  {
-    "type": "Function",
-    "url": "Reactium.Utils.breakpoints()",
-    "title": "Utils.breakpoints",
-    "version": "3.1.14",
-    "group": "Reactium.Utilities",
-    "name": "Utils.breakpoints",
-    "description": "<p>Get breakpoints from browser body:after psuedo element or <code>Utils.BREAKPOINTS_DEFAULT</code> if unset or node.</p> <table> <thead> <tr> <th>Breakpoint</th> <th>Range</th> </tr> </thead> <tbody> <tr> <td>xs</td> <td>0 - 640</td> </tr> <tr> <td>sm</td> <td>641 - 990</td> </tr> <tr> <td>md</td> <td>991 - 1280</td> </tr> <tr> <td>lg</td> <td>1281 - 1440</td> </tr> <tr> <td>xl</td> <td>1600+</td> </tr> </tbody> </table>",
-    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
-    "groupTitle": "Reactium.Utilities"
-  },
-  {
-    "type": "Function",
-    "url": "Reactium.Utils.isElectron(iframeWindow)",
-    "title": "Utils.isElectron()",
-    "version": "3.1.14",
-    "group": "Reactium.Utilities",
-    "name": "Utils.isElectron",
-    "description": "<p>Determine if window is an electron window. Useful for detecting electron usage.</p>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Window",
-            "optional": true,
-            "field": "iframeWindow",
-            "description": "<p>iframe window reference.</p>"
-          }
-        ]
-      }
-    },
-    "examples": [
-      {
-        "title": "Example Usage:",
-        "content": "Reactium.Utils.isElectron();\n// Returns: true if executed in electron.\n// Returns: false if executed in node or browser.",
-        "type": "json"
-      }
-    ],
-    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
-    "groupTitle": "Reactium.Utilities"
-  },
-  {
-    "type": "Function",
-    "url": "Reactium.Utils.isWindow(iframeWindow)",
-    "title": "Utils.isWindow()",
-    "version": "3.1.14",
-    "group": "Reactium.Utilities",
-    "name": "Utils.isWindow",
-    "description": "<p>Determine if the window object has been set. Useful when developing for server side rendering.</p>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Window",
-            "optional": true,
-            "field": "iframeWindow",
-            "description": "<p>iframe window reference.</p>"
-          }
-        ]
-      }
-    },
-    "examples": [
-      {
-        "title": "Example Usage:",
-        "content": "Reactium.Utils.isWindow();\n// Returns: true if executed in a browser.\n// Returns: false if executed in node (server side rendering).",
-        "type": "json"
-      }
-    ],
-    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
-    "groupTitle": "Reactium.Utilities"
-  },
-  {
-    "type": "Function",
     "url": "ec(Component)",
     "title": "ec()",
     "description": "<p>ec, short for &quot;easy connect&quot; is a stripped down version of the redux <code>connect</code> function, which will provide your component with any Redux state properties under the name matching your component class (if applicable), as well as a <code>getState</code> function property.</p>",
@@ -4405,6 +4985,73 @@
     "groupTitle": "Reactium.Utilities"
   },
   {
+    "type": "Function",
+    "url": "Reactium.Utils.abbreviatedNumber(number)",
+    "title": "Utils.abbreviatedNumber()",
+    "version": "3.1.14",
+    "group": "Reactium.Utils",
+    "name": "Utils.abbreviatedNumber",
+    "description": "<p>Abbreviate a long number to a string.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>The number to abbreviate.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example Usage:",
+        "content": "Reactium.Utils.abbreviatedNumber(5000);\n// Returns: 5k\n\nReactium.Utils.abbreviatedNumber(500000);\n// Returns .5m",
+        "type": "json"
+      }
+    ],
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
+    "groupTitle": "Reactium.Utils"
+  },
+  {
+    "type": "Function",
+    "url": "Reactium.Utils.breakpoint(width)",
+    "title": "Utils.breakpoint()",
+    "version": "3.1.14",
+    "group": "Reactium.Utils",
+    "name": "Utils.breakpoint",
+    "description": "<p>Get the breakpoint of a window width.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "width",
+            "defaultValue": "window.innerWidth",
+            "description": "<p>Custom width to check. Useful if you have a resize event and want to skip the function from looking up the value again. Reactium.Utils.breakpoint(); // Returns: the current window.innerWidth breakpoint.</p> <p>Reactium.Utils.breakpoint(1024); // Returns: sm</p>"
+          }
+        ]
+      }
+    },
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
+    "groupTitle": "Reactium.Utils"
+  },
+  {
+    "type": "Function",
+    "url": "Reactium.Utils.breakpoints()",
+    "title": "Utils.breakpoints",
+    "version": "3.1.14",
+    "group": "Reactium.Utils",
+    "name": "Utils.breakpoints",
+    "description": "<p>Get breakpoints from browser body:after psuedo element or <code>Utils.BREAKPOINTS_DEFAULT</code> if unset or node.</p> <table> <thead> <tr> <th>Breakpoint</th> <th>Range</th> </tr> </thead> <tbody> <tr> <td>xs</td> <td>0 - 640</td> </tr> <tr> <td>sm</td> <td>641 - 990</td> </tr> <tr> <td>md</td> <td>991 - 1280</td> </tr> <tr> <td>lg</td> <td>1281 - 1440</td> </tr> <tr> <td>xl</td> <td>1600+</td> </tr> </tbody> </table>",
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
+    "groupTitle": "Reactium.Utils"
+  },
+  {
     "type": "Utils.cxFactory",
     "url": "Utils.cxFactory",
     "title": "Utils.cxFactory",
@@ -4432,6 +5079,37 @@
       }
     ],
     "version": "0.0.0",
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
+    "groupTitle": "Reactium.Utils"
+  },
+  {
+    "type": "Function",
+    "url": "Reactium.Utils.isWindow(iframeWindow)",
+    "title": "Utils.isWindow()",
+    "version": "3.1.14",
+    "group": "Reactium.Utils",
+    "name": "Utils.isWindow",
+    "description": "<p>Determine if the window object has been set. Useful when developing for server side rendering.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Window",
+            "optional": true,
+            "field": "iframeWindow",
+            "description": "<p>iframe window reference.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example Usage:",
+        "content": "Reactium.Utils.isWindow();\n// Returns: true if executed in a browser.\n// Returns: false if executed in node (server side rendering).",
+        "type": "json"
+      }
+    ],
     "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
     "groupTitle": "Reactium.Utils"
   },
@@ -4518,6 +5196,99 @@
       }
     ],
     "version": "0.0.0",
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
+    "groupTitle": "Reactium.Utils"
+  },
+  {
+    "type": "Function",
+    "url": "Reactium.Utils.isBrowserWindow(iframeWindow)",
+    "title": "Utils.isBrowserWindow()",
+    "version": "3.1.14",
+    "group": "Reactium.Utils",
+    "name": "isBrowserWindow",
+    "description": "<p>If global window object exists, and does not have boolean isJSDOM flag, this context may be browser or electron. Use isElectronWindow() to know the latter.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Window",
+            "optional": true,
+            "field": "iframeWindow",
+            "description": "<p>iframe window reference.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example Usage:",
+        "content": "import { isBrowserWindow } from 'reactium-core/sdk';\nisBrowserWindow();\n// Returns: true if executed in browser or electron.\n// Returns: false if executed on server.",
+        "type": "json"
+      }
+    ],
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
+    "groupTitle": "Reactium.Utils"
+  },
+  {
+    "type": "Function",
+    "url": "Reactium.Utils.isElectronWindow(iframeWindow)",
+    "title": "Utils.isElectronWindow()",
+    "version": "3.1.14",
+    "group": "Reactium.Utils",
+    "name": "isElectronWindow",
+    "description": "<p>Determine if window is an electron window. Useful for detecting electron usage.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Window",
+            "optional": true,
+            "field": "iframeWindow",
+            "description": "<p>iframe window reference.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example Usage:",
+        "content": "import { isElectronWindow } from 'reactium-core/sdk';\nisElectronWindow();\n// Returns: true if executed in electron.\n// Returns: false if executed in node or browser.",
+        "type": "json"
+      }
+    ],
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
+    "groupTitle": "Reactium.Utils"
+  },
+  {
+    "type": "Function",
+    "url": "Reactium.Utils.isServerWindow(iframeWindow)",
+    "title": "Utils.isServerWindow()",
+    "version": "3.1.14",
+    "group": "Reactium.Utils",
+    "name": "isServerWindow",
+    "description": "<p>If global window object exists, and has boolean isJSDOM flag, this context is a JSON window object (not in the browser or electron)</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Window",
+            "optional": true,
+            "field": "iframeWindow",
+            "description": "<p>iframe window reference.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example Usage:",
+        "content": "import { isServerWindow } from 'reactium-core/sdk';\nisServerWindow();\n// Returns: true if executed in server SSR context.\n// Returns: false if executed in browser or electron.",
+        "type": "json"
+      }
+    ],
     "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/index.js",
     "groupTitle": "Reactium.Utils"
   },
@@ -4716,6 +5487,100 @@
   },
   {
     "type": "Function",
+    "url": "Zone.getZoneComponent(zone,id)",
+    "title": "Zone.getZoneComponent()",
+    "name": "Zone.getZoneComponent",
+    "description": "<p>Get the component from a zone by its id.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "zone",
+            "description": "<p>the zone name to get components from</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the id of the registered component, specified in the object passed to Zone.addComponent() or returned by it.</p>"
+          }
+        ]
+      }
+    },
+    "group": "Reactium.Zone",
+    "version": "0.0.0",
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/zone/index.js",
+    "groupTitle": "Reactium.Zone"
+  },
+  {
+    "type": "Function",
+    "url": "Zone.getZoneComponents(zone,raw)",
+    "title": "Zone.getZoneComponents()",
+    "name": "Zone.getZoneComponents",
+    "description": "<p>Get existing registrations for a zone, by default goes through mapping, sorting, filtering. Add raw=true to get unadulterated list, even if they may not be renderable in the Zone. Returns the object used in Zone.addComponent()</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "zone",
+            "description": "<p>the zone name to get components from</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "raw",
+            "defaultValue": "false",
+            "description": "<p>Set to true to get all components, whether or not they are currently filtered, and without mapping or extra sorting.</p>"
+          }
+        ]
+      }
+    },
+    "group": "Reactium.Zone",
+    "version": "0.0.0",
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/zone/index.js",
+    "groupTitle": "Reactium.Zone"
+  },
+  {
+    "type": "Function",
+    "url": "Zone.hasZoneComponent(zone,id)",
+    "title": "Zone.hasZoneComponent()",
+    "name": "Zone.hasZoneComponent",
+    "description": "<p>Returns true if component with id is present in the zone.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "zone",
+            "description": "<p>the zone name to get components from</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the id of the registered component, specified in the object passed to Zone.addComponent() or returned by it.</p>"
+          }
+        ]
+      }
+    },
+    "group": "Reactium.Zone",
+    "version": "0.0.0",
+    "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/zone/index.js",
+    "groupTitle": "Reactium.Zone"
+  },
+  {
+    "type": "Function",
     "url": "Zone.removeComponent(ID)",
     "title": "Zone.removeComponent()",
     "name": "Zone.removeComponent",
@@ -4899,99 +5764,198 @@
         "Parameter": [
           {
             "group": "Parameter",
+            "type": "Getter",
+            "optional": false,
+            "field": "listById",
+            "description": "<p>get Object keyed by id of most recent (or highest order) registered objects, filtering out unregistered or banned objects.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Getter",
             "optional": false,
             "field": "list",
-            "description": "<p>{Getter} get list of most recent (or highest order) registered objects, filtering out unregistered or banned objects.</p>"
+            "description": "<p>get list of most recent (or highest order) registered objects, filtering out unregistered or banned objects.</p>"
           },
           {
             "group": "Parameter",
+            "type": "Getter",
             "optional": false,
             "field": "registered",
-            "description": "<p>{Getter} get list of all historically registrated objects, even duplicates, ordered by order property of object (defaults to 100).</p>"
+            "description": "<p>get list of all historically registrated objects, even duplicates, ordered by order property of object (defaults to 100).</p>"
           },
           {
             "group": "Parameter",
+            "type": "Getter",
             "optional": false,
             "field": "protected",
-            "description": "<p>{Getter} get list of protected registrations ids</p>"
+            "description": "<p>get list of protected registrations ids</p>"
           },
           {
             "group": "Parameter",
+            "type": "Getter",
             "optional": false,
             "field": "unregistered",
-            "description": "<p>{Getter} get list of all existing registered objects ids that have been subsequently unregistered.</p>"
+            "description": "<p>get list of all existing registered objects ids that have been subsequently unregistered.</p>"
           },
           {
             "group": "Parameter",
+            "type": "Getter",
             "optional": false,
             "field": "banned",
-            "description": "<p>{Getter} get list of all banned objects ids.</p>"
+            "description": "<p>get list of all banned objects ids.</p>"
           },
           {
             "group": "Parameter",
+            "type": "Getter",
             "optional": false,
             "field": "mode",
-            "description": "<p>{Getter} get current mode (Default Utils.Registry.MODES.HISTORY)</p>"
+            "description": "<p>get current mode (Default Utils.Registry.MODES.HISTORY)</p>"
           },
           {
             "group": "Parameter",
+            "type": "Method",
+            "optional": false,
+            "field": "get",
+            "description": "<p><code>reg.get(id,defaultValue)</code> pass the identifier of an object get that object from the registry. Optionally provide a default value if the id doesn't exist in the registry.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Method",
             "optional": false,
             "field": "isProtected",
-            "description": "<p>{Method} pass the identifier of an object to see if it has been protected</p>"
+            "description": "<p>pass the identifier of an object to see if it has been protected</p>"
           },
           {
             "group": "Parameter",
+            "type": "Method",
             "optional": false,
             "field": "isRegistered",
-            "description": "<p>{Method} pass the identifier of an object to see if it has been registered</p>"
+            "description": "<p>pass the identifier of an object to see if it has been registered</p>"
           },
           {
             "group": "Parameter",
+            "type": "Method",
+            "optional": false,
+            "field": "isUnRegistered",
+            "description": "<p>pass the identifier of an object to see is NOT registered.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Method",
             "optional": false,
             "field": "isBanned",
-            "description": "<p>{Method} pass the identifier of an object to see if it has been banned</p>"
+            "description": "<p>pass the identifier of an object to see if it has been banned</p>"
           },
           {
             "group": "Parameter",
+            "type": "Method",
             "optional": false,
             "field": "ban",
-            "description": "<p>{Method} pass the identifier of an object to ban. Banned objects can not be registered and will not be show in list. Useful when you have code that needs to preempt the registration of an object from code you do not control. E.g. a plugin is introducing undesireable or disabled functionality</p>"
+            "description": "<p><code>reg.ban(id)</code> pass the identifier of an object to ban. Banned objects can not be registered and will not be show in list. Useful when you have code that needs to preempt the registration of an object from code you do not control. E.g. a plugin is introducing undesireable or disabled functionality</p>"
           },
           {
             "group": "Parameter",
+            "type": "Method",
             "optional": false,
             "field": "cleanup",
-            "description": "<p>{Method} pass the identifier of an object to be purged from historical registrations (i.e. free up memory) Automatically performed in mode Utils.Registry.CLEAN</p>"
+            "description": "<p><code>reg.cleanup(id)</code> pass the identifier of an object to be purged from historical registrations (i.e. free up memory) Automatically performed in mode Utils.Registry.CLEAN</p>"
           },
           {
             "group": "Parameter",
+            "type": "Method",
             "optional": false,
             "field": "protect",
-            "description": "<p>{Method} pass the identifier of an object to protect. Protected objects can not be overridden or cleaned up.</p>"
+            "description": "<p><code>reg.protect(id)</code> pass the identifier of an object to protect. Protected objects can not be overridden or cleaned up.</p>"
           },
           {
             "group": "Parameter",
+            "type": "Method",
             "optional": false,
             "field": "register",
-            "description": "<p>{Method} pass an identifier and a data object to register the object. The identifier will be added if it is not already registered (but protected) and not banned.</p>"
+            "description": "<p><code>reg.register(id,data)</code> pass an identifier and a data object to register the object. The identifier will be added if it is not already registered (but protected) and not banned.</p>"
           },
           {
             "group": "Parameter",
+            "type": "Method",
             "optional": false,
             "field": "unprotect",
-            "description": "<p>{Method} pass an identifier to unprotect an object</p>"
+            "description": "<p><code>reg.unprotect(id)</code> pass an identifier to unprotect an object</p>"
           },
           {
             "group": "Parameter",
+            "type": "Method",
             "optional": false,
             "field": "unregister",
-            "description": "<p>{Method} pass an identifier to unregister an object. When in HISTORY mode (default), previous registration will be retained, but the object will not be listed. In CLEAN mode, the previous registrations will be removed, unless protected.</p>"
+            "description": "<p><code>reg.unregister(id)</code> pass an identifier to unregister an object. When in HISTORY mode (default), previous registration will be retained, but the object will not be listed. In CLEAN mode, the previous registrations will be removed, unless protected.</p>"
           },
           {
             "group": "Parameter",
+            "type": "Method",
             "optional": false,
             "field": "flush",
-            "description": "<p>{Method} clear all registrations. Resets registry to newly constructed state.</p>"
+            "description": "<p><code>reg.flush()</code> clear all registrations. Resets registry to newly constructed state.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Method",
+            "optional": false,
+            "field": "subscribe",
+            "description": "<p><code>reg.subscribe(cb,id)</code> Adds a callback to indicate changes to the registry. Callback is called on register, unregister, protect, unprotect, ban, cleanup, and flush. Returns unsubscribe function.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Method",
+            "optional": false,
+            "field": "unsubscribe",
+            "description": "<p><code>reg.unsubscribe(id)</code> unsubscribe a subscriber by id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Method",
+            "optional": false,
+            "field": "unsubscribeAll",
+            "description": "<p><code>reg.unsubscribeAll()</code> unsubscribe all subscribers to changes made on the registry</p>"
+          }
+        ],
+        "register": [
+          {
+            "group": "register",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the id of the data object to be registered</p>"
+          },
+          {
+            "group": "register",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>the object to be registered</p>"
+          }
+        ],
+        "subscribe": [
+          {
+            "group": "subscribe",
+            "type": "Function",
+            "optional": false,
+            "field": "cb",
+            "description": "<p>Callback to be invoked on changes to the registry.</p>"
+          },
+          {
+            "group": "subscribe",
+            "type": "String",
+            "optional": true,
+            "field": "id",
+            "description": "<p>optional id of the callback, if you want to invoke unsubscribe manually by id, instead of the callback returned from subscribe method</p>"
+          }
+        ],
+        "unsubscribe": [
+          {
+            "group": "unsubscribe",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the id of the subscriber to unsubscribe</p>"
           }
         ]
       }
@@ -4999,37 +5963,6 @@
     "version": "0.0.0",
     "filename": "node_modules/@atomic-reactor/reactium-sdk-core/lib/utils/registry.js",
     "groupTitle": "Reactium"
-  },
-  {
-    "type": "Function",
-    "url": "Middleware.unregister(name)",
-    "title": "Middleware.unregister()",
-    "name": "Middleware.unregister",
-    "description": "<p>Unregister a Redux middleware. This should be called only:</p> <ol> <li>within <code>Reactium.Plugin.register()</code> promise callback,</li> <li>or after the <code>plugin-dependencies</code> hook, (e.g. <code>plugin-init</code>)</li> <li>or after <code>Reactium.Plugin.ready === true</code>.</li> </ol>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>the middleware's unique name</p>"
-          }
-        ]
-      }
-    },
-    "group": "Reatium.Middleware",
-    "examples": [
-      {
-        "title": "Example Usage:",
-        "content": "import Reactium from 'reactium-core/sdk';\nReactium.Middleware.unregister('logger');",
-        "type": "json"
-      }
-    ],
-    "version": "0.0.0",
-    "filename": ".core/sdk/middleware/index.js",
-    "groupTitle": "Reatium.Middleware"
   },
   {
     "type": "RegisteredComponent",

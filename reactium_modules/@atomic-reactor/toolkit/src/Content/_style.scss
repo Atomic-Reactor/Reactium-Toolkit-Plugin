@@ -1,0 +1,12 @@
+.rtk-content {
+    flex-grow: 1;
+    background-color: $color-grey-light;
+    min-height: calc(100vh - #{$header-height});
+}
+
+.dark {
+    .rtk-content {
+        color: $color-grey-light;
+        background-color: $color-gray-dark;
+    }
+}

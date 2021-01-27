@@ -1,15 +1,22 @@
-import Reactium from 'reactium-core/sdk';
+import Reactium, { isBrowserWindow } from 'reactium-core/sdk';
+import React, { forwardRef } from 'react';
 import op from 'object-path';
+import _ from 'underscore';
 import getComponents from 'dependencies/getComponents';
-import { createBrowserHistory, createMemoryHistory } from 'history';
+import RoutedContent from './RoutedContent';
+import manifestLoader from 'manifest';
 
 const lookupRouteComponent = async route => {
     let Found;
     if (typeof route.component === 'string') {
-        const { component } = Reactium.Hook.runSync(route.component);
-        if (component) Found = { [route.component]: component };
-        if (!Found) Found = getComponents([{ type: route.component }]);
-        route.component = op.get(Found, route.component, () => null);
+        route.component = Reactium.Component.get(
+            route.component,
+            op.get(
+                getComponents([{ type: route.component }]),
+                route.component,
+                forwardRef(() => null),
+            ),
+        );
     }
 
     return route;
@@ -17,103 +24,57 @@ const lookupRouteComponent = async route => {
 
 Reactium.Hook.register(
     'routes-init',
-    async context => {
-        const allRoutes = op.get(require('manifest').get(), 'allRoutes', {});
+    async Routing => {
+        const allRoutes = op.get(manifestLoader.get(), 'allRoutes', {});
 
         if (!Object.values(allRoutes || {}).length) {
             return [];
         }
 
-        let dynamicRoutes = [];
-        if (typeof window !== 'undefined') {
+        let globalRoutes = [];
+        if (isBrowserWindow()) {
             if ('routes' in window && Array.isArray(window.routes)) {
-                dynamicRoutes = window.routes;
+                globalRoutes = window.routes;
             }
         } else {
             if ('routes' in global && Array.isArray(global.routes)) {
-                dynamicRoutes = global.routes;
+                globalRoutes = global.routes;
             }
         }
 
-        context.routes = Object.values(allRoutes || {})
-            .concat(dynamicRoutes)
-            .filter(route => route)
-            .reduce((rts, route) => {
-                // Support multiple routable components per route file
-                if (Array.isArray(route)) {
-                    return [
-                        ...rts,
-                        ...route.map((subRoute, subKey) => ({
-                            order: 0,
-                            ...subRoute,
-                        })),
-                    ];
-                }
-
-                // Support one routable component
-                return [
-                    ...rts,
-                    {
-                        order: 0,
-                        ...route,
-                    },
-                ];
-            }, [])
-            .reduce((rts, route) => {
-                // Support multiple paths for one route
-                if (Array.isArray(route.path)) {
-                    return [
-                        ...rts,
-                        ...route.path.map(path => ({
+        _.chain(
+            Object.values(allRoutes || {})
+                .concat(globalRoutes)
+                .filter(route => route)
+                .map(route => _.flatten([route])),
+        )
+            .flatten()
+            .compact()
+            .value()
+            .forEach(route => {
+                const paths = _.compact(_.flatten([route.path]));
+                paths.forEach(path => {
+                    Reactium.Routing.register(
+                        {
                             ...route,
                             path,
-                        })),
-                    ];
-                }
-                return [...rts, route];
-            }, []);
-
-        context.routes = await Promise.all(
-            context.routes.map(lookupRouteComponent),
-        );
+                        },
+                        false,
+                    );
+                });
+            });
     },
     Reactium.Enums.priority.highest,
 );
 
 Reactium.Hook.register('register-route', lookupRouteComponent);
 
-Reactium.Hook.register(
-    '404-component',
-    async context => {
-        let { NotFound = null } = getComponents([{ type: 'NotFound' }]);
-        context.NotFound = NotFound;
+let { NotFound = null } = getComponents([{ type: 'NotFound' }]);
+if (NotFound !== null)
+    Reactium.Component.register(
+        'NotFound',
+        NotFound,
+        Reactium.Enums.priority.highest,
+    );
 
-        return Promise.resolve();
-    },
-    Reactium.Enums.priority.highest,
-);
-
-let history;
-const getHistory = () => {
-    const createHistory =
-        typeof window !== 'undefined' && window.process && window.process.type
-            ? createMemoryHistory
-            : createBrowserHistory;
-
-    if (!history) {
-        history = createHistory();
-    }
-
-    return history;
-};
-
-Reactium.Hook.register(
-    'history-create',
-    async context => {
-        context.history = getHistory();
-        Reactium.Routing.history = history;
-
-        return Promise.resolve();
-    },
-    Reactium.Enums.priority.highest,
-);
+Reactium.Component.register('RoutedContent', RoutedContent);

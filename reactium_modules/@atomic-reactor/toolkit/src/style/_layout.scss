@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-family: sans-serif;
+
+    &::before {
+        display: block;
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        visibility: hidden;
+        content: json-encode($breakpoints);
+    }
+
+    &::after {
+        display: block;
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        visibility: hidden;
+        content: json-encode($breakpoints-max);
+    }
+}
+  
+.rtk {
+    display: flex;
+    width: 100vw;
+    padding-top: $header-height;
+}

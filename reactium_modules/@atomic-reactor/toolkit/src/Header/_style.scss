@@ -1,0 +1,36 @@
+.rtk-header {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    width: 100vw;
+    height: $header-height;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: visible;
+    border-bottom: 1px solid $color-grey;
+
+    &-left,
+    &-right,
+    &-center {
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+        
+        &:empty {
+            display: none;
+        }
+    }
+
+    &-right {
+        justify-content: flex-end;
+    }
+
+    &-center {
+        flex-grow: 0;
+    }
+
+    .rtk-logo-link {
+        padding: 10px;
+    }
+}

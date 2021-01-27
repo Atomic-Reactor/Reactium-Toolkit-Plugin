@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/Atomic-Reactor/Reactium-Toolkit-Plugin/#readme",
   "reactium": {
-    "version": "3.2.6"
+    "version": "3.3.0"
+  },
+  "dependencies": {
+    "gsap": "^2.1.3",
+    "react-custom-scrollbars": "^4.2.1"
   }
 }

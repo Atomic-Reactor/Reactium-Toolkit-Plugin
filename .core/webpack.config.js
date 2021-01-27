@@ -16,7 +16,12 @@ if (fs.existsSync(`${rootPath}/src/app/server/defines.js`)) {
 
 const overrides = config => {
     globby
-        .sync('./**/webpack.override.js')
+        .sync([
+            './webpack.override.js',
+            './node_modules/**/reactium-plugin/webpack.override.js',
+            './src/**/webpack.override.js',
+            './reactium_modules/**/webpack.override.js',
+        ])
         .forEach(file => require(path.resolve(file))(config));
     return config;
 };
@@ -151,11 +156,13 @@ module.exports = config => {
                         /\.core\/manifest/,
                         /\.core\/index.js/,
                         /\.core\/gulp/,
-                        /\.core\/.*?config/,
+                        /\.core\/reactium-config.js$/,
+                        /\.core\/.*?\.config/,
                         /\.core\/.cli\//,
                         /\.cli/,
                         /src\/app\/server/,
                         /arcli-install.js$/,
+                        /arcli-publish.js$/,
                         /reactium-boot.js$/,
                     ],
                     use: [

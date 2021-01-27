@@ -4,7 +4,7 @@ const globby = require('globby');
 const rootPath = path.resolve(__dirname, '..');
 const gulpConfig = require('./gulp.config');
 
-const version = '3.4.0';
+const version = '3.6.0';
 
 const contextMode = () => {
     if (
@@ -157,7 +157,7 @@ const defaultManifestConfig = {
     sourceMappings: [
         {
             from: 'src/app/',
-            to: '',
+            to: '../src/app/',
         },
         {
             from: '.core/',
@@ -226,7 +226,12 @@ const defaultManifestConfig = {
 
 const overrides = config => {
     globby
-        .sync('./**/manifest.config.override.js')
+        .sync([
+            './manifest.config.override.js',
+            './node_modules/**/reactium-plugin/manifest.config.override.js',
+            './src/**/manifest.config.override.js',
+            './reactium_modules/**/manifest.config.override.js',
+        ])
         .forEach(file => require(path.resolve(file))(config));
     return config;
 };
@@ -378,6 +383,48 @@ module.exports = {
                     version: '>=3.2.2',
                     destination: '/.huskyrc',
                     source: '/tmp/update/.huskyrc',
+                },
+                {
+                    overwrite: false,
+                    version: '>=3.4.2',
+                    destination: '/src/app/api/reactium-hooks.js',
+                    source: '/tmp/update/src/app/api/reactium-hooks.js',
+                },
+                {
+                    overwrite: false,
+                    version: '>=3.4.2',
+                    destination: '/src/app/api/index.js',
+                    source: '/tmp/update/src/app/api/index.js',
+                },
+                {
+                    overwrite: false,
+                    version: '>=3.4.2',
+                    destination: '/src/app/api/domain.js',
+                    source: '/tmp/update/src/app/api/domain.js',
+                },
+                {
+                    overwrite: false,
+                    version: '>=3.4.2',
+                    destination: '/.npmrc',
+                    source: '/tmp/update/.npmrc',
+                },
+                {
+                    overwrite: true,
+                    version: '>=3.5.1',
+                    destination: '/src/sw',
+                    source: '/tmp/update/src/sw',
+                },
+                {
+                    overwrite: true,
+                    version: '>=3.5.1',
+                    destination: '/src/app/main.js',
+                    source: '/tmp/update/src/app/main.js',
+                },
+                {
+                    overwrite: true,
+                    version: '>=3.6.0',
+                    destination: '/.dockerignore',
+                    source: '/tmp/update/.dockerignore',
                 },
             ],
             remove: [],
