@@ -11,9 +11,9 @@ import Reactium, {
     useStatus,
 } from 'reactium-core/sdk';
 
-import Header from './Header';
 import Sidebar from './Sidebar';
 import Content from './Content';
+import Toolbar from './Toolbar';
 
 /**
  * -----------------------------------------------------------------------------
@@ -114,9 +114,10 @@ let Toolkit = ({ state: initialState, ...props }, ref) => {
 
     return (
         <main ref={elm => refs.set('container', elm)} className={cx()}>
-            <Header />
             <Sidebar />
-            <Content />
+            <Content>
+                <Toolbar />
+            </Content>
         </main>
     );
 };

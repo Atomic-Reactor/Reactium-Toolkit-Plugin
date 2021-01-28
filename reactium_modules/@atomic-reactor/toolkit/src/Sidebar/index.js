@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import cn from 'classnames';
 import op from 'object-path';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -6,11 +7,11 @@ import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 
 import Reactium, {
     ComponentEvent,
+    Zone,
     useDerivedState,
     useEventHandle,
     useRefs,
     useRegisterHandle,
-    useStatus,
 } from 'reactium-core/sdk';
 
 /**
@@ -20,14 +21,21 @@ import Reactium, {
  */
 let Sidebar = (props, ref) => {
     const pref = 'rtk.sidebar.collapsed';
-    const ENUMS = Reactium.Toolkit.ENUMS;
+
     const config = Reactium.Toolkit.config;
+    const { width = 320 } = config.sidebar;
+
+    const pos = op.get(
+        config,
+        'sidebar.position',
+        Reactium.Toolkit.Sidebar.position.left,
+    );
 
     const refs = useRefs();
 
-    const [status, setStatus, isStatus] = useStatus(ENUMS.STATUS.PENDING);
-
     const [state, update] = useDerivedState({
+        ease: Power2.easeInOut,
+        speed: 0.2,
         tween: null,
         collapsed: op.get(config, 'sidebar.collapsed', false),
     });
@@ -61,9 +69,9 @@ let Sidebar = (props, ref) => {
             cont.style.overflow = 'hidden';
             cont.classList.remove('collapsed');
 
-            TweenMax.to(cont, 0.25, {
+            TweenMax.to(cont, state.speed, {
                 width: 0,
-                ease: Power2.easeInOut,
+                ease: state.ease,
                 onComplete: () => {
                     if (unMounted()) resolve(false);
 
@@ -79,16 +87,17 @@ let Sidebar = (props, ref) => {
             dispatch('expand');
 
             const cont = refs.get('container');
-            const w = `${op.get(config, 'sidebar.width', 320)}px`;
+            const w = `${width}px`;
 
+            cont.style.width = '0px';
             cont.style.maxWidth = w;
             cont.style.display = 'block';
             cont.style.overflow = 'hidden';
             cont.classList.remove('collapsed');
 
-            TweenMax.from(cont, 0.25, {
-                width: 0,
-                ease: Power2.easeInOut,
+            TweenMax.to(cont, state.speed, {
+                width: width,
+                ease: state.ease,
                 onComplete: () => {
                     if (unMounted()) resolve(false);
 
@@ -118,39 +127,50 @@ let Sidebar = (props, ref) => {
     // -------------------------------------------------------------------------
     const _handle = () => ({
         collapse,
-        cx,
-        dispatch,
+        collapsed: state.collapsed,
         expand,
-        isStatus,
-        props,
-        setState,
-        setStatus,
-        state,
-        status,
+        expanded: !state.collapsed,
         toggle,
-        unMounted,
     });
 
-    const [handle] = useEventHandle(_handle());
+    const [handle, updateHandle] = useEventHandle(_handle());
+    const setHandle = newHandle => {
+        if (unMounted()) return;
+        updateHandle(newHandle);
+    };
 
     useEffect(() => {
         const type = state.collapsed === true ? 'collapsed' : 'expanded';
         Reactium.Prefs.set(pref, state.collapsed);
+
+        const newHandle = {
+            ...handle,
+            collapsed: state.collapsed,
+            expanded: !state.collapsed,
+        };
+
+        setHandle(newHandle);
+
         dispatch(type);
     }, [state.collapsed]);
 
-    useImperativeHandle(ref, () => handle, [handle]);
+    useImperativeHandle(ref, () => handle, [state.collapsed]);
 
     useRegisterHandle('RTKSidebar', () => handle);
 
     return (
         <nav
             ref={elm => refs.set('container', elm)}
-            style={{ maxWidth: op.get(config, 'sidebar.width', 320) }}
-            className={cn(cx('sidebar'), { collapsed: state.collapsed })}>
-            <Scrollbars>
-                <NavLinks />
-            </Scrollbars>
+            style={{ maxWidth: width }}
+            className={cn({
+                collapsed: state.collapsed,
+                [cx('sidebar')]: true,
+                [pos]: true,
+            })}>
+            <div className={cx('sidebar-brand')}>
+                <Zone zone='sidebar-brand' />
+            </div>
+            <NavLinks />
         </nav>
     );
 };
@@ -158,16 +178,23 @@ let Sidebar = (props, ref) => {
 const NavLinks = () => {
     const config = Reactium.Toolkit.config;
     const cx = Reactium.Toolkit.cx;
+    const { width = 320 } = config.sidebar;
 
-    // const links = () => {
-    //
-    // };
+    const links = _.chain(
+        Reactium.Toolkit.Sidebar.list.filter(item => !op.get(item, 'group')),
+    )
+        .sortBy('order')
+        .value();
 
     return (
-        <div
-            className={cx('sidebar-menu')}
-            style={{ minWidth: op.get(config, 'sidebar.width', 320) }}>
-            Sidebar
+        <div style={{ maxWidth: width }} className={cx('sidebar-menu')}>
+            <Scrollbars>
+                <div className='scroll'>
+                    {links.map(({ component: Component, ...item }) => (
+                        <Component key={item.id} {...item} />
+                    ))}
+                </div>
+            </Scrollbars>
         </div>
     );
 };

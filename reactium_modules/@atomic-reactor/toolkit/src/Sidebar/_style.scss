@@ -1,15 +1,139 @@
 .rtk-sidebar {
     width: 100%;
-    height: calc(100vh - #{$header-height});
+    height: 100vh;
+    max-height: 100vh;
     overflow: hidden;
     display: block;
+    display: flex;
+    flex-direction: column;
+
+    &-brand {
+        width: 100%;
+        height: $header-height;
+    }
 
     &-menu {
         width: 100%;
+        height: calc(100vh - #{$header-height});
+
+        .scroll {
+            padding: 12px 0 24px 0;
+        }
+
+        &-sub {
+            display: none;
+            z-index: 1;
+            padding: 8px 0;
+
+            &:empty {
+                display: none;
+            }
+        }
+
+        &-item {
+            position: relative;
+            width: 100%;
+        }
+
+        &-item-heading {
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: sans-serif;
+            padding: 4px 12px 4px 24px;
+            position: sticky;
+            min-height: 42px;
+            width: 100%;
+            left: 0;
+            top: -1px;
+            background-color: $color-white;
+            z-index: 2;
+            display: flex;
+            flex-shrink: 0;
+            flex-wrap: nowrap;
+            align-items: center;
+            color: $color-gray-dark;
+            margin-bottom: -1px;
+
+            &.active,
+            &:hover {
+                color: $color-blue;
+
+                button svg {
+                    fill: $color-blue;
+                }
+            }
+
+            > span {
+                flex-grow: 1;
+            }
+
+            button {
+                width: 40px;
+                height: 32px;
+                padding: 0;
+                opacity: .25;
+                transition: opacity 0.2s ease-in-out;
+
+                svg {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+
+            &:hover {
+                button {
+                    opacity: 1;
+                }
+            }
+
+            &.expanded {
+                border-top: 1px solid darken($color-grey-light, 1%);
+                border-bottom: 1px solid darken($color-grey-light, 1%);
+                background-color: darken($color-white, .5%);
+                margin-top: -1px;
+
+                button {
+                    opacity: 1;
+                }
+
+                button > svg {
+                    transform: rotate(180deg);
+                }
+            }
+
+            &.expanded + .rtk-sidebar-menu-sub {
+                display: block;
+                border-bottom: 1px solid darken($color-grey-light, 1%);
+            }
+        }
+
+        &-item-link {
+            z-index: 1;
+            width: 100%;
+            min-height: 40px;
+            text-decoration: none;
+            padding: 8px 12px 8px 48px;
+            color: $color-gray;
+            display: flex;
+            flex-shrink: 0;
+            flex-wrap: nowrap;
+            align-items: center;
+            font-size: 12px;
+
+            &.active,
+            &:hover {
+                color: $color-blue;
+            }
+        }
     }
 
     &.collapsed {
         width: 0;
         display: none;
+    }
+
+    &.right {
+        order: 10;
     }
 }

@@ -7,7 +7,7 @@ import Reactium from 'reactium-core/sdk';
  * Functional Component: Header
  * -----------------------------------------------------------------------------
  */
- 
+
 const alignment = ['left', 'center', 'right'];
 const Header = () => (
     <header className={Reactium.Toolkit.cx('header')}>
@@ -15,11 +15,13 @@ const Header = () => (
             <div
                 key={`header-${align}`}
                 className={Reactium.Toolkit.cx(`header-${align}`)}>
-                {_.where(Reactium.Toolkit.Toolbar.list, {
-                    align,
-                }).map(({ id, component: Component }) => (
-                    <Component key={`${align}-${id}`} />
-                ))}
+                {_.chain(Reactium.Toolkit.Toolbar.list)
+                    .where({ align })
+                    .sortBy('order')
+                    .value()
+                    .map(({ id, component: Component }) => (
+                        <Component key={`${align}-${id}`} zone={align} />
+                    ))}
             </div>
         ))}
     </header>

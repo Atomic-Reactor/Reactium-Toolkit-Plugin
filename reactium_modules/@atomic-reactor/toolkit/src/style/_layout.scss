@@ -22,9 +22,18 @@ body {
         content: json-encode($breakpoints-max);
     }
 }
-  
+
 .rtk {
     display: flex;
     width: 100vw;
-    padding-top: $header-height;
+    position: relative;
+
+    &,
+    * {
+        box-sizing: border-box;
+    }
+
+    svg {
+        flex-shrink: 0;
+    }
 }

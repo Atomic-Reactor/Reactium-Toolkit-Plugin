@@ -10,7 +10,7 @@ const defaultProps = {
     xmlns: 'http://www.w3.org/2000/svg',
 };
 
-export const Logo = ({ size = 40, ...initialProps }) => {
+export const Logo = ({ size = 32, ...initialProps }) => {
     const cx = Reactium.Toolkit.cx;
     const url = _.last(route.path);
 

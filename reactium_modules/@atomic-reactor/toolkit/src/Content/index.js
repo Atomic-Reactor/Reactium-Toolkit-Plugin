@@ -6,12 +6,16 @@ import Reactium from 'reactium-core/sdk';
  * Functional Component: Content
  * -----------------------------------------------------------------------------
  */
-const Content = () => {
+const Content = ({ children }) => {
     const cx = Reactium.Toolkit.cx;
     const { params = {} } = Reactium.Routing.currentRoute;
+    
     return (
         <div className={cx('content')}>
-            Content: {JSON.stringify(params)}
+            {children}
+            <div className={cx('content-wrap')}>
+
+            </div>
         </div>
     );
 };
