@@ -15,13 +15,11 @@ const Toolbar = () => (
             <div
                 key={`toolbar-${align}`}
                 className={Reactium.Toolkit.cx(`toolbar-${align}`)}>
-                {_.chain(Reactium.Toolkit.Toolbar.list)
-                    .where({ align })
-                    .sortBy('order')
-                    .value()
-                    .map(({ id, component: Component }) => (
+                {_.where(Reactium.Toolkit.Toolbar.sort('order'), { align }).map(
+                    ({ id, component: Component }) => (
                         <Component key={`${align}-${id}`} zone={align} />
-                    ))}
+                    ),
+                )}
             </div>
         ))}
     </header>

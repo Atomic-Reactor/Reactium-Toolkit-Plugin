@@ -22,7 +22,6 @@ const defaultProps = {
 };
 
 const MenuLink = initialProps => {
-    
     const {
         children,
         exact,
@@ -34,22 +33,21 @@ const MenuLink = initialProps => {
         ...props
     } = initialProps;
 
+    const prefkey = `rtk.sidebar.expanded.${id}`;
+
     const { params } = Reactium.Routing.currentRoute;
+
+    const { config, cx, useLinks } = Reactium.Toolkit;
+
+    const { position: align, width } = config.sidebar;
+
     const { Icon } = useHookComponent('RTK');
 
-    const shouldExpand = () => {
-        if (!!group) return false;
-        if (initialExpanded === true) return true;
-        if (op.get(params, 'group') === id) return true;
-        return Reactium.Prefs.get(prefkey, false);
-    };
+    const [expanded, setExpanded] = useState(false);
 
-    const config = Reactium.Toolkit.config;
-    const align = config.sidebar.position;
-    const cx = Reactium.Toolkit.cx;
-    const { width } = config.sidebar;
-    const prefkey = `rtk.sidebar.expanded.${id}`;
-    const [expanded, setExpanded] = useState(shouldExpand());
+    const [links] = useLinks({ group: true });
+
+    const related = _.where(links, { group: id });
 
     const className = cn({
         [cx('sidebar-menu-item')]: true,
@@ -59,16 +57,18 @@ const MenuLink = initialProps => {
         [cx(`sidebar-menu-item-${group}`)]: !!group,
     });
 
-    const related = _.chain(Reactium.Toolkit.Sidebar.list)
-        .where({ group: id })
-        .sortBy('order')
-        .value();
-
     const onToggle = e => {
         e.preventDefault();
         e.stopPropagation();
         Reactium.Prefs.set(prefkey, !expanded);
         setExpanded(!expanded);
+    };
+
+    const shouldExpand = () => {
+        if (!!group) return false;
+        if (initialExpanded === true) return true;
+        if (op.get(params, 'group') === id) return true;
+        return Reactium.Prefs.get(prefkey, false);
     };
 
     const Toggle = () =>

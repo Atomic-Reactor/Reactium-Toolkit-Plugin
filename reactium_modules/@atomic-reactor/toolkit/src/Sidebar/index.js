@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import cn from 'classnames';
 import op from 'object-path';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -176,20 +175,14 @@ let Sidebar = (props, ref) => {
 };
 
 const NavLinks = () => {
-    const config = Reactium.Toolkit.config;
-    const cx = Reactium.Toolkit.cx;
+    const { config, cx, useLinks } = Reactium.Toolkit;
     const { width = 320 } = config.sidebar;
-
-    const links = _.chain(
-        Reactium.Toolkit.Sidebar.list.filter(item => !op.get(item, 'group')),
-    )
-        .sortBy('order')
-        .value();
+    const [list] = useLinks();
 
     return (
         <div style={{ maxWidth: width }} className={cx('sidebar-menu')}>
             <Scrollbars className={cx('sidebar-menu-list')}>
-                {links.map(({ component: Component, ...item }) => (
+                {list.map(({ component: Component, ...item }) => (
                     <Component key={item.id} {...item} />
                 ))}
             </Scrollbars>
