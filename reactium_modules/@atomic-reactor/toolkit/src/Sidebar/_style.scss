@@ -9,12 +9,12 @@
 
     &-brand {
         width: 100%;
-        height: $header-height;
+        height: $rtk-header-height;
     }
 
     &-menu {
         width: 100%;
-        height: calc(100vh - #{$header-height});
+        height: calc(100vh - #{$rtk-header-height});
 
         &-list > div:first-child {
             padding: 0 0 24px 0;
@@ -39,20 +39,20 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 400;
-            font-family: $font-sans-light;
+            font-family: $rtk-font-sans-light;
             padding: 4px 12px 4px 24px;
             position: sticky;
             min-height: 42px;
             width: 100%;
             left: 0;
             top: -1px;
-            background-color: $sidebar-link-bg-color;
+            background-color: $rtk-sidebar-link-bg-color;
             z-index: 5;
             display: flex;
             flex-shrink: 0;
             flex-wrap: nowrap;
             align-items: center;
-            color: $sidebar-heading-text-color;
+            color: $rtk-sidebar-heading-text-color;
             margin-bottom: -1px;
 
             > span {
@@ -74,28 +74,28 @@
 
             &.active,
             &:hover {
-                color: $accent-color;
+                color: $rtk-accent-color;
 
                 button {
                     opacity: 1;
 
                     svg {
-                        fill: $accent-color;
+                        fill: $rtk-accent-color;
                     }
                 }
             }
 
             &.active {
-                font-family: $font-sans;
+                font-family: $rtk-font-sans;
                 font-weight: 500;
             }
 
             &.expanded {
-                font-family: $font-sans;
+                font-family: $rtk-font-sans;
                 font-weight: 500;
-                border-top: 1px solid $sidebar-border-color;
-                border-bottom: 1px solid $sidebar-border-color;
-                background-color: $sidebar-heading-bg-color;
+                border-top: 1px solid $rtk-sidebar-border-color;
+                border-bottom: 1px solid $rtk-sidebar-border-color;
+                background-color: $rtk-sidebar-heading-bg-color;
                 margin-top: -1px;
 
                 button {
@@ -109,7 +109,7 @@
 
             &.expanded + .rtk-sidebar-menu-sub {
                 display: block;
-                border-bottom: 1px solid $sidebar-border-color;
+                border-bottom: 1px solid $rtk-sidebar-border-color;
             }
         }
 
@@ -119,15 +119,15 @@
             min-height: 40px;
             text-decoration: none;
             padding: 8px 12px 8px 48px;
-            color: $sidebar-link-text-color;
-            background-color: $sidebar-link-bg-color;
+            color: $rtk-sidebar-link-text-color;
+            background-color: $rtk-sidebar-link-bg-color;
             display: flex;
             flex-shrink: 0;
             flex-wrap: nowrap;
             align-items: center;
             font-size: 12px;
             position: relative;
-            font-family: $font-sans;
+            font-family: $rtk-font-sans;
 
             &:before {
                 content: '';
@@ -136,17 +136,17 @@
                 top: 0;
                 width: 1px;
                 height: 100%;
-                background-color: $sidebar-border-color;
+                background-color: $rtk-sidebar-border-color;
                 z-index: 2;
             }
 
             &:hover,
             &.active {
-                color: $accent-color;
+                color: $rtk-accent-color;
             }
 
             &.active:before {
-                background-color: lighten($accent-color, 35%);
+                background-color: lighten($rtk-accent-color, 35%);
             }
 
             &.active:after {
@@ -157,8 +157,8 @@
                 width: 8px;
                 height: 8px;
                 transform: translate(-50%, -50%);
-                background-color: $sidebar-link-bg-color;
-                border: 1px solid $accent-color;
+                background-color: $rtk-sidebar-link-bg-color;
+                border: 1px solid $rtk-accent-color;
                 z-index: 3;
                 border-radius: 100%;
             }
@@ -177,18 +177,18 @@
 
 .rtk-brand {
     width: 100%;
-    height: $header-height;
-    background-color: $toolbar-bg-color;
+    height: $rtk-header-height;
+    background-color: $rtk-toolbar-bg-color;
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
     align-items: center;
     padding: 0 12px;
-    border-bottom: 1px solid $toolbar-border-color;
+    border-bottom: 1px solid $rtk-toolbar-border-color;
 
     &,
     * {
-        font-family: $font-sans;
+        font-family: $rtk-font-sans;
     }
 
     .rtk-logo-link {
@@ -205,11 +205,11 @@
         font-size: 18px;
         margin: 0;
         padding: 0;
-        color: $brand-name-text-color;
+        color: $rtk-brand-name-text-color;
     }
 
     &-info {
-        color: $brand-info-text-color;
+        color: $rtk-brand-info-text-color;
         font-size: 11px;
         margin-top: 2px;
     }

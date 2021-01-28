@@ -2,9 +2,9 @@
     flex-grow: 1;
     min-height: 100vh;
     position: relative;
-    color: $content-text-color;
-    background-color: $content-bg-color;
-    box-shadow: $content-box-shadow;
+    color: $rtk-content-text-color;
+    background-color: $rtk-content-bg-color;
+    box-shadow: $rtk-content-box-shadow;
     z-index: 100;
 
     &-wrap {

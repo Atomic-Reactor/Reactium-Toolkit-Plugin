@@ -1,28 +1,28 @@
-$color-black: #000000 !default;
-$color-blue: #4f82ba !default;
-$color-gray: #666666 !default;
-$color-gray-dark: #333333 !default;
-$color-green: #00ee00 !default;
-$color-grey: #eeeeee !default;
-$color-grey-light: #fdfdfd !default;
-$color-orange: #ff7f50 !default;
-$color-red: #ee0000 !default;
-$color-white: #ffffff !default;
+$rtk-color-black: #000000 !default;
+$rtk-color-blue: #4f82ba !default;
+$rtk-color-gray: #666666 !default;
+$rtk-color-gray-dark: #333333 !default;
+$rtk-color-green: #00ee00 !default;
+$rtk-color-grey: #eeeeee !default;
+$rtk-color-grey-light: #fdfdfd !default;
+$rtk-color-orange: #ff7f50 !default;
+$rtk-color-red: #ee0000 !default;
+$rtk-color-white: #ffffff !default;
 
-$accent-color: $color-blue !default;
+$rtk-accent-color: $rtk-color-blue !default;
 
-$brand-info-text-color: $color-gray !default;
-$brand-name-text-color: $color-black !default;
+$rtk-brand-info-text-color: $rtk-color-gray !default;
+$rtk-brand-name-text-color: $rtk-color-black !default;
 
-$content-bg-color: $color-grey-light !default;
-$content-box-shadow: 0 0 5px 2px rgba($color-black, 0.035) !default;
-$content-text-color: $color-gray !default;
+$rtk-content-bg-color: $rtk-color-grey-light !default;
+$rtk-content-box-shadow: 0 0 5px 2px rgba($rtk-color-black, 0.035) !default;
+$rtk-content-text-color: $rtk-color-gray !default;
 
-$sidebar-border-color: darken($color-grey-light, 2%) !default;
-$sidebar-link-bg-color: $color-white !default;
-$sidebar-link-text-color: $color-gray !default;
-$sidebar-heading-bg-color: darken($color-white, 0.5%) !default;
-$sidebar-heading-text-color: $color-gray-dark !default;
+$rtk-sidebar-border-color: darken($rtk-color-grey-light, 2%) !default;
+$rtk-sidebar-link-bg-color: $rtk-color-white !default;
+$rtk-sidebar-link-text-color: $rtk-color-gray !default;
+$rtk-sidebar-heading-bg-color: darken($rtk-color-white, 0.5%) !default;
+$rtk-sidebar-heading-text-color: $rtk-color-gray-dark !default;
 
-$toolbar-border-color: $color-grey !default;
-$toolbar-bg-color: $color-white !default;
+$rtk-toolbar-border-color: $rtk-color-grey !default;
+$rtk-toolbar-bg-color: $rtk-color-white !default;

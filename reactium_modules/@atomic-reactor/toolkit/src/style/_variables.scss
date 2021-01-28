@@ -1,73 +1,73 @@
 // Fonts
-$font-body: sans-serif !default;
-$font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
-$font-sans-light: 'HelveticaNeue-Light', 'Helvetica Neue Light',
+$rtk-font-body: sans-serif !default;
+$rtk-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
+$rtk-font-sans-light: 'HelveticaNeue-Light', 'Helvetica Neue Light',
 'Helvetica Neue', Helvetica, 'Lucida Grande', Arial, sans-serif !default;
 
 // Button
-$button-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
-$button-font-weight: 400 !default;
+$rtk-button-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
+$rtk-button-font-weight: 400 !default;
 
 // color-left, color-right, color, text-shadow
-$buttons: (
+$rtk-buttons: (
 'primary': (
-    $color-blue,
-    $color-blue,
-    $color-white,
-    rgba($color-white, 0)
+    $rtk-color-blue,
+    $rtk-color-blue,
+    $rtk-color-white,
+    rgba($rtk-color-white, 0)
 ),
 'secondary': (
-    lighten($color-black, 5%),
-    lighten($color-black, 5%),
-    $color-grey-light,
-    rgba($color-white, 0)
+    lighten($rtk-color-black, 5%),
+    lighten($rtk-color-black, 5%),
+    $rtk-color-grey-light,
+    rgba($rtk-color-white, 0)
 ),
 'tertiary': (
-    $color-gray,
-    $color-gray,
-    $color-white,
-    rgba($color-white, 0)
+    $rtk-color-gray,
+    $rtk-color-gray,
+    $rtk-color-white,
+    rgba($rtk-color-white, 0)
 ),
 'danger': (
-    $color-red,
-    $color-red,
-    $color-white,
-    rgba($color-white, 0)
+    $rtk-color-red,
+    $rtk-color-red,
+    $rtk-color-white,
+    rgba($rtk-color-white, 0)
 ),
 'clear': (
-    rgba($color-white, 0),
-    rgba($color-white, 0),
-    $color-gray,
-    rgba($color-white, 0)
+    rgba($rtk-color-white, 0),
+    rgba($rtk-color-white, 0),
+    $rtk-color-gray,
+    rgba($rtk-color-white, 0)
 ),
 'info': (
-    lighten($color-blue, 15%),
-    lighten($color-blue, 15%),
-    $color-white,
-    rgba($color-white, 0)
+    lighten($rtk-color-blue, 15%),
+    lighten($rtk-color-blue, 15%),
+    $rtk-color-white,
+    rgba($rtk-color-white, 0)
 ),
 'success': (
-    $color-green,
-    $color-green,
-    $color-white,
-    rgba($color-white, 0)
+    $rtk-color-green,
+    $rtk-color-green,
+    $rtk-color-white,
+    rgba($rtk-color-white, 0)
 ),
 'warning': (
-    $color-orange,
-    $color-orange,
-    $color-white,
-    rgba($color-white, 0)
+    $rtk-color-orange,
+    $rtk-color-orange,
+    $rtk-color-white,
+    rgba($rtk-color-white, 0)
 ),
 'default': (
-    $color-grey,
-    $color-grey,
-    $color-gray,
-    rgba($color-white, 0)
+    $rtk-color-grey,
+    $rtk-color-grey,
+    $rtk-color-gray,
+    rgba($rtk-color-white, 0)
 ),
 ) !default;
 
 // font-size, paddingTop, paddingRight, paddingBottom, paddingLeft
-$button-sizes: (
+$rtk-button-sizes: (
 'xs': (
     10px,
     5px,
@@ -99,4 +99,4 @@ $button-sizes: (
 ) !default;
 
 // Header
-$header-height: 60px !default;
+$rtk-header-height: 60px !default;

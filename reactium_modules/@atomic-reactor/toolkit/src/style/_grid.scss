@@ -1,8 +1,8 @@
 // Grid
-$grid-columns: 12 !default; // Set number of columns in the grid
+$rtk-grid-columns: 12 !default; // Set number of columns in the grid
 
 // smallest to largest
-$breakpoints-max: (
+$rtk-breakpoints-max: (
 'xs': 640,
 'sm': 990,
 'md': 1280,
@@ -10,53 +10,53 @@ $breakpoints-max: (
 'xl': 1920,
 ) !default;
 
-$xs-max: '#{map-get($breakpoints-max, 'xs')}px' !default; // Set xs breakpoint's max width
-$sm-max: '#{map-get($breakpoints-max, 'sm')}px' !default; // Set sm breakpoint's max width
-$md-max: '#{map-get($breakpoints-max, 'md')}px' !default; // Set md breakpoint's max width
-$lg-max: '#{map-get($breakpoints-max, 'xl')}px' !default; // Set lg breakpoint's max width
+$rtk-xs-max: '#{map-get($rtk-breakpoints-max, 'xs')}px' !default; // Set xs breakpoint's max width
+$rtk-sm-max: '#{map-get($rtk-breakpoints-max, 'sm')}px' !default; // Set sm breakpoint's max width
+$rtk-md-max: '#{map-get($rtk-breakpoints-max, 'md')}px' !default; // Set md breakpoint's max width
+$rtk-lg-max: '#{map-get($rtk-breakpoints-max, 'xl')}px' !default; // Set lg breakpoint's max width
 
-$gutter: 0 !default;
+$rtk-gutter: 0 !default;
 
-$sm-start: '#{map-get($breakpoints-max, 'xs') + 1}px' !default; // Set sm breakpoint's min width
-$md-start: '#{map-get($breakpoints-max, 'sm') + 1}px' !default; // Set md breakpoint's min width
-$lg-start: '#{map-get($breakpoints-max, 'md') + 1}px' !default; // Set lg breakpoint's min width
-$xl-start: '#{map-get($breakpoints-max, 'xl') + 1}px' !default; // Set xl breakpoint's min width
+$rtk-sm-start: '#{map-get($rtk-breakpoints-max, 'xs') + 1}px' !default; // Set sm breakpoint's min width
+$rtk-md-start: '#{map-get($rtk-breakpoints-max, 'sm') + 1}px' !default; // Set md breakpoint's min width
+$rtk-lg-start: '#{map-get($rtk-breakpoints-max, 'md') + 1}px' !default; // Set lg breakpoint's min width
+$rtk-xl-start: '#{map-get($rtk-breakpoints-max, 'xl') + 1}px' !default; // Set xl breakpoint's min width
 
-$content-well-max-width: 'none' !default; // Set the max-width of the content well
+$rtk-content-well-max-width: 'none' !default; // Set the max-width of the content well
 
 // Breakpoints
 // Create breakpoint range statements to be used in media queries
-$breakpoint-xs-up: 'only screen' !default;
-$breakpoint-xs-only: 'only screen and (max-width: #{$xs-max})' !default; // 0 -> xs-max range
-$breakpoint-sm-up: 'only screen and (min-width: #{$sm-start})' !default; // sm-start -> up range
-$breakpoint-sm-only: 'only screen and (min-width: #{$sm-start}) and (max-width: #{$sm-max})' !default; // sm-start -> sm-max range
-$breakpoint-md-up: 'only screen and (min-width: #{$md-start})' !default; // md-start -> up range
-$breakpoint-md-only: 'only screen and (min-width: #{$md-start}) and (max-width: #{$md-max})' !default; // md-start -> md-max range
-$breakpoint-lg-up: 'only screen and (min-width: #{$lg-start})' !default; // lg-start -> up range
-$breakpoint-lg-only: 'only screen and (min-width: #{$lg-start}) and (max-width: #{$lg-max})' !default; // lg-start -> lg-max range
-$breakpoint-xl-up: 'only screen and (min-width: #{$xl-start})' !default; // xl-start -> up range
+$rtk-breakpoint-xs-up: 'only screen' !default;
+$rtk-breakpoint-xs-only: 'only screen and (max-width: #{$rtk-xs-max})' !default; // 0 -> xs-max range
+$rtk-breakpoint-sm-up: 'only screen and (min-width: #{$rtk-sm-start})' !default; // sm-start -> up range
+$rtk-breakpoint-sm-only: 'only screen and (min-width: #{$rtk-sm-start}) and (max-width: #{$rtk-sm-max})' !default; // sm-start -> sm-max range
+$rtk-breakpoint-md-up: 'only screen and (min-width: #{$rtk-md-start})' !default; // md-start -> up range
+$rtk-breakpoint-md-only: 'only screen and (min-width: #{$rtk-md-start}) and (max-width: #{$rtk-md-max})' !default; // md-start -> md-max range
+$rtk-breakpoint-lg-up: 'only screen and (min-width: #{$rtk-lg-start})' !default; // lg-start -> up range
+$rtk-breakpoint-lg-only: 'only screen and (min-width: #{$rtk-lg-start}) and (max-width: #{$rtk-lg-max})' !default; // lg-start -> lg-max range
+$rtk-breakpoint-xl-up: 'only screen and (min-width: #{$rtk-xl-start})' !default; // xl-start -> up range
 
-$breakpoint-sm-down: 'only screen and (max-width: #{$sm-max})' !default; // sm -> down
-$breakpoint-md-down: 'only screen and (max-width: #{$md-max})' !default; // md -> down
-$breakpoint-lg-down: 'only screen and (max-width: #{$lg-max})' !default; // lg -> down
+$rtk-breakpoint-sm-down: 'only screen and (max-width: #{$rtk-sm-max})' !default; // sm -> down
+$rtk-breakpoint-md-down: 'only screen and (max-width: #{$rtk-md-max})' !default; // md -> down
+$rtk-breakpoint-lg-down: 'only screen and (max-width: #{$rtk-lg-max})' !default; // lg -> down
 
-$breakpoints-all: (
-$breakpoint-xs-only,
-$breakpoint-sm-up,
-$breakpoint-sm-only,
-$breakpoint-md-up,
-$breakpoint-md-only,
-$breakpoint-lg-up,
-$breakpoint-lg-only,
-$breakpoint-xl-up
+$rtk-breakpoints-all: (
+$rtk-breakpoint-xs-only,
+$rtk-breakpoint-sm-up,
+$rtk-breakpoint-sm-only,
+$rtk-breakpoint-md-up,
+$rtk-breakpoint-md-only,
+$rtk-breakpoint-lg-up,
+$rtk-breakpoint-lg-only,
+$rtk-breakpoint-xl-up
 ) !default;
-$breakpoint-ups: (
-$breakpoint-sm-up,
-$breakpoint-md-up,
-$breakpoint-lg-up,
-$breakpoint-xl-up
+$rtk-breakpoint-ups: (
+$rtk-breakpoint-sm-up,
+$rtk-breakpoint-md-up,
+$rtk-breakpoint-lg-up,
+$rtk-breakpoint-xl-up
 ) !default;
-$breakpoint-all-prefixes: (
+$rtk-breakpoint-all-prefixes: (
 'xs',
 'xs-only',
 'sm',
@@ -67,28 +67,28 @@ $breakpoint-all-prefixes: (
 'lg-only',
 'xl'
 ) !default;
-$breakpoint-up-prefixes: ('xs', 'sm', 'md', 'lg', 'xl') !default;
+$rtk-breakpoint-up-prefixes: ('xs', 'sm', 'md', 'lg', 'xl') !default;
 
-$breakpoints: (
-'xs': $breakpoint-xs-up,
-'xs-only': $breakpoint-xs-only,
-'sm': $breakpoint-sm-up,
-'sm-only': $breakpoint-sm-only,
-'sm-down': $breakpoint-sm-down,
-'md': $breakpoint-md-up,
-'md-only': $breakpoint-md-only,
-'md-down': $breakpoint-md-down,
-'lg': $breakpoint-lg-up,
-'lg-only': $breakpoint-lg-only,
-'lg-down': $breakpoint-lg-down,
-'xl': $breakpoint-xl-up,
+$rtk-breakpoints: (
+'xs': $rtk-breakpoint-xs-up,
+'xs-only': $rtk-breakpoint-xs-only,
+'sm': $rtk-breakpoint-sm-up,
+'sm-only': $rtk-breakpoint-sm-only,
+'sm-down': $rtk-breakpoint-sm-down,
+'md': $rtk-breakpoint-md-up,
+'md-only': $rtk-breakpoint-md-only,
+'md-down': $rtk-breakpoint-md-down,
+'lg': $rtk-breakpoint-lg-up,
+'lg-only': $rtk-breakpoint-lg-only,
+'lg-down': $rtk-breakpoint-lg-down,
+'xl': $rtk-breakpoint-xl-up,
 ) !default;
 
-@mixin breakpoint($thisPrefix) {
-    $break: map-get($breakpoints, $thisPrefix);
+@mixin breakpoint($rtk-thisPrefix) {
+    $rtk-break: map-get($rtk-breakpoints, $rtk-thisPrefix);
 
-    @if ($break != null) {
-        @media #{$break} {
+    @if ($rtk-break != null) {
+        @media #{$rtk-break} {
             @content;
         }
     }
@@ -156,7 +156,7 @@ $breakpoints: (
     }
 }
 
-@mixin row($full-width: 'false') {
+@mixin row($rtk-full-width: 'false') {
     margin: 0 auto;
     width: 100%;
     display: -webkit-flex;
@@ -167,14 +167,14 @@ $breakpoints: (
     flex-wrap: wrap;
     // // Overrides flexbox's default behavior of making all children equal height
     // align-items: flex-start; // If this was not in place it would require two classes to make a row full of unequal height columns aligned top, middle, bottom
-    @if type-of($content-well-max-width) ==
+    @if type-of($rtk-content-well-max-width) ==
         number and
-        $content-well-max-width !=
+        $rtk-content-well-max-width !=
         0 and
-        $full-width ==
+        $rtk-full-width ==
         'false'
     {
-        max-width: $content-well-max-width;
+        max-width: $rtk-content-well-max-width;
     }
 }
 
@@ -196,333 +196,333 @@ $breakpoints: (
 }
 
 // Condition to run inside of the col mixin * not for developer use *
-@mixin col-condition($col-number) {
-    @if type-of($col-number) == number {
-        @if $col-number > $grid-columns or $col-number == 0 {
-            @warn "Column number must be greater than 0 and less than or equal to total number of columns in the grid (#{$grid-columns})";
+@mixin col-condition($rtk-col-number) {
+    @if type-of($rtk-col-number) == number {
+        @if $rtk-col-number > $rtk-grid-columns or $rtk-col-number == 0 {
+            @warn "Column number must be greater than 0 and less than or equal to total number of columns in the grid (#{$rtk-grid-columns})";
         } @else {
-            flex-basis: 100% / $grid-columns * $col-number;
-            max-width: 100% / $grid-columns * $col-number;
-            padding: $gutter;
+            flex-basis: 100% / $rtk-grid-columns * $rtk-col-number;
+            max-width: 100% / $rtk-grid-columns * $rtk-col-number;
+            padding: $rtk-gutter;
         }
         // If no col number is passed then arg is set to "auto" by default
         // "auto" mode fills the horizontal space with evenly sized containers
-    } @else if $col-number == 'auto' {
+    } @else if $rtk-col-number == 'auto' {
         flex-grow: 1;
         flex-basis: 0;
         max-width: 100%;
-        padding: $gutter;
+        padding: $rtk-gutter;
     } @else {
-        @warn "Column number argument must either be the string 'auto' or a number greater than 0 and less than or equal to total number of columns in the grid (#{$grid-columns})";
+        @warn "Column number argument must either be the string 'auto' or a number greater than 0 and less than or equal to total number of columns in the grid (#{$rtk-grid-columns})";
     }
 } // Condition to run inside of the col mixin * not for developer use *
 
-@mixin col($breakpoint: 'xs', $col-number: 'auto') {
+@mixin col($rtk-breakpoint: 'xs', $rtk-col-number: 'auto') {
     // If no breakpoint is passed and a col number is just use the first arg as the col number and act like xs
-    @if type-of($breakpoint) == number {
-        $col-number: $breakpoint;
-        @include col-condition($col-number);
-    } @else if $breakpoint == 'xs' {
-        @include col-condition($col-number);
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
-            @include col-condition($col-number);
+    @if type-of($rtk-breakpoint) == number {
+        $rtk-col-number: $rtk-breakpoint;
+        @include col-condition($rtk-col-number);
+    } @else if $rtk-breakpoint == 'xs' {
+        @include col-condition($rtk-col-number);
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
+            @include col-condition($rtk-col-number);
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
-            @include col-condition($col-number);
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
+            @include col-condition($rtk-col-number);
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
-            @include col-condition($col-number);
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
+            @include col-condition($rtk-col-number);
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
-            @include col-condition($col-number);
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
+            @include col-condition($rtk-col-number);
         }
     } @else {
-        @warn "col mixin requires one of the existing breakpoint prefixes (#{$breakpoint-up-prefixes})";
+        @warn "col mixin requires one of the existing breakpoint prefixes (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
 // Condition to run inside of the col-offset mixin * not for developer use *
-@mixin col-offset-condition($offset-number) {
-    @if type-of($offset-number) != number {
+@mixin col-offset-condition($rtk-offset-number) {
+    @if type-of($rtk-offset-number) != number {
         @warn "Column offset number must be a number (only arg or second arg in the col mixin)";
-    } @else if $offset-number == 0 {
-        @warn "Column offset number must be greater than 0 and less than or equal to total number of columns in the grid (#{$grid-columns})";
-    } @else if $offset-number > $grid-columns {
-        @warn "Column offset number must be greater than 0 and less than or equal to total number of columns in the grid (#{$grid-columns})";
+    } @else if $rtk-offset-number == 0 {
+        @warn "Column offset number must be greater than 0 and less than or equal to total number of columns in the grid (#{$rtk-grid-columns})";
+    } @else if $rtk-offset-number > $rtk-grid-columns {
+        @warn "Column offset number must be greater than 0 and less than or equal to total number of columns in the grid (#{$rtk-grid-columns})";
     } @else {
-        margin-left: 100% / $grid-columns * $offset-number;
+        margin-left: 100% / $rtk-grid-columns * $rtk-offset-number;
     }
 } // Condition to run inside of the col-offset mixin * not for developer use *
 
-@mixin col-offset($breakpoint: 'xs', $offset-number: 0) {
+@mixin col-offset($rtk-breakpoint: 'xs', $rtk-offset-number: 0) {
     // If no breakpoint is passed and a col number is just use the first arg as the col number and act like xs
-    @if type-of($breakpoint) == number {
-        $offset-number: $breakpoint;
-        @include col-offset-condition($offset-number);
-    } @else if $breakpoint == 'xs' {
-        @include col-offset-condition($offset-number);
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
-            @include col-offset-condition($offset-number);
+    @if type-of($rtk-breakpoint) == number {
+        $rtk-offset-number: $rtk-breakpoint;
+        @include col-offset-condition($rtk-offset-number);
+    } @else if $rtk-breakpoint == 'xs' {
+        @include col-offset-condition($rtk-offset-number);
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
+            @include col-offset-condition($rtk-offset-number);
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
-            @include col-offset-condition($offset-number);
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
+            @include col-offset-condition($rtk-offset-number);
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
-            @include col-offset-condition($offset-number);
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
+            @include col-offset-condition($rtk-offset-number);
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
-            @include col-offset-condition($offset-number);
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
+            @include col-offset-condition($rtk-offset-number);
         }
     } @else {
-        @warn "col mixin requires one of the existing breakpoint prefixes (#{$breakpoint-up-prefixes})";
+        @warn "col mixin requires one of the existing breakpoint prefixes (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
-@mixin start($breakpoint: 'xs') {
-    @if $breakpoint == 'xs' {
+@mixin start($rtk-breakpoint: 'xs') {
+    @if $rtk-breakpoint == 'xs' {
         justify-content: flex-start;
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
             justify-content: flex-start;
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
             justify-content: flex-start;
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
             justify-content: flex-start;
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
             justify-content: flex-start;
         }
     } @else {
-        @warn "start mixin arg must be one of the existing breakpoints (#{$breakpoint-up-prefixes})";
+        @warn "start mixin arg must be one of the existing breakpoints (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
-@mixin center($breakpoint: 'xs') {
-    @if $breakpoint == 'xs' {
+@mixin center($rtk-breakpoint: 'xs') {
+    @if $rtk-breakpoint == 'xs' {
         justify-content: center;
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
             justify-content: center;
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
             justify-content: center;
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
             justify-content: center;
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
             justify-content: center;
         }
     } @else {
-        @warn "center mixin arg must be one of the existing breakpoints (#{$breakpoint-up-prefixes})";
+        @warn "center mixin arg must be one of the existing breakpoints (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
-@mixin end($breakpoint: 'xs') {
-    @if $breakpoint == 'xs' {
+@mixin end($rtk-breakpoint: 'xs') {
+    @if $rtk-breakpoint == 'xs' {
         justify-content: flex-end;
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
             justify-content: flex-end;
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
             justify-content: flex-end;
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
             justify-content: flex-end;
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
             justify-content: flex-end;
         }
     } @else {
-        @warn "end mixin arg must be one of the existing breakpoints (#{$breakpoint-up-prefixes})";
+        @warn "end mixin arg must be one of the existing breakpoints (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
-@mixin top($breakpoint: 'xs') {
-    @if $breakpoint == 'xs' {
+@mixin top($rtk-breakpoint: 'xs') {
+    @if $rtk-breakpoint == 'xs' {
         align-items: flex-start;
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
             align-items: flex-start;
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
             align-items: flex-start;
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
             align-items: flex-start;
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
             align-items: flex-start;
         }
     } @else {
-        @warn "top mixin arg must be one of the existing breakpoints (#{$breakpoint-up-prefixes})";
+        @warn "top mixin arg must be one of the existing breakpoints (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
-@mixin middle($breakpoint: 'xs') {
-    @if $breakpoint == 'xs' {
+@mixin middle($rtk-breakpoint: 'xs') {
+    @if $rtk-breakpoint == 'xs' {
         align-items: center;
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
             align-items: center;
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
             align-items: center;
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
             align-items: center;
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
             align-items: center;
         }
     } @else {
-        @warn "middle mixin arg must be one of the existing breakpoints (#{$breakpoint-up-prefixes})";
+        @warn "middle mixin arg must be one of the existing breakpoints (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
-@mixin bottom($breakpoint: 'xs') {
-    @if $breakpoint == 'xs' {
+@mixin bottom($rtk-breakpoint: 'xs') {
+    @if $rtk-breakpoint == 'xs' {
         align-items: flex-end;
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
             align-items: flex-end;
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
             align-items: flex-end;
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
             align-items: flex-end;
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
             align-items: flex-end;
         }
     } @else {
-        @warn "bottom mixin arg must be one of the existing breakpoints (#{$breakpoint-up-prefixes})";
+        @warn "bottom mixin arg must be one of the existing breakpoints (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
-@mixin around($breakpoint: 'xs') {
-    @if $breakpoint == 'xs' {
+@mixin around($rtk-breakpoint: 'xs') {
+    @if $rtk-breakpoint == 'xs' {
         justify-content: space-around;
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
             justify-content: space-around;
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
             justify-content: space-around;
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
             justify-content: space-around;
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
             justify-content: space-around;
         }
     } @else {
-        @warn "around mixin arg must be one of the existing breakpoints (#{$breakpoint-up-prefixes})";
+        @warn "around mixin arg must be one of the existing breakpoints (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
-@mixin between($breakpoint: 'xs') {
-    @if $breakpoint == 'xs' {
+@mixin between($rtk-breakpoint: 'xs') {
+    @if $rtk-breakpoint == 'xs' {
         justify-content: space-between;
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
             justify-content: space-between;
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
             justify-content: space-between;
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
             justify-content: space-between;
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
             justify-content: space-between;
         }
     } @else {
-        @warn "between mixin arg must be one of the existing breakpoints (#{$breakpoint-up-prefixes})";
+        @warn "between mixin arg must be one of the existing breakpoints (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
-@mixin first($breakpoint: 'xs') {
-    @if $breakpoint == 'xs' {
+@mixin first($rtk-breakpoint: 'xs') {
+    @if $rtk-breakpoint == 'xs' {
         order: -1;
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
             order: -1;
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
             order: -1;
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
             order: -1;
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
             order: -1;
         }
     } @else {
-        @warn "first mixin arg must be one of the existing breakpoints (#{$breakpoint-up-prefixes})";
+        @warn "first mixin arg must be one of the existing breakpoints (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
-@mixin last($breakpoint: 'xs') {
-    @if $breakpoint == 'xs' {
+@mixin last($rtk-breakpoint: 'xs') {
+    @if $rtk-breakpoint == 'xs' {
         order: 1;
-    } @else if $breakpoint == 'sm' {
-        @media #{$breakpoint-sm-up} {
+    } @else if $rtk-breakpoint == 'sm' {
+        @media #{$rtk-breakpoint-sm-up} {
             order: 1;
         }
-    } @else if $breakpoint == 'md' {
-        @media #{$breakpoint-md-up} {
+    } @else if $rtk-breakpoint == 'md' {
+        @media #{$rtk-breakpoint-md-up} {
             order: 1;
         }
-    } @else if $breakpoint == 'lg' {
-        @media #{$breakpoint-lg-up} {
+    } @else if $rtk-breakpoint == 'lg' {
+        @media #{$rtk-breakpoint-lg-up} {
             order: 1;
         }
-    } @else if $breakpoint == 'xl' {
-        @media #{$breakpoint-xl-up} {
+    } @else if $rtk-breakpoint == 'xl' {
+        @media #{$rtk-breakpoint-xl-up} {
             order: 1;
         }
     } @else {
-        @warn "last mixin arg must be one of the existing breakpoints (#{$breakpoint-up-prefixes})";
+        @warn "last mixin arg must be one of the existing breakpoints (#{$rtk-breakpoint-up-prefixes})";
     }
 }
 
@@ -554,12 +554,12 @@ $breakpoints: (
     @include col-reverse();
 }
 
-@each $prefix in $breakpoint-all-prefixes {
-    @include breakpoint($prefix) {
-        .rtk-col.reverse-#{$prefix} {
+@each $rtk-prefix in $rtk-breakpoint-all-prefixes {
+    @include breakpoint($rtk-prefix) {
+        .rtk-col.reverse-#{$rtk-prefix} {
             @include col-reverse();
         }
-        .rtk-row.reverse-#{$prefix} {
+        .rtk-row.reverse-#{$rtk-prefix} {
             @include row-reverse();
         }
     }
@@ -593,74 +593,74 @@ $breakpoints: (
     align-self: stretch;
 }
 // Mixin to run inside of for loop - creates col/breakpoint classes * Not for developer use *
-@mixin col-factory($thisPrefix) {
-    .rtk-col-#{$thisPrefix} {
+@mixin col-factory($rtk-thisPrefix) {
+    .rtk-col-#{$rtk-thisPrefix} {
         flex-grow: 1;
         flex-basis: 0;
         max-width: 100%;
-        padding: $gutter;
+        padding: $rtk-gutter;
     }
-    @for $i from 1 through $grid-columns {
-        .rtk-col-#{$thisPrefix}-#{$i} {
-            flex-basis: 100% / $grid-columns * $i;
-            max-width: 100% / $grid-columns * $i;
-            padding: $gutter;
+    @for $rtk-i from 1 through $rtk-grid-columns {
+        .rtk-col-#{$rtk-thisPrefix}-#{$rtk-i} {
+            flex-basis: 100% / $rtk-grid-columns * $rtk-i;
+            max-width: 100% / $rtk-grid-columns * $rtk-i;
+            padding: $rtk-gutter;
         }
 
-        .rtk-col-#{$thisPrefix}-offset-#{$i} {
-            margin-left: 100% / $grid-columns * $i;
+        .rtk-col-#{$rtk-thisPrefix}-offset-#{$rtk-i} {
+            margin-left: 100% / $rtk-grid-columns * $rtk-i;
         }
     }
 
-    .start-#{$thisPrefix} {
+    .start-#{$rtk-thisPrefix} {
         justify-content: flex-start;
     }
 
-    .center-#{$thisPrefix} {
+    .center-#{$rtk-thisPrefix} {
         justify-content: center;
     }
 
-    .end-#{$thisPrefix} {
+    .end-#{$rtk-thisPrefix} {
         justify-content: flex-end;
     }
 
-    .top-#{$thisPrefix} {
+    .top-#{$rtk-thisPrefix} {
         align-items: flex-start;
     }
 
-    .middle-#{$thisPrefix} {
+    .middle-#{$rtk-thisPrefix} {
         align-items: center;
     }
 
-    .bottom-#{$thisPrefix} {
+    .bottom-#{$rtk-thisPrefix} {
         align-items: flex-end;
     }
 
-    .around-#{$thisPrefix} {
+    .around-#{$rtk-thisPrefix} {
         justify-content: space-around;
     }
 
-    .between-#{$thisPrefix} {
+    .between-#{$rtk-thisPrefix} {
         justify-content: space-between;
     }
 
-    .first-#{$thisPrefix} {
+    .first-#{$rtk-thisPrefix} {
         order: -1;
     }
 
-    .last-#{$thisPrefix} {
+    .last-#{$rtk-thisPrefix} {
         order: 1;
     }
 }
 // Mixin to run inside of for loop - creates col/breakpoint classes
-@each $prefix in $breakpoint-up-prefixes {
-    @include breakpoint($prefix) {
-        @include col-factory($prefix);
+@each $rtk-prefix in $rtk-breakpoint-up-prefixes {
+    @include breakpoint($rtk-prefix) {
+        @include col-factory($rtk-prefix);
     }
 }
 
 .rtk-col-gutter-lr {
-    padding: 0 $gutter;
+    padding: 0 $rtk-gutter;
 }
 
 .rtk-col-no-gutter {

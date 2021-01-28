@@ -12,7 +12,7 @@ body {
     margin: 0;
     padding: 0;
     font-size: 14px;
-    font-family: $font-body;
+    font-family: $rtk-font-body;
 
     &::before {
         display: block;
@@ -20,7 +20,7 @@ body {
         width: 0;
         overflow: hidden;
         visibility: hidden;
-        content: json-encode($breakpoints);
+        content: json-encode($rtk-breakpoints);
     }
 
     &::after {
@@ -29,7 +29,7 @@ body {
         width: 0;
         overflow: hidden;
         visibility: hidden;
-        content: json-encode($breakpoints-max);
+        content: json-encode($rtk-breakpoints-max);
     }
 }
 
