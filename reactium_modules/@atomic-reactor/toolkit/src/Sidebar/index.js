@@ -188,12 +188,10 @@ const NavLinks = () => {
 
     return (
         <div style={{ maxWidth: width }} className={cx('sidebar-menu')}>
-            <Scrollbars>
-                <div className='scroll'>
-                    {links.map(({ component: Component, ...item }) => (
-                        <Component key={item.id} {...item} />
-                    ))}
-                </div>
+            <Scrollbars className={cx('sidebar-menu-list')}>
+                {links.map(({ component: Component, ...item }) => (
+                    <Component key={item.id} {...item} />
+                ))}
             </Scrollbars>
         </div>
     );

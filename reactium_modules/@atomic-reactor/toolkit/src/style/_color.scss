@@ -1,10 +1,28 @@
-$color-black: #000000;
-$color-blue: #4f82ba;
-$color-gray: #666666;
-$color-gray-dark: #333333;
-$color-green: #00ee00;
-$color-grey: #eeeeee;
-$color-grey-light: #FDFDFD;
-$color-orange: #ff7f50;
-$color-red: #ee0000;
-$color-white: #ffffff;
+$color-black: #000000 !default;
+$color-blue: #4f82ba !default;
+$color-gray: #666666 !default;
+$color-gray-dark: #333333 !default;
+$color-green: #00ee00 !default;
+$color-grey: #eeeeee !default;
+$color-grey-light: #fdfdfd !default;
+$color-orange: #ff7f50 !default;
+$color-red: #ee0000 !default;
+$color-white: #ffffff !default;
+
+$accent-color: $color-blue !default;
+
+$brand-info-text-color: $color-gray !default;
+$brand-name-text-color: $color-black !default;
+
+$content-bg-color: $color-grey-light !default;
+$content-box-shadow: 0 0 5px 2px rgba($color-black, 0.035) !default;
+$content-text-color: $color-gray !default;
+
+$sidebar-border-color: darken($color-grey-light, 2%) !default;
+$sidebar-link-bg-color: $color-white !default;
+$sidebar-link-text-color: $color-gray !default;
+$sidebar-heading-bg-color: darken($color-white, 0.5%) !default;
+$sidebar-heading-text-color: $color-gray-dark !default;
+
+$toolbar-border-color: $color-grey !default;
+$toolbar-bg-color: $color-white !default;

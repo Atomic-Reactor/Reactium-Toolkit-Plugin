@@ -1,21 +1,24 @@
-// Header
-$header-height: 60px !default;
+// Fonts
+$font-body: sans-serif !default;
+$font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
+$font-sans-light: 'HelveticaNeue-Light', 'Helvetica Neue Light',
+'Helvetica Neue', Helvetica, 'Lucida Grande', Arial, sans-serif !default;
 
 // Button
-$button-font-family: sans-serif !default;
+$button-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
 $button-font-weight: 400 !default;
 
 // color-left, color-right, color, text-shadow
 $buttons: (
 'primary': (
-    lighten($color-blue, 5%),
+    $color-blue,
     $color-blue,
     $color-white,
     rgba($color-white, 0)
 ),
 'secondary': (
     lighten($color-black, 5%),
-    $color-black,
+    lighten($color-black, 5%),
     $color-grey-light,
     rgba($color-white, 0)
 ),
@@ -26,7 +29,7 @@ $buttons: (
     rgba($color-white, 0)
 ),
 'danger': (
-    lighten($color-red, 5%),
+    $color-red,
     $color-red,
     $color-white,
     rgba($color-white, 0)
@@ -38,35 +41,29 @@ $buttons: (
     rgba($color-white, 0)
 ),
 'info': (
-    lighten($color-blue, 5%),
-    $color-blue,
+    lighten($color-blue, 15%),
+    lighten($color-blue, 15%),
     $color-white,
     rgba($color-white, 0)
 ),
 'success': (
-    lighten($color-green, 5%),
+    $color-green,
     $color-green,
     $color-white,
     rgba($color-white, 0)
 ),
 'warning': (
-    lighten($color-orange, 15%),
+    $color-orange,
     $color-orange,
     $color-white,
     rgba($color-white, 0)
 ),
 'default': (
-    darken($color-white, 2%),
-    darken($color-white, 2%),
+    $color-grey,
+    $color-grey,
     $color-gray,
     rgba($color-white, 0)
 ),
-'error': (
-    lighten($color-red, 5%),
-    $color-red,
-    $color-white,
-    rgba($color-white, 0)
-)
 ) !default;
 
 // font-size, paddingTop, paddingRight, paddingBottom, paddingLeft
@@ -100,3 +97,6 @@ $button-sizes: (
     80px
 )
 ) !default;
+
+// Header
+$header-height: 60px !default;

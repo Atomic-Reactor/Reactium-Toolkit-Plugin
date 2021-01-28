@@ -1,6 +1,9 @@
+import _ from 'underscore';
 import ENUMS from './enums';
-import Reactium, { __ } from 'reactium-core/sdk';
+import op from 'object-path';
 import pkg from '../package';
+import slugify from 'slugify';
+import Reactium, { __ } from 'reactium-core/sdk';
 
 const cx = Reactium.Utils.cxFactory('rtk');
 const Sidebar = Reactium.Utils.registryFactory('RTKSidebar');
@@ -59,6 +62,22 @@ class SDK {
 
     get cx() {
         return cx;
+    }
+
+    get zone() {
+        const { pathname } = Reactium.Routing.currentRoute.location;
+
+        if (String(pathname).startsWith('/toolbar/search')) return 'search';
+
+        const { group, slug } = op.get(
+            Reactium.Routing.currentRoute,
+            'params',
+            {},
+        );
+
+        const zone = !group ? ['overview'] : _.compact([group, slug]);
+
+        return slugify(zone.join('-'), { lower: true });
     }
 }
 

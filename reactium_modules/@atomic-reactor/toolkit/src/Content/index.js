@@ -1,5 +1,6 @@
 import React from 'react';
-import Reactium from 'reactium-core/sdk';
+import Toolbar from '../Toolbar';
+import Reactium, { Zone } from 'reactium-core/sdk';
 
 /**
  * -----------------------------------------------------------------------------
@@ -7,14 +8,16 @@ import Reactium from 'reactium-core/sdk';
  * -----------------------------------------------------------------------------
  */
 const Content = ({ children }) => {
-    const cx = Reactium.Toolkit.cx;
-    const { params = {} } = Reactium.Routing.currentRoute;
-    
+    const { cx, zone } = Reactium.Toolkit;
+
     return (
         <div className={cx('content')}>
-            {children}
+            <Toolbar />
             <div className={cx('content-wrap')}>
-
+                <div className={cx('content-zone', `content-zone-${zone}`)}>
+                    <Zone zone={zone} />
+                    {children}
+                </div>
             </div>
         </div>
     );

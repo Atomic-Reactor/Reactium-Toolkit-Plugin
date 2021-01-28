@@ -8,6 +8,7 @@ import { Icon } from './Icon';
 import { Logo } from './Logo';
 import { Toolkit } from './index';
 import Brand from './Sidebar/Brand';
+import Element from './Content/Element';
 import Reactium from 'reactium-core/sdk';
 import MenuLink from './Sidebar/MenuLink';
 import MenuToggle from './Toolbar/MenuToggle';
@@ -15,7 +16,7 @@ import MenuToggle from './Toolbar/MenuToggle';
 Reactium.Toolkit = Reactium.Toolkit || SDK;
 
 Reactium.Plugin.register('ReactiumToolkit').then(() => {
-    Reactium.Component.register('RTK', { Toolkit, Icon });
+    Reactium.Component.register('RTK', { Element, Icon, Toolkit });
     Reactium.Component.register('RTKLOGO', Logo);
     Reactium.Component.register('RTKMENULINK', MenuLink);
 
@@ -71,7 +72,7 @@ Reactium.Plugin.register('ReactiumToolkit').then(() => {
             order: Reactium.Enums.priority.neutral,
         });
 
-        for (let i = 1; i <= 50; i++) {
+        for (let i = 1; i <= 10; i++) {
             Reactium.Toolkit.Sidebar.register(`component-${i}`, {
                 group: 'components',
                 url: `/toolkit/components/${i}`,

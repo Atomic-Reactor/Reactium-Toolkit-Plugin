@@ -13,7 +13,6 @@ import Reactium, {
 
 import Sidebar from './Sidebar';
 import Content from './Content';
-import Toolbar from './Toolbar';
 
 /**
  * -----------------------------------------------------------------------------
@@ -115,9 +114,7 @@ let Toolkit = ({ state: initialState, ...props }, ref) => {
     return (
         <main ref={elm => refs.set('container', elm)} className={cx()}>
             <Sidebar />
-            <Content>
-                <Toolbar />
-            </Content>
+            <Content />
         </main>
     );
 };

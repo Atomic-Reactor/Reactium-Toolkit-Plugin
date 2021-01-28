@@ -4,17 +4,17 @@ import Reactium from 'reactium-core/sdk';
 
 /**
  * -----------------------------------------------------------------------------
- * Functional Component: Header
+ * Functional Component: Toolbar
  * -----------------------------------------------------------------------------
  */
 
 const alignment = ['left', 'center', 'right'];
-const Header = () => (
-    <header className={Reactium.Toolkit.cx('header')}>
+const Toolbar = () => (
+    <header className={Reactium.Toolkit.cx('toolbar')}>
         {alignment.map(align => (
             <div
-                key={`header-${align}`}
-                className={Reactium.Toolkit.cx(`header-${align}`)}>
+                key={`toolbar-${align}`}
+                className={Reactium.Toolkit.cx(`toolbar-${align}`)}>
                 {_.chain(Reactium.Toolkit.Toolbar.list)
                     .where({ align })
                     .sortBy('order')
@@ -27,4 +27,4 @@ const Header = () => (
     </header>
 );
 
-export { Header, Header as default };
+export { Toolbar, Toolbar as default };
