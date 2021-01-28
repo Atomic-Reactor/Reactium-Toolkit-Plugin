@@ -1,4 +1,4 @@
-@mixin default-button($rtk-size, $rtk-pt, $rtk-pr, $rtk-pb, $rtk-pl) {
+@mixin rtk-default-button($rtk-size, $rtk-pt, $rtk-pr, $rtk-pb, $rtk-pl) {
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -13,15 +13,15 @@
     text-decoration: none;
 }
 
-@mixin pill-button($rtk-size) {
+@mixin rtk-pill-button($rtk-size) {
     border-radius: $rtk-size;
 }
 
-@mixin h-gradient($rtk-clr-l, $rtk-clr-r) {
+@mixin rtk-h-gradient($rtk-clr-l, $rtk-clr-r) {
     background: $rtk-clr-r;
 }
 
-@mixin button() {
+@mixin rtk-button() {
     @each $rtk-clr-name, $rtk-clr-codes in $rtk-buttons {
         $rtk-shadow: nth($rtk-clr-codes, 4);
 
@@ -38,7 +38,7 @@
                 flex-shrink: 0;
             }
 
-            @include h-gradient(nth($rtk-clr-codes, 1), nth($rtk-clr-codes, 2));
+            @include rtk-h-gradient(nth($rtk-clr-codes, 1), nth($rtk-clr-codes, 2));
 
             &:focus,
             &.focus {
@@ -51,7 +51,7 @@
             &.active {
                 color: nth($rtk-clr-codes, 3);
                 text-decoration: none;
-                @include h-gradient(
+                @include rtk-h-gradient(
                     lighten(nth($rtk-clr-codes, 1), 7%),
                     lighten(nth($rtk-clr-codes, 2), 7%)
                 );
@@ -66,7 +66,7 @@
             &.disabled {
                 opacity: 0.5;
                 cursor: default;
-                @include h-gradient(nth($rtk-clr-codes, 1), nth($rtk-clr-codes, 2));
+                @include rtk-h-gradient(nth($rtk-clr-codes, 1), nth($rtk-clr-codes, 2));
                 pointer-events: none;
             }
 
@@ -75,7 +75,7 @@
                     @extend .rtk-btn;
                     @extend .rtk-btn-#{$rtk-clr-name};
 
-                    @include default-button(
+                    @include rtk-default-button(
                         nth($rtk-size-codes, 1),
                         nth($rtk-size-codes, 2),
                         nth($rtk-size-codes, 3),
@@ -125,7 +125,7 @@
 
         @each $rtk-size-name, $rtk-size-codes in $rtk-button-sizes {
             &-#{$rtk-clr-name}-#{$rtk-size-name}-outline {
-                @include default-button(
+                @include rtk-default-button(
                     nth($rtk-size-codes, 1),
                     nth($rtk-size-codes, 2),
                     nth($rtk-size-codes, 3),
@@ -140,25 +140,25 @@
         &-#{$rtk-clr-name}-pill {
             @extend .rtk-btn;
             @extend .rtk-btn-#{$rtk-clr-name};
-            @include pill-button(60px);
+            @include rtk-pill-button(60px);
         }
 
         &-#{$rtk-clr-name}-circle {
             @extend .rtk-btn;
             @extend .rtk-btn-#{$rtk-clr-name};
-            @include pill-button(100%);
+            @include rtk-pill-button(100%);
         }
 
         &-#{$rtk-clr-name}-outline-pill {
             @extend .rtk-btn;
             @extend .rtk-btn-#{$rtk-clr-name}-outline;
-            @include pill-button(60px);
+            @include rtk-pill-button(60px);
         }
 
         &-#{$rtk-clr-name}-outline-circle {
             @extend .rtk-btn;
             @extend .rtk-btn-#{$rtk-clr-name}-outline;
-            @include pill-button(100%);
+            @include rtk-pill-button(100%);
         }
 
         @each $rtk-size-name, $rtk-size-codes in $rtk-button-sizes {
@@ -172,28 +172,28 @@
                 @extend .rtk-btn;
                 @extend .rtk-btn-#{$rtk-clr-name};
                 @extend .rtk-btn-#{$rtk-clr-name}-#{$rtk-size-name};
-                @include pill-button(nth($rtk-size-codes, 1) * 3);
+                @include rtk-pill-button(nth($rtk-size-codes, 1) * 3);
             }
 
             &-#{$rtk-clr-name}-#{$rtk-size-name}-circle {
                 @extend .rtk-btn;
                 @extend .rtk-btn-#{$rtk-clr-name};
                 @extend .rtk-btn-#{$rtk-clr-name}-#{$rtk-size-name};
-                @include pill-button(100%);
+                @include rtk-pill-button(100%);
             }
 
             &-#{$rtk-clr-name}-#{$rtk-size-name}-outline-pill {
                 @extend .rtk-btn;
                 @extend .rtk-btn-#{$rtk-clr-name}-#{$rtk-size-name};
                 @extend .rtk-btn-#{$rtk-clr-name}-outline;
-                @include pill-button(nth($rtk-size-codes, 1) * 3);
+                @include rtk-pill-button(nth($rtk-size-codes, 1) * 3);
             }
 
             &-#{$rtk-clr-name}-#{$rtk-size-name}-outline-circle {
                 @extend .rtk-btn;
                 @extend .rtk-btn-#{$rtk-clr-name}-#{$rtk-size-name};
                 @extend .rtk-btn-#{$rtk-clr-name}-outline;
-                @include pill-button(100%);
+                @include rtk-pill-button(100%);
             }
         }
     }
@@ -206,7 +206,7 @@ a, button {
 }
 
 .rtk-btn {
-    @include default-button(14px, 8px, 24px, 8px, 24px);
+    @include rtk-default-button(14px, 8px, 24px, 8px, 24px);
     outline: none;
     border-radius: 2px;
     background: $rtk-color-grey;
@@ -223,7 +223,7 @@ a, button {
         stroke: $rtk-color-white;
     }
 
-    @include button();
+    @include rtk-button();
 
     &-block {
         width: 100%;
