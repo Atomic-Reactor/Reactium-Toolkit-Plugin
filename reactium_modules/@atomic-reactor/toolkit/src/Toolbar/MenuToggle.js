@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import cc from 'camelcase';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Reactium, { __, useHandle, useHookComponent } from 'reactium-core/sdk';
 
 const MenuToggle = ({ zone }) => {
@@ -28,8 +28,18 @@ const MenuToggle = ({ zone }) => {
     useEffect(() => {
         if (_.isUndefined(collapsed)) return;
 
-        const lbl =
+        let lbl =
             collapsed === true ? __('expand sidebar') : __('collapse sidebar');
+
+        switch (Reactium.Toolkit.os) {
+            case 'windows' :
+                lbl = `ctrl+] ${lbl}`;
+                break;
+
+            case 'mac' :
+                lbl = `⌘+] ${lbl}`;
+                break;
+        }
 
         setLabel(lbl);
     }, [collapsed]);
@@ -40,9 +50,18 @@ const MenuToggle = ({ zone }) => {
         Sidebar.addEventListener('expand', onExpand);
         Sidebar.addEventListener('collapse', onCollapse);
 
+        // Register hotkey
+        Reactium.Toolkit.Hotkeys.register('sidebar', {
+            hotkey: 'mod+]',
+            keydown: () => Sidebar.toggle(),
+        });
+
         return () => {
             Sidebar.removeEventListener('expand', onExpand);
             Sidebar.removeEventListener('collapse', onCollapse);
+
+            // Unregister hotkey
+            Reactium.Toolkit.Hotkeys.unregister('sidebar');
         };
     }, [Sidebar]);
 

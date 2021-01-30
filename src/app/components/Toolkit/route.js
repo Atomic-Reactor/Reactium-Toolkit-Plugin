@@ -3,7 +3,7 @@ import { Toolkit } from 'reactium_modules/@atomic-reactor/toolkit/src';
 
 export default {
     exact: true,
-    component: Toolkit,
     path: ['/'],
+    component: Toolkit,
     order: Reactium.Enums.priority.lowest
 };

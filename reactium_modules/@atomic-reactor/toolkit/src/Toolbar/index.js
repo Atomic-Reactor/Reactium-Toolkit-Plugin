@@ -9,8 +9,8 @@ import Reactium from 'reactium-core/sdk';
  */
 
 const alignment = ['left', 'center', 'right'];
-const Toolbar = () => (
-    <header className={Reactium.Toolkit.cx('toolbar')}>
+const Toolbar = props => (
+    <header className={Reactium.Toolkit.cx('toolbar')} {...props}>
         {alignment.map(align => (
             <div
                 key={`toolbar-${align}`}

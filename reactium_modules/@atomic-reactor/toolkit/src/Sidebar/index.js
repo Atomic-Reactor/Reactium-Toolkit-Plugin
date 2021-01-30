@@ -22,7 +22,6 @@ let Sidebar = (props, ref) => {
     const pref = 'rtk.sidebar.collapsed';
 
     const config = Reactium.Toolkit.config;
-    const { width = 320 } = config.sidebar;
 
     const pos = op.get(
         config,
@@ -34,8 +33,9 @@ let Sidebar = (props, ref) => {
 
     const [state, update] = useDerivedState({
         ease: Power2.easeInOut,
-        speed: 0.2,
+        speed: 0.25,
         tween: null,
+        width: op.get(config, 'sidebar.width', 320),
         collapsed: op.get(config, 'sidebar.collapsed', false),
     });
 
@@ -66,6 +66,7 @@ let Sidebar = (props, ref) => {
 
             cont.style.display = 'block';
             cont.style.overflow = 'hidden';
+            cont.style.minWidth = 0;
             cont.classList.remove('collapsed');
 
             TweenMax.to(cont, state.speed, {
@@ -78,6 +79,7 @@ let Sidebar = (props, ref) => {
                     setState({ collapsed: true, tween: null });
                     resolve(true);
                 },
+                onUpdate: () => dispatch('resize', { width: cont.style.width }),
             });
         });
 
@@ -86,25 +88,27 @@ let Sidebar = (props, ref) => {
             dispatch('expand');
 
             const cont = refs.get('container');
-            const w = `${width}px`;
+            const w = `${state.width}px`;
 
-            cont.style.width = '0px';
             cont.style.maxWidth = w;
+            cont.style.minWidth = 0;
             cont.style.display = 'block';
             cont.style.overflow = 'hidden';
             cont.classList.remove('collapsed');
 
             TweenMax.to(cont, state.speed, {
-                width: width,
+                width: state.width,
                 ease: state.ease,
                 onComplete: () => {
                     if (unMounted()) resolve(false);
 
                     cont.removeAttribute('style');
                     cont.style.maxWidth = w;
+                    cont.style.minWidth = w;
                     setState({ collapsed: false, tween: null });
                     resolve();
                 },
+                onUpdate: () => dispatch('resize', { width: cont.style.width }),
             });
         });
 
@@ -129,7 +133,9 @@ let Sidebar = (props, ref) => {
         collapsed: state.collapsed,
         expand,
         expanded: !state.collapsed,
+        setWidth: width => setState({ width }),
         toggle,
+        width: state.width,
     });
 
     const [handle, updateHandle] = useEventHandle(_handle());
@@ -153,6 +159,21 @@ let Sidebar = (props, ref) => {
         dispatch(type);
     }, [state.collapsed]);
 
+    useEffect(() => {
+        const newHandle = { ...handle, width: state.width };
+        setHandle(newHandle);
+    }, [state.width]);
+
+    useEffect(() => {
+        const unsub = Reactium.Toolkit.subscribe(({ type, ...info }) => {
+            if (type !== 'config') return;
+            const { width } = info.sidebar;
+            if (width !== state.width) setState({ width: width });
+        });
+
+        return unsub;
+    }, []);
+
     useImperativeHandle(ref, () => handle, [state.collapsed]);
 
     useRegisterHandle('RTKSidebar', () => handle);
@@ -160,23 +181,26 @@ let Sidebar = (props, ref) => {
     return (
         <nav
             ref={elm => refs.set('container', elm)}
-            style={{ maxWidth: width }}
+            style={{ maxWidth: state.width, minWidth: state.width }}
             className={cn({
                 collapsed: state.collapsed,
                 [cx('sidebar')]: true,
                 [pos]: true,
             })}>
-            <div className={cx('sidebar-brand')}>
-                <Zone zone='sidebar-brand' />
+            <div
+                className={cx('sidebar-wrapper')}
+                style={{ maxWidth: state.width }}>
+                <div className={cx('sidebar-brand')}>
+                    <Zone zone='sidebar-brand' />
+                </div>
+                <NavLinks width={state.width} />
             </div>
-            <NavLinks />
         </nav>
     );
 };
 
-const NavLinks = () => {
-    const { config, cx, useLinks } = Reactium.Toolkit;
-    const { width = 320 } = config.sidebar;
+const NavLinks = ({ width }) => {
+    const { cx, useLinks } = Reactium.Toolkit;
     const [list] = useLinks();
 
     return (

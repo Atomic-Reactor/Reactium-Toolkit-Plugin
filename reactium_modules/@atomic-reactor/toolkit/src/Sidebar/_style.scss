@@ -1,11 +1,21 @@
+$rtk-sidebar-offset: 28px !default;
+
 .rtk-sidebar {
     width: 100%;
     height: 100vh;
     max-height: 100vh;
     overflow: hidden;
-    display: block;
     display: flex;
     flex-direction: column;
+    position: relative;
+
+    &-wrapper {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+    }
 
     &-brand {
         width: 100%;
@@ -16,8 +26,12 @@
         width: 100%;
         height: calc(100vh - #{$rtk-header-height});
 
+        a:hover {
+            text-decoration: none;
+        }
+
         &-list > div:first-child {
-            padding: 0 0 24px 0;
+            padding: $rtk-sidebar-offset 0;
         }
 
         &-sub {
@@ -40,12 +54,12 @@
             font-size: 14px;
             font-weight: 400;
             font-family: $rtk-font-sans-light;
-            padding: 4px 12px 4px 24px;
+            padding: 4px 12px 4px $rtk-sidebar-offset;
             position: sticky;
             min-height: 42px;
             width: 100%;
             left: 0;
-            top: -1px;
+            top: calc(-#{$rtk-sidebar-offset} - 1px);
             background-color: $rtk-sidebar-link-bg-color;
             z-index: 5;
             display: flex;
@@ -54,6 +68,7 @@
             align-items: center;
             color: $rtk-sidebar-heading-text-color;
             margin-bottom: -1px;
+            border-left: 4px solid transparent;
 
             > span {
                 flex-grow: 1;
@@ -75,6 +90,7 @@
             &.active,
             &:hover {
                 color: $rtk-accent-color;
+                border-left: 4px solid $rtk-sidebar-border-color;
 
                 button {
                     opacity: 1;
@@ -98,6 +114,10 @@
                 background-color: $rtk-sidebar-heading-bg-color;
                 margin-top: -1px;
 
+                &.active {
+                    border-left: 4px solid $rtk-accent-color;
+                }
+
                 button {
                     opacity: 1;
                 }
@@ -118,7 +138,7 @@
             width: 100%;
             min-height: 40px;
             text-decoration: none;
-            padding: 8px 12px 8px 48px;
+            padding: 8px 12px 8px calc(#{$rtk-sidebar-offset} * 2);
             color: $rtk-sidebar-link-text-color;
             background-color: $rtk-sidebar-link-bg-color;
             display: flex;
@@ -132,8 +152,9 @@
             &:before {
                 content: '';
                 position: absolute;
-                left: 28px;
+                left: calc(#{$rtk-sidebar-offset} + 9px);
                 top: 0;
+                transform: translateX(-50%);
                 width: 1px;
                 height: 100%;
                 background-color: $rtk-sidebar-border-color;
@@ -152,10 +173,10 @@
             &.active:after {
                 content: '';
                 position: absolute;
-                left: 28px;
+                left: calc(#{$rtk-sidebar-offset} + 9px);
                 top: 50%;
-                width: 8px;
-                height: 8px;
+                width: 7.5px;
+                height: 7.5px;
                 transform: translate(-50%, -50%);
                 background-color: $rtk-sidebar-link-bg-color;
                 border: 1px solid $rtk-accent-color;

@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'underscore';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import Reactium, { Zone } from 'reactium-core/sdk';
@@ -18,7 +19,17 @@ const propTypes = {
  * -----------------------------------------------------------------------------
  */
 
-const Element = ({ children, className, index, xs, sm, md, lg, ...props }) => {
+const Element = ({
+    children,
+    className,
+    index,
+    title,
+    xs = 12,
+    sm,
+    md,
+    lg,
+    ...props
+}) => {
     const { cx, zone } = Reactium.Toolkit;
 
     const cname = cn(className, cx('element'), {
@@ -30,7 +41,12 @@ const Element = ({ children, className, index, xs, sm, md, lg, ...props }) => {
 
     return (
         <div {...props} className={cname}>
-            <div>{children}</div>
+            {title && (
+                <div className={cx('element-title')}>
+                    {_.isString(title) ? <h2>{title}</h2> : title}
+                </div>
+            )}
+            <div className={cx('element-content')}>{children}</div>
             {index && (
                 <div
                     className={cn(

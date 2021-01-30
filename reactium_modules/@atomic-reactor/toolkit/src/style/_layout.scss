@@ -1,4 +1,8 @@
 html {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
     &,
     * {
         box-sizing: border-box;
@@ -9,6 +13,9 @@ html {
 }
 
 body {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
     margin: 0;
     padding: 0;
     font-size: 14px;
@@ -36,7 +43,6 @@ body {
 .rtk {
     display: flex;
     width: 100vw;
-    position: relative;
 
     svg {
         flex-shrink: 0;

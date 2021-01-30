@@ -10,6 +10,7 @@
     overflow-y: visible;
     border-bottom: 1px solid $rtk-toolbar-border-color;
     background-color: $rtk-toolbar-bg-color;
+    z-index: $rtk-header-z;
 
     &-left,
     &-right,
