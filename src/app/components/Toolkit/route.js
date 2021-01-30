@@ -1,5 +1,5 @@
 import Reactium from 'reactium-core/sdk';
-import { Toolkit } from 'reactium_modules/@atomic-reactor/toolkit/src';
+import { Toolkit } from 'reactium_modules/@atomic-reactor/toolkit';
 
 export default {
     exact: true,

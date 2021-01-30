@@ -2,7 +2,7 @@ import _ from 'underscore';
 import uuid from 'uuid/v4';
 import ENUMS from './enums';
 import op from 'object-path';
-import pkg from '../package';
+import pkg from './package';
 import slugify from 'slugify';
 import isHotkey from 'is-hotkey';
 import { useEffect } from 'react';

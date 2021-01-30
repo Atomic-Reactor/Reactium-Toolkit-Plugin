@@ -87,6 +87,15 @@ $rtk-sidebar-offset: 28px !default;
                 }
             }
 
+            &.toggle {
+                user-select: none;
+                cursor: pointer;
+
+                button {
+                    pointer-events: none;
+                }
+            }
+
             &.active,
             &:hover {
                 color: $rtk-accent-color;

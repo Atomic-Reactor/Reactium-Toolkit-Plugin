@@ -21,6 +21,8 @@ const defaultProps = {
     url: null,
 };
 
+const noop = () => {};
+
 const MenuLink = initialProps => {
     const {
         children,
@@ -58,8 +60,10 @@ const MenuLink = initialProps => {
     });
 
     const onToggle = e => {
-        e.preventDefault();
-        e.stopPropagation();
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         Reactium.Prefs.set(prefkey, !expanded);
         setExpanded(!expanded);
     };
@@ -114,8 +118,10 @@ const MenuLink = initialProps => {
             ) : (
                 <div
                     {...props}
+                    onClick={() => (related.length > 0 ? onToggle() : noop())}
                     className={cn({
                         expanded,
+                        toggle: related.length > 0,
                         [cx('sidebar-menu-item-heading')]: !group,
                         [cx('sidebar-menu-item-link')]: !!group,
                     })}>
