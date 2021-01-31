@@ -2,15 +2,13 @@
     display: flex;
     align-items: center;
     position: sticky;
-    width: 100%;
-    height: $rtk-header-height;
     top: 0;
     right: 0;
-    overflow-x: hidden;
-    overflow-y: visible;
-    border-bottom: 1px solid $rtk-toolbar-border-color;
+    width: 100%;
+    height: $rtk-toolbar-height;
+    z-index: $rtk-toolbar-z;
     background-color: $rtk-toolbar-bg-color;
-    z-index: $rtk-header-z;
+    border-bottom: 1px solid $rtk-toolbar-border-color;
 
     &-title {
         font-size: 14px;

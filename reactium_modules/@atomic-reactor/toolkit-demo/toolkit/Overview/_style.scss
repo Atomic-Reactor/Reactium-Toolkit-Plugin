@@ -87,6 +87,7 @@ $rtk-sh-md: calc(100vh - #{$rtk-hh-md}) !default;
         background-color: $color-white;
         box-shadow: 0 0 5px 5px rgba($color-black, 0.02);
         padding: 40px;
+        min-height: 200px;
 
         @include rtk-breakpoint(xs) {
             height: $rtk-sh-xs;

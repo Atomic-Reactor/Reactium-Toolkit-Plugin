@@ -1,0 +1,56 @@
+.rtk-btn-color-select {
+    padding: 4px;
+    position: relative;
+    background-color: $rtk-toolbar-bg-color;
+    border: 1px solid $rtk-toolbar-border-color;
+
+    @include rtk-breakpoint(md) {
+        padding: 8px;
+    }
+
+    &-selected {
+        padding: 0;
+        border: none;
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+
+        [class^='btn'] {
+            padding: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 0;
+        }
+    }
+
+    &-label {
+        margin-left: 8px;
+        font-size: 12px;
+        min-width: 100px;
+        flex-grow: 1;
+        text-align: left;
+
+        display: none;
+
+        @include rtk-breakpoint(md) {
+            display: inline;
+        }
+    }
+
+    &-picker {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        //transform: translateY(100%);
+        padding: 8px;
+        background-color: $rtk-toolbar-bg-color;
+
+
+        button {
+            &:not(:last-child) {
+                margin-bottom: 8px;
+            }
+        }
+    }
+}

@@ -4,7 +4,7 @@ import States from './States';
 import Sizing from './Sizing';
 import Reactium, { __ } from 'reactium-core/sdk';
 
-Reactium.Plugin.register('ToolkitButtons').then(() => {
+Reactium.Plugin.register('ToolkitDemoButtons').then(() => {
     if (!Reactium.Toolkit) return;
 
     Reactium.Hook.register('plugin-ready', () => {

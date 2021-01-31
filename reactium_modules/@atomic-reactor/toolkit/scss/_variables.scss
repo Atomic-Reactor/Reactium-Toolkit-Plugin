@@ -4,6 +4,10 @@ $rtk-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
 $rtk-font-sans-light: 'HelveticaNeue-Light', 'Helvetica Neue Light',
 'Helvetica Neue', Helvetica, 'Lucida Grande', Arial, sans-serif !default;
 
+// Toolbar
+$rtk-toolbar-height: 60px !default;
+$rtk-toolbar-z: 10000000 !default;
+
 // Button
 $rtk-button-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
 $rtk-button-font-weight: 400 !default;
@@ -97,7 +101,3 @@ $rtk-button-sizes: (
     80px
 )
 ) !default;
-
-// Header
-$rtk-header-height: 60px !default;
-$rtk-header-z: 10000000 !default;

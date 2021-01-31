@@ -19,12 +19,12 @@ $rtk-sidebar-offset: 28px !default;
 
     &-brand {
         width: 100%;
-        height: $rtk-header-height;
+        height: $rtk-toolbar-height;
     }
 
     &-menu {
         width: 100%;
-        height: calc(100vh - #{$rtk-header-height});
+        height: calc(100vh - #{$rtk-toolbar-height});
 
         a:hover {
             text-decoration: none;
@@ -207,7 +207,7 @@ $rtk-sidebar-offset: 28px !default;
 
 .rtk-brand {
     width: 100%;
-    height: $rtk-header-height;
+    height: $rtk-toolbar-height;
     background-color: $rtk-toolbar-bg-color;
     display: flex;
     flex-wrap: nowrap;
