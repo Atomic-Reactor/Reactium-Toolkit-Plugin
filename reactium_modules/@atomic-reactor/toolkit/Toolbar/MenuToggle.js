@@ -33,11 +33,11 @@ const MenuToggle = ({ zone, ...props }) => {
 
         switch (Reactium.Toolkit.os) {
             case 'windows' :
-                lbl = `ctrl+] ${lbl}`;
+                lbl = `ctrl+| ${lbl}`;
                 break;
 
             case 'mac' :
-                lbl = `⌘+] ${lbl}`;
+                lbl = `⌘+| ${lbl}`;
                 break;
         }
 

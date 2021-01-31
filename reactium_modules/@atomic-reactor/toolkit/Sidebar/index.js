@@ -21,7 +21,7 @@ import Reactium, {
 let Sidebar = (props, ref) => {
     const pref = 'rtk.sidebar.collapsed';
 
-    const { config, cx, fullscreen } = Reactium.Toolkit;
+    const { config, cx } = Reactium.Toolkit;
 
     const pos = op.get(
         config,
@@ -175,7 +175,7 @@ let Sidebar = (props, ref) => {
     useEffect(() => {
         // Register hotkey
         Reactium.Toolkit.Hotkeys.register('sidebar', {
-            hotkey: 'mod+]',
+            hotkey: 'mod+\\',
             keydown: () => toggle(),
         });
 
