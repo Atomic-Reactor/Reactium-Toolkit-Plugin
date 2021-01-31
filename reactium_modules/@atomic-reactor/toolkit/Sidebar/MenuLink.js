@@ -37,7 +37,7 @@ const MenuLink = initialProps => {
 
     const prefkey = `rtk.sidebar.expanded.${id}`;
 
-    const { params } = Reactium.Routing.currentRoute;
+    const { params, location } = Reactium.Routing.currentRoute;
 
     const { config, cx, useLinks } = Reactium.Toolkit;
 
@@ -58,6 +58,12 @@ const MenuLink = initialProps => {
         [cx(`sidebar-menu-item-${order}`)]: true,
         [cx(`sidebar-menu-item-${group}`)]: !!group,
     });
+
+    const isActiveHeading = () => {
+        const url = location.pathname;
+        const urls = _.pluck(related, 'url');
+        return urls.includes(url);
+    };
 
     const onToggle = e => {
         if (e) {
@@ -121,6 +127,7 @@ const MenuLink = initialProps => {
                     onClick={() => (related.length > 0 ? onToggle() : noop())}
                     className={cn({
                         expanded,
+                        active: isActiveHeading(),
                         toggle: related.length > 0,
                         [cx('sidebar-menu-item-heading')]: !group,
                         [cx('sidebar-menu-item-link')]: !!group,
