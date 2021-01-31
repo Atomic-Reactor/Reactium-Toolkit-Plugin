@@ -1,21 +1,32 @@
 import cn from 'classnames';
+import op from 'object-path';
 import { buttonColors } from '../index';
-import React, { useEffect } from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 
 import Reactium, {
-    useHookComponent,
+    ComponentEvent,
     useDerivedState,
+    useEventHandle,
+    useHookComponent,
     useIsContainer,
     useRefs,
 } from 'reactium-core/sdk';
 
+const defaultButtonProps = () => ({ block: true, size: 'sm' });
+
 const noop = () => {};
-const ColorSelect = ({
-    className,
-    colors: initialColors,
-    onChange = noop,
-    ...props
-}) => {
+
+let ColorSelect = (
+    {
+        buttonProps,
+        className,
+        colors: initialColors,
+        onChange = noop,
+        ...props
+    },
+    ref,
+) => {
     const { cx } = Reactium.Toolkit;
 
     const refs = useRefs();
@@ -26,10 +37,7 @@ const ColorSelect = ({
     const [state, update] = useDerivedState({
         colors: initialColors || buttonColors(),
         collapsed: true,
-        buttonProps: {
-            block: true,
-            size: Button.ENUMS.SIZE.SM,
-        },
+        buttonProps: buttonProps || defaultButtonProps(),
         expanded: false,
         value: props.value,
     });
@@ -39,9 +47,13 @@ const ColorSelect = ({
         update(newState);
     };
 
-    const collapse = () => setState({ collapsed: true, expanded: false });
+    const collapse = () => {
+        dispatch('collapse');
+        setState({ collapsed: true, expanded: false });
+    };
 
     const dismiss = e => {
+        dispatch('dismiss');
         if (!e) return collapse();
         if (state.collapsed === true) return;
         const container = refs.get('container');
@@ -50,9 +62,60 @@ const ColorSelect = ({
         collapse();
     };
 
-    const expand = () => setState({ collapsed: false, expanded: true });
+    const dispatch = (type, data = {}) => {
+        if (unMounted()) return;
+        const evt = new ComponentEvent(type, data);
+        handle.dispatchEvent(evt);
+    };
+
+    const expand = () => {
+        dispatch('expand');
+        setState({ collapsed: false, expanded: true });
+    };
+
+    const toggle = () => {
+        if (state.expanded === true) {
+            collapse();
+        } else {
+            expand();
+        }
+    };
 
     const unMounted = () => !refs.get('container');
+
+    const _onChange = (e, value) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        collapse();
+        setState({ value });
+        onChange({ target: { value } });
+    };
+
+    const _onKeyDown = e => {
+        if (e.keyCode !== 13) return;
+        e.preventDefault();
+        toggle();
+    };
+
+    const _handle = () => ({
+        ...state,
+        collapse,
+        dismiss,
+        dispatch,
+        expand,
+        toggle,
+        setState,
+        state,
+    });
+
+    const [handle, setHandle] = useEventHandle(() => _handle());
+    const updateHandle = () => {
+        if (unMounted()) return;
+        const _newHandle = _handle();
+        Object.entries(_newHandle).forEach(([k, v]) => op.set(handle, k, v));
+        setHandle(handle);
+    };
 
     useEffect(() => {
         setState({ value: props.value });
@@ -70,44 +133,67 @@ const ColorSelect = ({
         };
     }, []);
 
+    useEffect(() => {
+        updateHandle();
+    }, [Object.values(state)]);
+
+    useEffect(() => {
+        dispatch('change', { value: state.value });
+    }, [state.value]);
+
+    useEffect(() => {
+        dispatch('collapsed');
+    }, [state.collapsed]);
+
+    useEffect(() => {
+        dispatch('expanded');
+    }, [state.expanded]);
+
+    useImperativeHandle(ref, () => handle);
+
     return (
         <div
             {...props}
+            tabIndex={1}
+            onClick={toggle}
             title={state.value}
+            onKeyDown={_onKeyDown}
             ref={elm => refs.set('container', elm)}
-            className={cn(cx('btn-color-select'), className)}>
-            <button
-                onClick={expand}
-                className={cx('btn-color-select-selected')}>
+            className={cn(cx('btn-color-select'), className, {
+                expanded: state.expanded,
+            })}>
+            <div className={cx('btn-color-select-selected')}>
                 <Button readOnly color={state.value} />
                 <span className={cx('btn-color-select-label')}>
                     {state.value}
                 </span>
-            </button>
-            <div className={cx('btn-color-select-picker')}>
-                {state.colors.map((c, i) => (
-                    <Button
-                        color={c}
-                        value={c}
-                        key={`select-${i}`}
-                        {...state.buttonProps}
-                        onClick={() => onChange({ target: { value: c }})}>
-                        <span className={cx('btn-color-select-label')}>
-                            {c}
-                        </span>
-                    </Button>
-                ))}
+            </div>
+            <div
+                className={cx('btn-color-select-picker')}
+                style={{ display: state.collapsed ? 'none' : null }}>
+                <Scrollbars>
+                    <div className={cx('btn-color-select-picker-list')}>
+                        {state.colors.map((c, i) => (
+                            <Button
+                                color={c}
+                                value={c}
+                                title={c}
+                                key={`select-${i}`}
+                                {...state.buttonProps}
+                                onClick={e => _onChange(e, c)}>
+                                <span className={cx('btn-color-select-label')}>
+                                    {c}
+                                </span>
+                            </Button>
+                        ))}
+                    </div>
+                </Scrollbars>
+                <div className='arrow-up' />
             </div>
         </div>
     );
 };
 
-export { ColorSelect, ColorSelect as default };
+ColorSelect = forwardRef(ColorSelect);
 
-/*
-<select defaultValue={value} onChange={onChange} title={__('select color')}>
-    {colors.map((c, i) => (
-        <option key={i}>{c}</option>
-    ))}
-</select>;
-*/
+export { ColorSelect, ColorSelect as default };
