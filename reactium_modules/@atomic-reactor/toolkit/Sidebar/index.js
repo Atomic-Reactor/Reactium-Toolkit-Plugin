@@ -36,6 +36,7 @@ let Sidebar = (props, ref) => {
         speed: 0.25,
         tween: null,
         width: op.get(config, 'sidebar.width', 320),
+        expanded: !op.get(config, 'sidebar.collapsed', false),
         collapsed: op.get(config, 'sidebar.collapsed', false),
     });
 
@@ -59,6 +60,7 @@ let Sidebar = (props, ref) => {
     const collapse = () =>
         new Promise(resolve => {
             dispatch('collapse');
+            document.body.setAttribute('data-collapse', true);
 
             const cont = refs.get('container');
 
@@ -74,7 +76,7 @@ let Sidebar = (props, ref) => {
                     if (unMounted()) resolve(false);
 
                     cont.removeAttribute('style');
-                    setState({ collapsed: true, tween: null });
+                    setState({ expanded: false, collapsed: true, tween: null });
                     resolve(true);
                 },
                 onUpdate: () => dispatch('resize', { width: cont.style.width }),
@@ -84,6 +86,7 @@ let Sidebar = (props, ref) => {
     const expand = () =>
         new Promise(resolve => {
             dispatch('expand');
+            document.body.setAttribute('data-expand', true);
 
             const cont = refs.get('container');
             const w = `${state.width}px`;
@@ -103,7 +106,7 @@ let Sidebar = (props, ref) => {
                     cont.removeAttribute('style');
                     cont.style.maxWidth = w;
                     cont.style.minWidth = w;
-                    setState({ collapsed: false, tween: null });
+                    setState({ expanded: true, collapsed: false, tween: null });
                     resolve();
                 },
                 onUpdate: () => dispatch('resize', { width: cont.style.width }),
@@ -171,6 +174,28 @@ let Sidebar = (props, ref) => {
 
         return unsub;
     }, []);
+
+    useEffect(() => {
+        if (state.collapsed === true) {
+            document.body.removeAttribute('data-expand');
+            document.body.removeAttribute('data-expanded');
+            document.body.removeAttribute('data-collapse');
+            document.body.setAttribute('data-collapsed', true);
+        } else {
+            document.body.removeAttribute('data-collapsed');
+        }
+    }, [state.collapsed]);
+
+    useEffect(() => {
+        if (state.expanded === true) {
+            document.body.removeAttribute('data-collapse');
+            document.body.removeAttribute('data-collapsed');
+            document.body.removeAttribute('data-expand');
+            document.body.setAttribute('data-expanded', true);
+        } else {
+            document.body.removeAttribute('data-expanded');
+        }
+    }, [state.expanded]);
 
     useEffect(() => {
         // Register hotkey
