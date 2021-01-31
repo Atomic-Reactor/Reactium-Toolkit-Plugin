@@ -35,7 +35,7 @@ Reactium.Plugin.register('ReactiumToolkit').then(() => {
         // Titlebar update
         if (typeof window !== 'undefined') {
             document.title = Reactium.Toolkit.config.titlebar;
-        }
+        }        
 
         // ---------------------------------------------------------------------
         // Toolbar Buttons
