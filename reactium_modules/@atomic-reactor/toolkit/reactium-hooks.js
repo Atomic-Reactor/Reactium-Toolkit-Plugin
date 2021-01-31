@@ -32,6 +32,11 @@ Reactium.Plugin.register('ReactiumToolkit').then(() => {
             order: Reactium.Enums.priority.highest,
         });
 
+        // Titlebar update
+        if (typeof window !== 'undefined') {
+            document.title = Reactium.Toolkit.config.titlebar;
+        }
+
         // ---------------------------------------------------------------------
         // Toolbar Buttons
         // ---------------------------------------------------------------------
@@ -46,5 +51,5 @@ Reactium.Plugin.register('ReactiumToolkit').then(() => {
             component: MenuToggle,
             order: Reactium.Enums.priority.highest,
         });
-    });
+    }, Reactium.Enums.priority.highest);
 });

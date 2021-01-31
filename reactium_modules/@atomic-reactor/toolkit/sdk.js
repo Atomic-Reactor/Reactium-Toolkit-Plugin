@@ -117,8 +117,8 @@ class SDK {
         // fullscreen
         this.__fs;
 
-        // Hotkeys listener
         if (typeof window !== 'undefined') {
+            // Hotkeys listener
             window.addEventListener('keydown', Hotkeys.search);
             window.addEventListener('keyup', Hotkeys.search);
         }
