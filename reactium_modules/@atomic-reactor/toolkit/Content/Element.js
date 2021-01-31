@@ -1,16 +1,21 @@
-import React from 'react';
 import _ from 'underscore';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
-import Reactium, { Zone } from 'reactium-core/sdk';
+import React, { useEffect } from 'react';
+import Reactium, { Zone, useHookComponent } from 'reactium-core/sdk';
 
 const propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
+    fullscreen: PropTypes.bool,
     xs: PropTypes.number,
     sm: PropTypes.number,
     md: PropTypes.number,
     lg: PropTypes.number,
+};
+
+const defaultProps = {
+    fullscreen: false,
 };
 
 /**
@@ -22,8 +27,10 @@ const propTypes = {
 const Element = ({
     children,
     className,
+    fullscreen,
     index,
     title,
+    toolbar,
     xs = 12,
     sm,
     md,
@@ -32,6 +39,8 @@ const Element = ({
 }) => {
     const { cx, zone } = Reactium.Toolkit;
 
+    const { ToolbarTitle } = useHookComponent('RTK');
+
     const cname = cn(className, cx('element'), {
         [`rtk-col-xs-${xs}`]: !!xs,
         [`rtk-col-sm-${sm}`]: !!sm,
@@ -39,13 +48,41 @@ const Element = ({
         [`rtk-col-lg-${lg}`]: !!lg,
     });
 
-    return (
+    useEffect(() => {
+        const unreg = [];
+        if (title) {
+            unreg.push({
+                id: 'element-title',
+                reg: Reactium.Toolkit.Toolbar.register('element-title', {
+                    align: Reactium.Toolkit.Toolbar.align.left,
+                    component: ToolbarTitle,
+                    children: title,
+                }),
+            });
+        }
+
+        if (toolbar) {
+            unreg.push({
+                id: 'element-toolbar',
+                reg: Reactium.Toolkit.Toolbar.register('element-toolbar', {
+                    align: Reactium.Toolkit.Toolbar.align.right,
+                    component: toolbar,
+                    className: 'mr-xs-12',
+                }),
+            });
+        }
+
+        return () => {
+            unreg.forEach(({ id, reg }) => reg.unregister(id));
+        };
+    }, []);
+
+    useEffect(() => {
+        Reactium.Toolkit.setFullscreen(fullscreen);
+    }, [fullscreen]);
+
+    return _.isUndefined(Reactium.Toolkit.fullscreen) ? null : (
         <div {...props} className={cname}>
-            {title && (
-                <div className={cx('element-title')}>
-                    {_.isString(title) ? <h2>{title}</h2> : title}
-                </div>
-            )}
             <div className={cx('element-content')}>{children}</div>
             {index && (
                 <div
@@ -61,5 +98,7 @@ const Element = ({
 };
 
 Element.propTypes = propTypes;
+
+Element.defaultProps = defaultProps;
 
 export { Element, Element as default };

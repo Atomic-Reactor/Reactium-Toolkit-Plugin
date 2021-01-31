@@ -114,6 +114,9 @@ class SDK {
         // default config
         this.__config = JSON.parse(JSON.stringify(defaultConfig));
 
+        // fullscreen
+        this.__fs;
+
         // Hotkeys listener
         if (typeof window !== 'undefined') {
             window.addEventListener('keydown', Hotkeys.search);
@@ -176,6 +179,26 @@ class SDK {
 
     get cx() {
         return cx;
+    }
+
+    get fullscreen() {
+        return this.__fs;
+    }
+
+    get setFullscreen() {
+        return val => {
+            this.__fs = val;
+
+            if (typeof window !== 'undefined') {
+                if (val === true) {
+                    document.body.setAttribute('data-fullscreen', val);
+                } else {
+                    document.body.removeAttribute('data-fullscreen');
+                }
+            }
+
+            this.notify('fullscreen', { fullscreen: val });
+        };
     }
 
     get os() {
@@ -274,18 +297,52 @@ class SDK {
 
             const isEqual = newData => _.isEqual(state.data, newData);
 
-            const setData = (newData, caller) => {
-                if (isEqual(newData, caller)) return;
+            const setData = newData => {
+                if (isEqual(newData)) return;
                 setState({ data: newData });
             };
 
             useEffect(() => {
-                setData(fetch(), 'useEffect');
+                setData(fetch());
             }, [zone, order]);
 
             useEffect(() => {
                 const unsub = Elements.subscribe(() => {
-                    setData(fetch(), 'subscribe');
+                    setData(fetch());
+                });
+                return unsub;
+            }, []);
+
+            return [state.data, setData];
+        };
+    }
+
+    get useToolbarElements() {
+        return props => {
+            const order = op.get(props, 'order', 'order');
+
+            const fetch = () => {
+                const filter = item => !!op.get(item, 'component');
+
+                return Toolbar.sort(order).filter(filter);
+            };
+
+            const [state, setState] = useDerivedState({ data: [] });
+
+            const isEqual = newData => _.isEqual(state.data, newData);
+
+            const setData = newData => {
+                if (isEqual(newData)) return;
+                setState({ data: newData });
+            };
+
+            useEffect(() => {
+                setData(fetch());
+            }, [order]);
+
+            useEffect(() => {
+                const unsub = Toolbar.subscribe(() => {
+                    setData(fetch());
                 });
                 return unsub;
             }, []);

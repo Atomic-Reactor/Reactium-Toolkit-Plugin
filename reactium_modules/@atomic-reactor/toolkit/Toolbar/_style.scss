@@ -12,6 +12,19 @@
     background-color: $rtk-toolbar-bg-color;
     z-index: $rtk-header-z;
 
+    &-title {
+        font-size: 14px;
+
+        @include rtk-breakpoint(lg) {
+            font-size: 18px;
+        }
+    }
+
+    .form-group > select {
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+
     &-left,
     &-right,
     &-center {

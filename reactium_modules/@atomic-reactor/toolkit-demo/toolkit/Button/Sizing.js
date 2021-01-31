@@ -1,9 +1,12 @@
-import { buttonProps, buttonStates } from '.';
+import _ from 'underscore';
+import { buttonProps } from '.';
 import React, { useEffect, useState } from 'react';
 import Reactium, { __, useHookComponent } from 'reactium-core/sdk';
 
 export default () => {
     const pref = 'rtk.button.color';
+    const { copy } = Reactium.Toolkit;
+
     const [color, updateColor] = useState();
     const { Button } = useHookComponent('ReactiumUI');
     const { ColorSelect, Element } = useHookComponent('RTK');
@@ -13,9 +16,19 @@ export default () => {
         updateColor(newColor);
     };
 
-    const style = { width: 128 };
-
     const title = __('copy selector to clipboard');
+
+    const sizes = Object.values(Button.ENUMS.SIZE);
+
+    const css = ({ color, size, appearance, outline }) => {
+        const arr = ['btn', color];
+
+        if (size) arr.push(size);
+        if (outline) arr.push('outline');
+        if (appearance) arr.push(appearance);
+
+        return _.compact(arr).join('-');
+    };
 
     const Toolbar = props => (
         <ColorSelect
@@ -25,18 +38,22 @@ export default () => {
         />
     );
 
-    const ButtonRender = ({ className, color, ...props }) => (
-        <div className='col-xs-6 col-sm-3'>
+    const ButtonRender = ({ color, size, ...props }) => {
+        const cname = css({ ...props, color, size });
+
+        return (
             <div className='px-xs-12 px-sm-4 pb-xs-24 text-center'>
-                <Button readOnly {...props} color={color} className={className}>
+                <Button
+                    {...props}
+                    size={size}
+                    color={color}
+                    onClick={() => copy(cname)}>
                     {color}
                 </Button>
-                <div className='rtk-meta-info pt-xs-8'>
-                    <span>&nbsp;</span>
-                </div>
+                <div className='rtk-meta-info pt-xs-8'>.{cname}</div>
             </div>
-        </div>
-    );
+        );
+    };
 
     useEffect(() => {
         const colorPref = Reactium.Prefs.get(pref, Button.ENUMS.COLOR.PRIMARY);
@@ -46,7 +63,7 @@ export default () => {
     return !color ? null : (
         <Element
             className='px-xs-24 px-lg-40 pt-xs-0 pt-md-40'
-            title={__('Button States')}
+            title={__('Button Sizing')}
             toolbar={Toolbar}>
             <div
                 style={{
@@ -54,25 +71,24 @@ export default () => {
                     margin: '0 auto',
                     display: 'flex flex-center',
                 }}>
-                {buttonStates.map(({ label, className }) => (
-                    <div className='row' key={className}>
-                        <div className='col-xs-12 col-md-2 text-xs-center text-md-left pb-xs-40 pb-md-0 pt-md-8'>
-                            {label}
-                        </div>
-                        <div className='col-xs-12 col-md-10'>
-                            <div className='row'>
-                                {buttonProps({ style, title }).map((btn, i) => (
+                <div className='row'>
+                    {buttonProps({ title }).map((btn, i) => {
+                        return (
+                            <div
+                                key={`button-style-${i}`}
+                                className='col-xs-12 col-md-6 mb-xs-40'>
+                                {sizes.reverse().map((size, s) => (
                                     <ButtonRender
                                         {...btn}
+                                        size={size}
                                         color={color}
-                                        className={className}
-                                        key={`btn-state-${label}-${i}`}
+                                        key={`button-style-${i}-${s}`}
                                     />
                                 ))}
                             </div>
-                        </div>
-                    </div>
-                ))}
+                        );
+                    })}
+                </div>
             </div>
         </Element>
     );

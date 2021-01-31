@@ -1,6 +1,9 @@
-import React from 'react';
+export * from './Title';
+export * from './MenuToggle';
+
 import _ from 'underscore';
-import Reactium from 'reactium-core/sdk';
+import React, { useEffect } from 'react';
+import Reactium, { useDerivedState } from 'reactium-core/sdk';
 
 /**
  * -----------------------------------------------------------------------------
@@ -9,20 +12,46 @@ import Reactium from 'reactium-core/sdk';
  */
 
 const alignment = ['left', 'center', 'right'];
-const Toolbar = props => (
-    <header className={Reactium.Toolkit.cx('toolbar')} {...props}>
-        {alignment.map(align => (
-            <div
-                key={`toolbar-${align}`}
-                className={Reactium.Toolkit.cx(`toolbar-${align}`)}>
-                {_.where(Reactium.Toolkit.Toolbar.sort('order'), { align }).map(
-                    ({ id, component: Component }) => (
-                        <Component key={`${align}-${id}`} zone={align} />
-                    ),
-                )}
-            </div>
-        ))}
-    </header>
-);
+const Toolbar = props => {
+    const { useToolbarElements, fullscreen } = Reactium.Toolkit;
+
+    const [state, setState] = useDerivedState({
+        fullscreen,
+    });
+
+    const [list] = useToolbarElements();
+
+    useEffect(() => {
+        setState({ fullscreen });
+    }, [fullscreen]);
+
+    return state.fullscreen === true || _.isUndefined(fullscreen) ? null : (
+        <header className={Reactium.Toolkit.cx('toolbar')} {...props}>
+            {alignment.map(align => (
+                <div
+                    key={`toolbar-${align}`}
+                    className={Reactium.Toolkit.cx(`toolbar-${align}`)}>
+                    {_.where(list, { align }).map(
+                        ({
+                            align,
+                            component: Component,
+                            id,
+                            order,
+                            ...props
+                        }) => (
+                            <Component
+                                zone={align}
+                                data-order={order}
+                                data-align={align}
+                                key={`${align}-${id}`}
+                                {...props}
+                            />
+                        ),
+                    )}
+                </div>
+            ))}
+        </header>
+    );
+};
 
 export { Toolbar, Toolbar as default };

@@ -21,7 +21,7 @@ import Reactium, {
 let Sidebar = (props, ref) => {
     const pref = 'rtk.sidebar.collapsed';
 
-    const config = Reactium.Toolkit.config;
+    const { config, cx, fullscreen } = Reactium.Toolkit;
 
     const pos = op.get(
         config,
@@ -43,8 +43,6 @@ let Sidebar = (props, ref) => {
         if (unMounted()) return;
         update(newState, silent);
     };
-
-    const cx = Reactium.Toolkit.cx;
 
     const dispatch = async (eventType, event = {}) => {
         if (unMounted()) return;
@@ -173,6 +171,19 @@ let Sidebar = (props, ref) => {
 
         return unsub;
     }, []);
+
+    useEffect(() => {
+        // Register hotkey
+        Reactium.Toolkit.Hotkeys.register('sidebar', {
+            hotkey: 'mod+]',
+            keydown: () => toggle(),
+        });
+
+        return () => {
+            // Unregister hotkey
+            Reactium.Toolkit.Hotkeys.unregister('sidebar');
+        };
+    }, [Sidebar]);
 
     useImperativeHandle(ref, () => handle, [state.collapsed]);
 

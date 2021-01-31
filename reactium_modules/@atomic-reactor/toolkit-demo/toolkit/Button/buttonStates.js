@@ -1,6 +1,6 @@
 import { __ } from 'reactium-core/sdk';
 
-export default [
+const buttonStates = [
     {
         label: __('Default'),
         className: '',
@@ -22,3 +22,5 @@ export default [
         className: 'disabled',
     },
 ];
+
+export { buttonStates, buttonStates as default };

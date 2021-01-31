@@ -11,7 +11,7 @@ import Brand from './Sidebar/Brand';
 import Element from './Content/Element';
 import Reactium from 'reactium-core/sdk';
 import MenuLink from './Sidebar/MenuLink';
-import MenuToggle from './Toolbar/MenuToggle';
+import { MenuToggle, ToolbarTitle } from './Toolbar';
 
 Reactium.Toolkit = Reactium.Toolkit || SDK;
 
@@ -20,7 +20,7 @@ Reactium.Plugin.register('ReactiumToolkit').then(() => {
     Reactium.Component.register('RTKLOGO', Logo);
     Reactium.Component.register('RTKBRAND', Brand);
     Reactium.Component.register('RTKMENULINK', MenuLink);
-    Reactium.Component.register('RTK', { Element, Icon, Toolkit });
+    Reactium.Component.register('RTK', { Element, Icon, Toolkit, ToolbarTitle });
 
     Reactium.Hook.register('plugin-ready', () => {
         const BrandComp = Reactium.Component.get('RTKBRAND');
@@ -45,15 +45,6 @@ Reactium.Plugin.register('ReactiumToolkit').then(() => {
             align: Reactium.Toolkit.Toolbar.align.right,
             component: MenuToggle,
             order: Reactium.Enums.priority.highest,
-        });
-
-        Reactium.Toolkit.Sidebar.register('overview', {
-            order: 0,
-            exact: true,
-            url: '/toolkit',
-            component: MenuLink,
-            children: 'Overview',
-            'aria-label': 'Overview',
         });
     });
 });

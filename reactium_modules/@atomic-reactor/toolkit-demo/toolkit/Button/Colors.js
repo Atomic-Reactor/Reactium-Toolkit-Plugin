@@ -1,7 +1,6 @@
 import React from 'react';
-import _ from 'underscore';
 import camelcase from 'camelcase';
-import buttonProps from './buttonProps';
+import { buttonColors, buttonProps } from '.';
 import Reactium, { __, useHookComponent } from 'reactium-core/sdk';
 
 const cc = str => camelcase(str, { pascalCase: true });
@@ -11,11 +10,7 @@ export default () => {
     const { Element } = useHookComponent('RTK');
     const { Button } = useHookComponent('ReactiumUI');
 
-    const colors = _.without(
-        Object.values(Button.ENUMS.COLOR),
-        Button.ENUMS.COLOR.DEFAULT,
-        Button.ENUMS.COLOR.CLEAR,
-    );
+    const colors = buttonColors();
 
     const style = { width: 128 };
 
@@ -41,16 +36,18 @@ export default () => {
     };
 
     return (
-        <Element className='px-xs-24 px-lg-40' title={__('Button Colors')}>
+        <Element
+            className='px-xs-24 px-lg-40 pt-xs-0 pt-md-40'
+            title={__('Button Colors')}>
             <div
                 style={{
                     maxWidth: 1280,
-                    display: 'flex flex-center',
                     margin: '0 auto',
+                    display: 'flex flex-center',
                 }}>
                 {colors.map(color => (
                     <div className='row' key={`button-color-${color}`}>
-                        <div className='col-xs-12 col-md-2 text-xs-center text-md-left pb-xs-40 pb-md-0 pt-md-8'>
+                        <div className='col-xs-12 col-md-2 text-xs-center text-md-left pb-xs-32 pb-md-0 pt-xs-8 pt-md-8'>
                             {cc(color)}
                         </div>
                         <div className='col-xs-12 col-md-10'>
@@ -70,40 +67,3 @@ export default () => {
         </Element>
     );
 };
-
-/*
-{buttonProps({ style }).map(({ css, ...props }, i) => {
-    return (
-        <div key={`col-${i}`} className='col-xs-6 col-sm-3'>
-            {colors.map(color => {
-                const cname = `.${String(css).replace(
-                    '%color',
-                    color,
-                )}`;
-
-                const title = __(
-                    'copy selector to clipboard',
-                );
-
-                return (
-                    <div
-                        key={`col-${i}-${color}`}
-                        className='px-xs-12 px-sm-4 pb-xs-24 text-center'>
-                        <Button
-                            {...props}
-                            color={color}
-                            title={title}
-                            onClick={() => copy(cname)}>
-                            {color}
-                        </Button>
-                        <div className='rtk-meta-info pt-xs-8'>
-                            {cname}
-                        </div>
-                    </div>
-                );
-            })}
-        </div>
-    </div>
-    );
-})}
-*/

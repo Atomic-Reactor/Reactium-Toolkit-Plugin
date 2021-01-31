@@ -1,6 +1,6 @@
 import Reactium from 'reactium-core/sdk';
 
-export default ({ style = {} }) => {
+const buttonProps = ({ style = {} }) => {
     const { Button } = Reactium.Component.get('ReactiumUI');
 
     return [
@@ -26,3 +26,5 @@ export default ({ style = {} }) => {
         },
     ];
 };
+
+export { buttonProps, buttonProps as default };

@@ -1,6 +1,7 @@
 import Usage from './Usage';
-import States from './States';
 import Colors from './Colors';
+import States from './States';
+import Sizing from './Sizing';
 import Reactium, { __ } from 'reactium-core/sdk';
 
 Reactium.Plugin.register('ToolkitButtons').then(() => {
@@ -26,11 +27,19 @@ Reactium.Plugin.register('ToolkitButtons').then(() => {
         });
 
         Reactium.Toolkit.Sidebar.register('button-states', {
-            order: 0,
+            order: 2,
             group: 'button',
             url: '/toolkit/button/states',
             children: __('Button States'),
             'aria-label': __('Button States'),
+        });
+
+        Reactium.Toolkit.Sidebar.register('button-sizing', {
+            order: 4,
+            group: 'button',
+            url: '/toolkit/button/sizing',
+            children: __('Button Sizing'),
+            'aria-label': __('Button Sizing'),
         });
 
         Reactium.Toolkit.Elements.register('button-colors', {
@@ -45,8 +54,14 @@ Reactium.Plugin.register('ToolkitButtons').then(() => {
             zone: 'button-states',
         });
 
-        Reactium.Toolkit.Elements.register('button-component', {
+        Reactium.Toolkit.Elements.register('button-sizing', {
             order: 4,
+            component: Sizing,
+            zone: 'button-sizing',
+        });
+
+        Reactium.Toolkit.Elements.register('button-component', {
+            order: 6,
             component: Usage,
             zone: 'button-component',
         });

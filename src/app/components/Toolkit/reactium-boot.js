@@ -1,3 +1,4 @@
+/*
 const Reactium = require('reactium-core/sdk').default;
 
 Reactium.Hook.register('Server.AppStyleSheets', async (req, AppStyleSheets) => {
@@ -6,3 +7,5 @@ Reactium.Hook.register('Server.AppStyleSheets', async (req, AppStyleSheets) => {
         order: Reactium.Enums.priority.lowest,
     });
 });
+
+*/
