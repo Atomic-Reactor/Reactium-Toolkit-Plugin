@@ -8,7 +8,6 @@ const buttonColors = exclude => {
 
     return _.without(
         Object.values(Button.ENUMS.COLOR),
-        Button.ENUMS.COLOR.DEFAULT,
         ...exclude,
     ).sort();
 };

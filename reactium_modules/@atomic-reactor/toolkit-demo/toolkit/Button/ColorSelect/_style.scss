@@ -32,6 +32,7 @@
             width: 14px;
             height: 14px;
             border-radius: 100%;
+            flex-shrink: 0;
 
             @include rtk-breakpoint(md) {
                 border-radius: 0;
@@ -64,6 +65,7 @@
         overflow: visible;
         border: 1px solid $rtk-toolbar-border-color;
         margin: 0 -1px;
+        z-index: 100;
 
         .arrow-up {
             display: none;

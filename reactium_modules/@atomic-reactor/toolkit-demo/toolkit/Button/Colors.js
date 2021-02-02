@@ -37,8 +37,8 @@ export default () => {
 
     return (
         <Element
-            className='px-xs-24 px-lg-40 pt-xs-0 pt-md-40'
-            title={__('Button Colors')}>
+            title={__('Button Colors')}
+            className='pt-xs-64 px-xs-40'>
             <div
                 style={{
                     maxWidth: 1280,

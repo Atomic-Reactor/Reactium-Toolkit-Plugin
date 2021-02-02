@@ -11,7 +11,6 @@
 
     &-zone {
         @extend .rtk-row;
-        padding: 20px 0;
         overflow-x: auto;
         width: 100%;
         min-height: calc(100vh - #{$rtk-toolbar-height});
@@ -22,10 +21,6 @@
             overflow-x: hidden;
         }
     }
-}
-
-.rtk-element {
-    margin: 20px 0;
 }
 
 .rtk-meta-info {

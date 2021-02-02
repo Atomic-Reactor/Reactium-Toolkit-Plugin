@@ -1,0 +1,62 @@
+$buttons: (
+    'primary': (
+        $primary,
+        $primary,
+        $color-white,
+        rgba($color-white, 0),
+    ),
+    'secondary': (
+        $secondary,
+        $secondary,
+        $color-grey-light,
+        rgba($color-white, 0),
+    ),
+    'tertiary': (
+        $tertiary,
+        $tertiary,
+        $color-white,
+        rgba($color-white, 0),
+    ),
+    'danger': (
+        $danger,
+        $danger,
+        $color-white,
+        rgba($color-white, 0),
+    ),
+    'clear': (
+        rgba($color-white, 0),
+        rgba($color-white, 0),
+        $color-gray,
+        $color-gray,
+    ),
+    'info': (
+        $info,
+        $info,
+        $color-white,
+        rgba($color-white, 0),
+    ),
+    'success': (
+        $success,
+        $success,
+        $color-white,
+        rgba($color-white, 0),
+    ),
+    'warning': (
+        $warning,
+        $warning,
+        $color-white,
+        rgba($color-white, 0),
+    ),
+    'default': (
+        $default,
+        $default,
+        $color-white,
+        rgba($color-white, 0),
+    ),
+    'error': (
+        $error,
+        $error,
+        $color-white,
+        rgba($color-white, 0),
+    ),
+);

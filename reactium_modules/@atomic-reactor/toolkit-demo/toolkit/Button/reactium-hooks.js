@@ -51,6 +51,14 @@ Reactium.Plugin.register('ToolkitDemoButtons').then(() => {
             'aria-label': __('Button Block'),
         });
 
+        Reactium.Toolkit.Sidebar.register('button-component', {
+            order: 8,
+            group: 'button',
+            url: '/toolkit/button/component',
+            children: __('Component'),
+            'aria-label': __('Component'),
+        });
+
         Reactium.Toolkit.Elements.register('button-colors', {
             order: 0,
             component: Colors,

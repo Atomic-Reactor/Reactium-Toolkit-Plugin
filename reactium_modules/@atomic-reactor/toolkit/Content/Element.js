@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import Reactium, { Zone, useHookComponent } from 'reactium-core/sdk';
 
 const propTypes = {
@@ -24,7 +24,7 @@ const defaultProps = {
  * -----------------------------------------------------------------------------
  */
 
-const Element = ({
+let Element = ({
     children,
     className,
     fullscreen,
@@ -36,7 +36,7 @@ const Element = ({
     md,
     lg,
     ...props
-}) => {
+}, ref) => {
     const { cx, zone } = Reactium.Toolkit;
 
     const { ToolbarTitle } = useHookComponent('RTK');
@@ -82,7 +82,7 @@ const Element = ({
     }, [fullscreen]);
 
     return _.isUndefined(Reactium.Toolkit.fullscreen) ? null : (
-        <div {...props} className={cname}>
+        <div {...props} className={cname} ref={ref}>
             <div className={cx('element-content')}>{children}</div>
             {index && (
                 <div
@@ -96,6 +96,8 @@ const Element = ({
         </div>
     );
 };
+
+Element = forwardRef(Element);
 
 Element.propTypes = propTypes;
 

@@ -64,9 +64,9 @@ export default () => {
 
     return !color ? null : (
         <Element
-            className='px-xs-24 px-lg-40 pt-xs-0 pt-md-40'
+            toolbar={Toolbar}
             title={__('Button Block')}
-            toolbar={Toolbar}>
+            className='pt-xs-64 px-xs-40'>
             <div
                 style={{
                     maxWidth: 1280,
