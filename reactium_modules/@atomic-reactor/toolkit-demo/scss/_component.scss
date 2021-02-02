@@ -13,12 +13,11 @@ $rtk-component-height: calc(100vh - #{$rtk-toolbar-height}) !default;
     }
 
     &-inspector {
-        height: $rtk-component-height;
-
         @include rtk-breakpoint($rtk-component-brk) {
-            width: 40%;
+            min-width: 40%;
             display: flex;
             flex-direction: column;
+            height: $rtk-component-height;
         }
     }
 
@@ -35,7 +34,10 @@ $rtk-component-height: calc(100vh - #{$rtk-toolbar-height}) !default;
 
     &-demo-wrap,
     &-props-wrap {
-        height: calc(#{$rtk-component-height}/ 2);
+        height: 304px;
+        @include rtk-breakpoint($rtk-component-brk) {
+            height: calc(#{$rtk-component-height}/ 2);
+        }
     }
 
     &-code-wrap {
@@ -81,6 +83,53 @@ $rtk-component-height: calc(100vh - #{$rtk-toolbar-height}) !default;
 
             &:focus {
                 border: 1px solid $primary;
+            }
+        }
+    }
+
+    .rtk-btn-color-select {
+        padding: 8px;
+
+        &:focus,
+        .expanded {
+            box-shadow: 0 0 1px 3px rgba($rtk-accent-color, 0.1);
+            border: 1px solid $rtk-accent-color;
+        }
+
+        &-picker {
+            top: calc(100% + 14px);
+            width: calc(100% + 2px);
+            height: calc(33vh + 4px);
+            max-height: 202px;
+            box-shadow: 0 0 1px 3px rgba($color-black, 0.03);
+
+            .arrow-up {
+                display: block;
+            }
+
+            &-list {
+                padding: 8px;
+            }
+
+            button {
+                padding: 0 6px;
+                width: 100%;
+                height: 24px;
+                border-radius: 0;
+
+                &:not(:last-child) {
+                    margin-bottom: 8px;
+                }
+            }
+        }
+
+        &-label {
+            display: inline;
+        }
+
+        &-selected {
+            [class^='btn'] {
+                border-radius: 0;
             }
         }
     }

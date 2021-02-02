@@ -23,14 +23,14 @@ let defaultConfig = {
     },
 };
 
-let prettierOptions = {
+const prettierOptions = {
+    tabWidth: 2,
+    printWidth: 80,
     parser: 'babel',
     singleQuote: true,
-    tabWidth: 2,
-    printWidth: 200000000,
+    trailingComma: 'es5',
     jsxSingleQuote: true,
     jsxBracketSameLine: true,
-    trailingComma: 'es5',
     plugins: [parserbabel, parserHtml],
 };
 

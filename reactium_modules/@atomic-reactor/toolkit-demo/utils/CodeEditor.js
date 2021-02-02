@@ -17,6 +17,9 @@ const CodeEditor = ({ setState, tagName, value }) => {
         const reg = new RegExp(`<${tagName}\\s+(.*?)\>`, 'gm');
         const tag = _.first(_.first(Array.from(str.matchAll(reg))));
 
+        const creg = new RegExp(`<${tagName}\\s+(.*?)>(.*?)<\/${tagName}>`, 'gims');
+        const cmatch = _.first(Array.from(str.matchAll(creg)));
+        const children = String(cmatch[2]).trim();
         try {
             attributes = Reactium.Toolkit.parseAttributes(
                 Array.from(
@@ -31,6 +34,7 @@ const CodeEditor = ({ setState, tagName, value }) => {
         } catch (err) {}
 
         if (attributes) {
+            attributes.children = children;
             setState(attributes);
         }
     };

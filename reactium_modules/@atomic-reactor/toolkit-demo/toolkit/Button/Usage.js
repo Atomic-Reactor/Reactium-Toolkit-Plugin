@@ -40,7 +40,9 @@ export default () => {
 
     const attributes = _.compact(
         Object.entries(state).map(([key, val]) =>
-            val !== null && val !== false ? `${key}='${val}'` : null,
+            val !== null && val !== false && key !== 'children'
+                ? `${key}='${val}'`
+                : null,
         ),
     ).join(' ');
 
@@ -51,7 +53,7 @@ export default () => {
         export const Component = () => {
             const { Button } = useHookComponent('ReactiumUI');
 
-            return <Button ${attributes} />;
+            return <Button ${attributes}>${state.children}</Button>;
         };
     `;
 
@@ -76,7 +78,11 @@ export default () => {
                     </div>
                 </div>
                 <div className={cx('component-code-wrap')}>
-                    <CodeEditor tagName='Button' value={jsx} setState={setState} />
+                    <CodeEditor
+                        tagName='Button'
+                        value={jsx}
+                        setState={setState}
+                    />
                 </div>
             </div>
         </Element>
