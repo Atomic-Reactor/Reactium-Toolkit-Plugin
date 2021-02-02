@@ -10,19 +10,39 @@ import Reactium, {
     useRefs,
 } from 'reactium-core/sdk';
 
-const CodeEditor = ({ children, ...initialProps }) => {
-    const { Code } = useHookComponent('RTK');
+export default () => {
+    const pref = 'rtk.button';
 
-    const props = Object.entries(initialProps).reduce((obj, [key, val]) => {
-        if (val !== null) {
-            obj[key] = val;
-        }
-        return obj;
-    }, {});
+    const { cx } = Reactium.Toolkit;
 
-    const attributes = Object.entries(props)
-        .map(([key, val]) => `${key}='${val}'`)
-        .join(' ');
+    const refs = useRefs();
+    const { CodeEditor, Element } = useHookComponent('RTK');
+    const { Button } = useHookComponent('ReactiumUI');
+
+    const loadedState = Reactium.Toolkit.parseAttributes(
+        Reactium.Prefs.get(pref, {}),
+    );
+
+    const [state, update] = useDerivedState({
+        children: __('Button'),
+        color: Button.ENUMS.COLOR.PRIMARY,
+        outline: false,
+        size: Button.ENUMS.SIZE.SM,
+        ...loadedState,
+    });
+
+    const setState = newState => {
+        if (unMounted()) return;
+        update(newState);
+    };
+
+    const unMounted = () => !refs.get('container');
+
+    const attributes = _.compact(
+        Object.entries(state).map(([key, val]) =>
+            val !== null && val !== false ? `${key}='${val}'` : null,
+        ),
+    ).join(' ');
 
     const jsx = `
         import React from 'react';
@@ -31,18 +51,44 @@ const CodeEditor = ({ children, ...initialProps }) => {
         export const Component = () => {
             const { Button } = useHookComponent('ReactiumUI');
 
-            return <Button ${attributes}>${children}</Button>
+            return <Button ${attributes} />;
         };
     `;
 
-    return <Code value={jsx} />;
+    useEffect(() => {
+        Reactium.Prefs.set(pref, state);
+    }, [Object.values(state)]);
+
+    return (
+        <Element title={__('Buttons')} ref={elm => refs.set('container', elm)}>
+            <div className={cx('component')}>
+                <div className={cx('component-inspector')}>
+                    <div
+                        className={cx('component-demo-wrap')}
+                        style={{ maxHeight: 220 }}>
+                        <Demo {...Reactium.Toolkit.parseAttributes(state)} />
+                    </div>
+                    <div className={cx('component-props-wrap')}>
+                        <Properties
+                            {...Reactium.Toolkit.parseAttributes(state)}
+                            setState={setState}
+                        />
+                    </div>
+                </div>
+                <div className={cx('component-code-wrap')}>
+                    <CodeEditor tagName='Button' value={jsx} setState={setState} />
+                </div>
+            </div>
+        </Element>
+    );
 };
 
 const Demo = props => {
     const { cx } = Reactium.Toolkit;
     const { Button } = useHookComponent('ReactiumUI');
+
     return (
-        <div className={cx('component-demo')}>
+        <div className={cx('component-demo')} style={{ overflow: 'hidden' }}>
             <Button {...props} />
         </div>
     );
@@ -91,7 +137,7 @@ const Properties = ({ setState, ...props }) => {
                         <div className='col-xs-12 col-sm-6'>{__('Size')}</div>
                         <div className='col-xs-12 col-sm-6 text-right'>
                             <select
-                                defaultValue={props.size}
+                                value={props.size}
                                 style={{ width: 150, marginLeft: 'auto' }}
                                 onChange={e =>
                                     setState({ size: e.target.value })
@@ -107,79 +153,35 @@ const Properties = ({ setState, ...props }) => {
                 </div>
                 <div className='form-group'>
                     <Toggle
+                        value={true}
                         label={__('Outline')}
-                        defaultChecked={props.outline}
+                        checked={props.outline === true}
                         onChange={e =>
                             setState({
-                                outline: e.target.checked ? true : null,
+                                outline: e.target.checked
+                                    ? e.target.value
+                                    : null,
                             })
                         }
                     />
                 </div>
                 <div className='form-group'>
                     <Toggle
-                        value={true}
                         label={__('Pill')}
+                        value={Button.ENUMS.APPEARANCE.PILL}
                         onChange={e =>
                             setState({
                                 appearance: e.target.checked
-                                    ? Button.ENUMS.APPEARANCE.PILL
+                                    ? e.target.value
                                     : null,
                             })
                         }
-                        defaultChecked={
+                        checked={
                             props.appearance === Button.ENUMS.APPEARANCE.PILL
                         }
                     />
                 </div>
             </div>
         </Scrollbars>
-    );
-};
-
-export default () => {
-    const pref = 'rtk.button';
-
-    const { cx } = Reactium.Toolkit;
-
-    const refs = useRefs();
-    const { Element } = useHookComponent('RTK');
-    const { Button } = useHookComponent('ReactiumUI');
-
-    const [state, update] = useDerivedState({
-        children: __('Button'),
-        color: Button.ENUMS.COLOR.PRIMARY,
-        outline: false,
-        size: Button.ENUMS.SIZE.SM,
-        ...Reactium.Prefs.get(pref, {}),
-    });
-
-    const setState = newState => {
-        if (unMounted()) return;
-        update(newState);
-    };
-
-    const unMounted = () => !refs.get('container');
-
-    useEffect(() => {
-        Reactium.Prefs.set(pref, state);
-    }, [Object.values(state)]);
-
-    return (
-        <Element title={__('Buttons')} ref={elm => refs.set('container', elm)}>
-            <div className={cx('component')}>
-                <div className={cx('component-inspector')}>
-                    <div className={cx('component-demo-wrap')}>
-                        <Demo {...state} />
-                    </div>
-                    <div className={cx('component-props-wrap')}>
-                        <Properties {...state} setState={setState} />
-                    </div>
-                </div>
-                <div className={cx('component-code-wrap')}>
-                    <CodeEditor {...state} />
-                </div>
-            </div>
-        </Element>
     );
 };

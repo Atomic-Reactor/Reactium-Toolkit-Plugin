@@ -4,6 +4,7 @@ $rtk-component-height: calc(100vh - #{$rtk-toolbar-height}) !default;
 .rtk-component {
     width: 100%;
     height: $rtk-toolbar-height;
+    position: relative;
 
     @include rtk-breakpoint($rtk-component-brk) {
         display: flex;
@@ -24,6 +25,7 @@ $rtk-component-height: calc(100vh - #{$rtk-toolbar-height}) !default;
     &-code-wrap,
     &-demo-wrap,
     &-props-wrap {
+        position: relative;
         flex-grow: 1;
 
         &:not(:last-child) {

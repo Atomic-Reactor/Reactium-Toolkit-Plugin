@@ -7,6 +7,9 @@ import slugify from 'slugify';
 import isHotkey from 'is-hotkey';
 import { useEffect } from 'react';
 import copy from 'copy-to-clipboard';
+import prettier from 'prettier/standalone';
+import parserHtml from 'prettier/parser-html';
+import parserbabel from 'prettier/parser-babylon';
 import Reactium, { __, useDerivedState } from 'reactium-core/sdk';
 
 let defaultConfig = {
@@ -18,6 +21,17 @@ let defaultConfig = {
         position: Reactium.Prefs.get('rtk.sidebar.position', 'left'),
         width: Reactium.Prefs.get('rtk.sidebar.width', 320),
     },
+};
+
+let prettierOptions = {
+    parser: 'babel',
+    singleQuote: true,
+    tabWidth: 2,
+    printWidth: 200000000,
+    jsxSingleQuote: true,
+    jsxBracketSameLine: true,
+    trailingComma: 'es5',
+    plugins: [parserbabel, parserHtml],
 };
 
 const sorter = (list, id, key = 'order') => {
@@ -173,6 +187,22 @@ class SDK {
         };
     }
 
+    get codeFormat() {
+        return (str, options = {}) => {
+            let output;
+            try {
+                output = prettier.format(str, {
+                    ...prettierOptions,
+                    ...options,
+                });
+            } catch (err) {
+                output = str;
+            }
+
+            return output;
+        };
+    }
+
     get copy() {
         return copy;
     }
@@ -201,6 +231,17 @@ class SDK {
         };
     }
 
+    get parseAttributes() {
+        return (props = {}) =>
+            Object.entries(props).reduce((obj, [key, val]) => {
+                val = val === 'true' ? true : val;
+                val = val === 'false' ? false : val;
+                val = val === 'null' ? null : val;
+
+                obj[key] = val;
+                return obj;
+            }, {});
+    }
     get os() {
         if (typeof window === 'undefined') return null;
 
