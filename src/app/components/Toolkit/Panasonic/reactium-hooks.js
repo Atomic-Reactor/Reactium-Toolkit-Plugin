@@ -8,24 +8,27 @@ Reactium.Plugin.register('Panasonic').then(() => {
     Reactium.Hook.register('plugin-ready', () => {
         const MenuLink = Reactium.Component.get('RTKMENULINK');
 
+        Reactium.Toolkit.Sidebar.unregister('overview');
+        Reactium.Toolkit.Elements.unregister('overview');
+
         Reactium.Toolkit.Sidebar.register('panasonic', {
             exact: true,
             component: MenuLink,
             children: 'Panasonic',
             'aria-label': 'Panasonic',
-            url: '/toolkit/panasonic',
+            url: '/toolkit',
             order: Reactium.Enums.priority.highest,
         });
 
         Reactium.Toolkit.Elements.register('panasonic-calculator', {
             order: 0,
-            zone: 'panasonic',
+            zone: 'overview',
             component: Calculator,
         });
 
         Reactium.Toolkit.Elements.register('panasonic-header', {
             order: 2,
-            zone: 'panasonic',
+            zone: 'overview',
             component: Header,
         });
     });
