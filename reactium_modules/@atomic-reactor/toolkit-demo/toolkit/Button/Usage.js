@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import cn from 'classnames';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import Reactium, {
@@ -13,10 +13,8 @@ import Reactium, {
 export default () => {
     const pref = 'rtk.button';
 
-    const { cx } = Reactium.Toolkit;
-
     const refs = useRefs();
-    const { CodeEditor, Element } = useHookComponent('RTK');
+    const { CodeEditor, Element, ComponentDemo } = useHookComponent('RTK');
     const { Button } = useHookComponent('ReactiumUI');
 
     const loadedState = Reactium.Toolkit.parseAttributes(
@@ -44,7 +42,9 @@ export default () => {
                 ? `${key}='${val}'`
                 : null,
         ),
-    ).join(' ');
+    )
+        .sort()
+        .join(' ');
 
     const jsx = `
         import React from 'react';
@@ -63,28 +63,24 @@ export default () => {
 
     return (
         <Element title={__('Buttons')} ref={elm => refs.set('container', elm)}>
-            <div className={cx('component')}>
-                <div className={cx('component-inspector')}>
-                    <div
-                        className={cx('component-demo-wrap')}
-                        style={{ maxHeight: 220 }}>
-                        <Demo {...Reactium.Toolkit.parseAttributes(state)} />
-                    </div>
-                    <div className={cx('component-props-wrap')}>
-                        <Properties
-                            {...Reactium.Toolkit.parseAttributes(state)}
-                            setState={setState}
-                        />
-                    </div>
-                </div>
-                <div className={cx('component-code-wrap')}>
+            <ComponentDemo
+                id='button'
+                className='button-demo'
+                demo={<Demo {...Reactium.Toolkit.parseAttributes(state)} />}
+                inspector={
+                    <Properties
+                        {...Reactium.Toolkit.parseAttributes(state)}
+                        setState={setState}
+                    />
+                }
+                editor={
                     <CodeEditor
                         tagName='Button'
                         value={jsx}
                         setState={setState}
                     />
-                </div>
-            </div>
+                }
+            />
         </Element>
     );
 };
@@ -94,7 +90,9 @@ const Demo = props => {
     const { Button } = useHookComponent('ReactiumUI');
 
     return (
-        <div className={cx('component-demo')} style={{ overflow: 'hidden' }}>
+        <div
+            className={cx('component-demo')}
+            style={{ overflow: 'hidden', height: 220 }}>
             <Button {...props} />
         </div>
     );
@@ -104,10 +102,20 @@ const Properties = ({ setState, ...props }) => {
     const { cx } = Reactium.Toolkit;
 
     const { ColorSelect } = useHookComponent('RTK');
-    const { Button, Toggle } = useHookComponent('ReactiumUI');
+    const { Breakpoint, Button, Toggle } = useHookComponent('ReactiumUI');
+
+    const ScrollWrap = useCallback(
+        ({ children }) => (
+            <Breakpoint
+                xs={children}
+                lg={<Scrollbars>{children}</Scrollbars>}
+            />
+        ),
+        [],
+    );
 
     return (
-        <Scrollbars>
+        <ScrollWrap>
             <div className={cn(cx('component-props'), 'p-xs-40')}>
                 <div className='form-group'>
                     <div className='flex middle'>
@@ -188,6 +196,6 @@ const Properties = ({ setState, ...props }) => {
                     />
                 </div>
             </div>
-        </Scrollbars>
+        </ScrollWrap>
     );
 };

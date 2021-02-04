@@ -1,6 +1,7 @@
 import Reactium from 'reactium-core/sdk';
-import ColorSelect from './toolkit/Button/ColorSelect';
 import CodeEditor from './utils/CodeEditor';
+import ComponentDemo from './utils/ComponentDemo';
+import ColorSelect from './toolkit/Button/ColorSelect';
 
 Reactium.Plugin.register('ToolkitDemo').then(() => {
     if (!Reactium.Toolkit) return;
@@ -11,8 +12,11 @@ Reactium.Plugin.register('ToolkitDemo').then(() => {
 
     Reactium.Hook.register('plugin-ready', () => {
         const RTK = Reactium.Component.get('RTK');
-        RTK.ColorSelect = ColorSelect;
+
         RTK.CodeEditor = CodeEditor;
+        RTK.ColorSelect = ColorSelect;
+        RTK.ComponentDemo = ComponentDemo;
+
         Reactium.Component.register('RTK', RTK);
     });
 });

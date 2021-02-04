@@ -3,21 +3,50 @@ $rtk-component-height: calc(100vh - #{$rtk-toolbar-height}) !default;
 
 .rtk-component {
     width: 100%;
-    height: $rtk-toolbar-height;
+    height: $rtk-component-height;
+    max-width: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
 
     @include rtk-breakpoint($rtk-component-brk) {
-        display: flex;
         align-items: stretch;
-        height: $rtk-component-height;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
     }
 
     &-inspector {
+        position: relative;
+
         @include rtk-breakpoint($rtk-component-brk) {
-            min-width: 40%;
+            min-width: 390px;
             display: flex;
             flex-direction: column;
             height: $rtk-component-height;
+
+            .handle-hidden {
+                display: none;
+            }
+
+            .handle-right {
+                &:hover,
+                &:active {
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        width: 4px;
+                        height: 20px;
+                        top: 50%;
+                        right: 50%;
+                        transform: translate(-50%, -50%);
+                        z-index: 100;
+                        border-left: 1px solid $rtk-toolbar-border-color;
+                        border-right: 1px solid $rtk-toolbar-border-color;
+                        pointer-events: none;
+                    }
+                }
+            }
         }
     }
 
@@ -26,28 +55,18 @@ $rtk-component-height: calc(100vh - #{$rtk-toolbar-height}) !default;
     &-props-wrap {
         position: relative;
         flex-grow: 1;
-
-        &:not(:last-child) {
-            border-bottom: 1px solid $rtk-toolbar-border-color;
-        }
-    }
-
-    &-demo-wrap,
-    &-props-wrap {
-        height: 304px;
-        @include rtk-breakpoint($rtk-component-brk) {
-            height: calc(#{$rtk-component-height}/ 2);
-        }
+        border-bottom: 1px solid $rtk-toolbar-border-color;
     }
 
     &-code-wrap {
         width: 100%;
-        height: $rtk-component-height;
-        border-top: 1px solid $rtk-toolbar-border-color;
 
         @include rtk-breakpoint($rtk-component-brk) {
+            width: auto;
+            flex-shrink: 1;
             border-top: none;
             border-left: 1px solid $rtk-toolbar-border-color;
+            height: $rtk-component-height;
         }
     }
 
@@ -92,7 +111,7 @@ $rtk-component-height: calc(100vh - #{$rtk-toolbar-height}) !default;
 
         &:focus,
         .expanded {
-            box-shadow: 0 0 1px 3px rgba($rtk-accent-color, 0.1);
+            box-shadow: 0 0 0 2px rgba($rtk-accent-color, 0.25);
             border: 1px solid $rtk-accent-color;
         }
 
@@ -101,7 +120,7 @@ $rtk-component-height: calc(100vh - #{$rtk-toolbar-height}) !default;
             width: calc(100% + 2px);
             height: calc(33vh + 4px);
             max-height: 202px;
-            box-shadow: 0 0 1px 3px rgba($color-black, 0.03);
+            box-shadow: 0 0 0 2px rgba($rtk-toolbar-border-color, 0.5);
 
             .arrow-up {
                 display: block;
@@ -131,6 +150,24 @@ $rtk-component-height: calc(100vh - #{$rtk-toolbar-height}) !default;
             [class^='btn'] {
                 border-radius: 0;
             }
+        }
+    }
+
+    .rtk-code {
+        min-height: 100%;
+    }
+}
+
+.button-demo {
+    .rtk-component-demo-wrap {
+        @include rtk-breakpoint($rtk-component-brk) {
+            height: 220px;
+        }
+    }
+
+    .rtk-component-props-wrap {
+        @include rtk-breakpoint($rtk-component-brk) {
+            height: calc(100vh - (220px + #{$rtk-toolbar-height}));
         }
     }
 }

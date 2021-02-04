@@ -15,7 +15,7 @@
 
         &:focus,
         .expanded {
-            box-shadow: 0 0 1px 3px rgba($rtk-accent-color, 0.1);
+            box-shadow: 0 0 0 2px rgba($rtk-accent-color, 0.25);
             border: 1px solid $rtk-accent-color;
         }
     }
@@ -26,6 +26,8 @@
         display: flex;
         align-items: center;
         background-color: transparent;
+        font-size: 14px;
+        font-family: inherit;
 
         [class^='btn'] {
             padding: 0;
@@ -63,7 +65,7 @@
         background-color: $rtk-toolbar-bg-color;
         text-align: center;
         overflow: visible;
-        border: 1px solid $rtk-toolbar-border-color;
+        border: 1px solid darken($rtk-toolbar-border-color, 2%);
         margin: 0 -1px;
         z-index: 100;
 
@@ -86,7 +88,7 @@
                 height: 20px;
                 display: block;
                 background-color: $rtk-toolbar-bg-color;
-                border: 1px solid $rtk-toolbar-border-color;
+                border: 1px solid darken($rtk-toolbar-border-color, 2%);
                 transform-origin: center;
                 transform: translate(-50%, 0) rotate(45deg);
                 border-radius: 0;
@@ -98,7 +100,7 @@
             width: calc(100% + 2px);
             height: calc(33vh + 4px);
             max-height: 202px;
-            box-shadow: 0 0 1px 3px rgba($color-black, 0.03);
+            box-shadow: 0 0 0 2px rgba($rtk-toolbar-border-color, 0.5);
 
             .arrow-up {
                 display: block;
