@@ -3,6 +3,11 @@ import copy from 'copy-to-clipboard';
 import React, { useEffect } from 'react';
 import Reactium, { useHookComponent, useRefs } from 'reactium-core/sdk';
 
+const copyParse = str =>
+    String(str)
+        .replace(/\=\'true\'/gi, '')
+        .replace(/\'false\'/gi, '{ false }');
+
 const CodeEditor = ({ setState, tagName, value }) => {
     const refs = useRefs();
     const { Code } = useHookComponent('RTK');
@@ -17,7 +22,10 @@ const CodeEditor = ({ setState, tagName, value }) => {
         const reg = new RegExp(`<${tagName}\\s+(.*?)\>`, 'gm');
         const tag = _.first(_.first(Array.from(str.matchAll(reg))));
 
-        const creg = new RegExp(`<${tagName}\\s+(.*?)>(.*?)<\/${tagName}>`, 'gims');
+        const creg = new RegExp(
+            `<${tagName}\\s+(.*?)>(.*?)<\/${tagName}>`,
+            'gims',
+        );
         const cmatch = _.first(Array.from(str.matchAll(creg)));
         const children = String(cmatch[2]).trim();
         try {
@@ -59,7 +67,7 @@ const CodeEditor = ({ setState, tagName, value }) => {
                 zone: ['code-editor-actions'],
                 component: props => (
                     <Button
-                        onClick={() => copy(props.value)}
+                        onClick={() => copy(copyParse(props.value))}
                         color='clear'
                         style={{ padding: 0, width: 40, height: 32 }}>
                         <Icon name='Feather.Clipboard' size={14} />
