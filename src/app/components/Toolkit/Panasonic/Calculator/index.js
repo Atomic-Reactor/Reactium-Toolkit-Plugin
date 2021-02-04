@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import React, { useCallback, useEffect, useState } from 'react';
-import Reactium, {
+import {
     useDerivedState,
     useEventHandle,
     useHookComponent,
@@ -339,7 +339,7 @@ const Processing = ({ handle, id }) => {
                     />
                     <h4>Thank You!</h4>
                     <p>
-                        An Panasonic Energy Solution Consultant will be in
+                        A Panasonic Energy Solution Consultant will be in
                         contact with you soon.
                     </p>
                     <Button

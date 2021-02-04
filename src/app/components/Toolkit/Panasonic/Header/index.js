@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import Reactium, { useHookComponent } from 'reactium-core/sdk';
+import { useHookComponent } from 'reactium-core/sdk';
 
 export default () => {
     const { Button } = useHookComponent('ReactiumUI');
 
-    const onStartClick = () => window.dispatchEvent(new Event('calculator-show'));
+    const onStartClick = () =>
+        window.dispatchEvent(new Event('calculator-show'));
 
     return (
         <div className='pan'>
@@ -37,7 +38,7 @@ export default () => {
                     <Link to='#'>
                         <span>Energy Solutions</span>
                     </Link>
-                    <NavLink to='/toolkit/panasonic'>
+                    <NavLink to='/'>
                         <span>Battery Storage</span>
                     </NavLink>
                 </div>
