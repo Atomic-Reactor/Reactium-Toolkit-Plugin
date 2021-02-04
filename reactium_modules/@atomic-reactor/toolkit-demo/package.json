@@ -23,7 +23,7 @@
     "version": "3.3.0"
   },
   "dependencies": {
-    "@atomic-reactor/reactium-ui": "0.2.8",
+    "@atomic-reactor/reactium-ui": "0.2.9",
     "camelcase": "^6.2.0",
     "copy-to-clipboard": "^3.3.1"
   }
