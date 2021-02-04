@@ -48,7 +48,10 @@ const CodeEditor = ({ setState, tagName, value }) => {
     };
 
     useEffect(() => {
-        if (!Reactium.Zone.hasZoneComponent('code-editor-actions', 'refresh')) {
+        if (
+            !Reactium.Zone.hasZoneComponent('code-editor-actions', 'refresh') &&
+            !Reactium.Zone.hasZoneComponent('code-editor-actions', 'clipboard')
+        ) {
             Reactium.Zone.addComponent({
                 id: 'refresh',
                 zone: ['code-editor-actions'],
@@ -63,7 +66,7 @@ const CodeEditor = ({ setState, tagName, value }) => {
             });
 
             Reactium.Zone.addComponent({
-                id: 'copy',
+                id: 'clipboard',
                 zone: ['code-editor-actions'],
                 component: props => (
                     <Button
