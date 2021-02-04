@@ -111,7 +111,10 @@ const Calculator = () => {
                     height={640}
                     ref={elm => refs.set('scene', elm)}>
                     <div id='step-1' className='pan-calculator-step'>
-                        <img src='/assets/images/suburbs.svg' className='graphic-right' />
+                        <img
+                            src='/assets/images/suburbs.svg'
+                            className='graphic-right'
+                        />
                         <h4>Tell us about your location</h4>
                         <div style={{ width: 300 }}>
                             <div className='form-group'>
@@ -287,7 +290,10 @@ const Calculator = () => {
                     readOnly
                     index={0}
                     points={points()}
-                    ref={elm => refs.set('checkpoints', elm)}
+                    ref={elm => {
+                        refs.set('checkpoints', elm);
+                        updateHandle();
+                    }}
                 />
             </div>
         ),
@@ -309,7 +315,6 @@ const Processing = ({ handle, id }) => {
                 break;
 
             case 'done':
-                console.log(handle);
                 handle.Checkpoints.complete();
                 break;
         }
@@ -337,7 +342,11 @@ const Processing = ({ handle, id }) => {
                         An Panasonic Energy Solution Consultant will be in
                         contact with you soon.
                     </p>
-                    <Button outline appearance='pill' className='mt-xs-32' size='lg'>
+                    <Button
+                        outline
+                        appearance='pill'
+                        className='mt-xs-32'
+                        size='lg'>
                         Recommend to a Friend
                     </Button>
                 </>
