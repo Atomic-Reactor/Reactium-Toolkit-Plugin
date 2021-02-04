@@ -39,27 +39,35 @@ const Calculator = () => {
     };
 
     const showProductDetail = index => {
-        const s = refs.get('scene');
-
+        handle.state.pid = index;
         setState({ pid: index });
 
-        handle.state.pid = index;
-
-        s.removeChildren(['product-info']);
-        s.addChildren([
-            <ProductInfo handle={handle} id='product-info' key='pid' />,
-        ]);
-
-        _.defer(() => s.navTo({ panel: 'product-info' }));
+        const s = refs.get('scene');
+        s.addChildren([<ProductInfo handle={handle} id='product' key='pid' />]);
+        _.defer(() => s.navTo({ panel: 'product' }));
     };
 
     const submit = () => {
         const s = refs.get('scene');
-        s.removeChildren(['processing']);
-        s.addChildren([
-            <Processing handle={handle} id='processing' key='processing' />,
-        ]);
+        s.addChildren(<Processing handle={handle} id='processing' />);
         _.defer(() => s.navTo({ panel: 'processing' }));
+    };
+
+    const _onChange = e => {
+        if (e.active === 'step-1') {
+            const s = refs.get('scene');
+            let panels = { ...s.state.panels };
+
+            if (e.active !== 'product') {
+                delete panels.product;
+            }
+
+            if (e.active !== 'processing') {
+                delete panels.processing;
+            }
+
+            _.defer(() => s.setState({ panels }));
+        }
     };
 
     const _handle = () => ({
@@ -92,6 +100,7 @@ const Calculator = () => {
         window.addEventListener('calculator-back', back);
 
         return () => {
+            console.log('dismissed');
             window.removeEventListener('calculator-show', show);
             window.removeEventListener('calculator-next', next);
             window.removeEventListener('calculator-back', back);
@@ -109,6 +118,7 @@ const Calculator = () => {
                     active='step-1'
                     width={840}
                     height={640}
+                    onBeforeChange={_onChange}
                     ref={elm => refs.set('scene', elm)}>
                     <div id='step-1' className='pan-calculator-step'>
                         <img
@@ -305,28 +315,23 @@ const Calculator = () => {
 
 const Processing = ({ handle, id }) => {
     const { Button, Spinner } = useHookComponent('ReactiumUI');
-
     const [status, setStatus, isStatus] = useStatus('pending');
 
     useEffect(() => {
         switch (status) {
             case 'pending':
-                _.delay(() => setStatus('done', true), 5000);
+                _.delay(() => setStatus('done', true), 1500);
                 break;
 
             case 'done':
                 handle.Checkpoints.complete();
                 break;
         }
-
-        return () => {
-            setStatus('pending');
-        };
     }, [status]);
 
     return (
         <div id={id} className='pan-calculator-step'>
-            {isStatus('pending') ? (
+            {!isStatus('done') ? (
                 <>
                     <h4>Processing...</h4>
                     <Spinner />
