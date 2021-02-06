@@ -3,6 +3,7 @@ import Block from './Block';
 import Colors from './Colors';
 import States from './States';
 import Sizing from './Sizing';
+import Docs from './Documentation';
 import Reactium, { __ } from 'reactium-core/sdk';
 
 Reactium.Plugin.register('ToolkitDemoButtons').then(() => {
@@ -14,7 +15,7 @@ Reactium.Plugin.register('ToolkitDemoButtons').then(() => {
         Reactium.Toolkit.Sidebar.register('button', {
             order: 4,
             component: MenuLink,
-            // url: '/toolkit/button',
+            url: '/toolkit/button',
             children: __('Button'),
             'aria-label': __('Button'),
         });
@@ -87,6 +88,12 @@ Reactium.Plugin.register('ToolkitDemoButtons').then(() => {
             order: 8,
             component: Usage,
             zone: 'button-component',
+        });
+
+        Reactium.Toolkit.Elements.register('button-docs', {
+            order: 10,
+            component: Docs,
+            zone: 'button',
         });
     });
 });

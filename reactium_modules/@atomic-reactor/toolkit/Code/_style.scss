@@ -1,6 +1,18 @@
+blockquote {
+    p:first-child {
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
 .rtk-code {
     position: relative;
     height: 100%;
+
+    &.block {
+        border: 1px solid $rtk-code-border-color;
+        margin: 20px 0;
+    }
 
     &-actions {
         position: absolute;

@@ -3,12 +3,14 @@
  * Reactium Plugin: Toolkit
  * -----------------------------------------------------------------------------
  */
+
 import SDK from './sdk';
+import { Code, CodeCopy } from './Code';
 import { Icon } from './Icon';
 import { Logo } from './Logo';
 import { Toolkit } from './index';
+import Markdown from './Markdown';
 import Brand from './Sidebar/Brand';
-import Code from './Code';
 import Element from './Content/Element';
 import Reactium from 'reactium-core/sdk';
 import MenuLink from './Sidebar/MenuLink';
@@ -17,14 +19,16 @@ import { MenuToggle, ToolbarTitle } from './Toolbar';
 Reactium.Toolkit = Reactium.Toolkit || SDK;
 
 Reactium.Plugin.register('ReactiumToolkit').then(() => {
+    Reactium.Component.register('Code', Code);
     Reactium.Component.register('RTKLOGO', Logo);
     Reactium.Component.register('RTKBRAND', Brand);
     Reactium.Component.register('RTKMENULINK', MenuLink);
-    
+
     Reactium.Component.register('RTK', {
         Code,
         Element,
         Icon,
+        Markdown,
         Toolkit,
         ToolbarTitle,
     });
@@ -39,6 +43,14 @@ Reactium.Plugin.register('ReactiumToolkit').then(() => {
                 component: BrandComp,
                 zone: 'sidebar-brand',
                 order: Reactium.Enums.priority.highest,
+            });
+
+            // Code copy button
+            Reactium.Zone.addComponent({
+                id: 'clipboard',
+                component: CodeCopy,
+                zone: ['code-editor-actions'],
+                order: Reactium.Enums.priority.lowest,
             });
 
             // Titlebar update

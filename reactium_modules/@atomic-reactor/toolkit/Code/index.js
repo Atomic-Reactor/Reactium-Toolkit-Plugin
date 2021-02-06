@@ -10,43 +10,60 @@ import 'codemirror/mode/javascript/javascript';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import _ from 'underscore';
+import cn from 'classnames';
 import op from 'object-path';
 import PropTypes from 'prop-types';
+import copy from 'copy-to-clipboard';
 import React, { forwardRef, useImperativeHandle } from 'react';
 
 import Reactium, {
+    ComponentEvent,
     useDerivedState,
     useEventHandle,
+    useHookComponent,
     useRefs,
     Zone,
 } from 'reactium-core/sdk';
 
-let Code = ({ className, id, value: initialValue, ...initialProps }, ref) => {
-    let events = {};
+let Code = (
+    { className, id, namespace, value: initialValue, ...initialProps },
+    ref,
+) => {
     let props = { ...initialProps };
+
+    const events = Object.entries(initialProps).reduce((obj, [key, val]) => {
+        if (String(key).startsWith('on') || String(key).startsWith('editor')) {
+            obj[key] = val;
+            delete props[key];
+        }
+
+        return obj;
+    }, {});
 
     const refs = useRefs();
 
-    const [value, setValue] = useDerivedState({
+    const [value, update] = useDerivedState({
         current: Reactium.Toolkit.codeFormat(initialValue),
     });
 
-    Object.entries(initialProps).forEach(([key, val]) => {
-        if (String(key).startsWith('on') || String(key).startsWith('editor')) {
-            events[key] = val;
-            delete props[key];
-        }
-    });
+    const setValue = newValue => {
+        if (unMounted()) return;
+        update({ current: newValue });
+    };
+
+    const unMounted = () => !refs.get('container');
 
     const _onChange = (...args) => {
         const cm = args[0];
         const newValue = cm.doc.getValue();
         if (newValue === value.current) return;
 
-        setValue({ changed: true, current: newValue });
+        update({ changed: true, current: newValue });
         handle.value = newValue;
         handle.editor = cm;
         setHandle(handle);
+
+        handle.dispatchEvent(new ComponentEvent('change', { value: newValue }));
 
         if (_.isFunction(op.get(events, 'onChange'))) {
             _.defer(() => events.onChange(...args, handle));
@@ -58,16 +75,20 @@ let Code = ({ className, id, value: initialValue, ...initialProps }, ref) => {
         handle.editor = args[0];
         setHandle(handle);
 
+        handle.dispatchEvent(new ComponentEvent('mount', { editor: args[0] }));
+
         if (_.isFunction(op.get(events, 'editorDidMount'))) {
             events.editorDidMount(...args, handle);
         }
     };
 
     const _handle = () => ({
-        id,
-        props,
-        value: value.current,
+        ...props,
         editor: refs.get('code'),
+        id,
+        refs,
+        setValue,
+        value: value.current,
     });
 
     let [handle, setHandle] = useEventHandle(_handle());
@@ -75,7 +96,9 @@ let Code = ({ className, id, value: initialValue, ...initialProps }, ref) => {
     useImperativeHandle(ref, () => handle);
 
     return (
-        <div className={className}>
+        <div
+            className={cn(namespace, className)}
+            ref={elm => refs.set('container', elm)}>
             <CodeMirror
                 {...events}
                 options={props}
@@ -83,9 +106,9 @@ let Code = ({ className, id, value: initialValue, ...initialProps }, ref) => {
                 editorDidMount={_onMount}
                 value={Reactium.Toolkit.codeFormat(initialValue)}
             />
-            <div className={`${className}-actions`}>
-                <Zone zone={`${className}-actions`} {..._handle()} />
+            <div className={`${namespace}-actions`}>
                 {id && <Zone zone={`${id}-actions`} {..._handle()} />}
+                <Zone zone={`${namespace}-actions`} {..._handle()} />
             </div>
         </div>
     );
@@ -137,16 +160,34 @@ Code.propTypes = {
 };
 
 Code.defaultProps = {
-    className: 'rtk-code',
+    namespace: 'rtk-code',
     gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
     lineNumbers: true,
     lineWrapping: false,
     foldGutter: true,
     foldOptions: { widget: () => '...' },
-    id: 'code',
+    id: 'code-editor',
     indentUnit: 4,
     mode: 'jsx',
     readOnly: false,
 };
 
-export { Code, Code as default };
+const CodeCopy = ({ value }) => {
+    const { Icon } = useHookComponent('RTK');
+
+    const copyParse = str =>
+        String(str)
+            .replace(/\=\'true\'/gi, '')
+            .replace(/\'false\'/gi, '{ false }');
+
+    return (
+        <button
+            className='rtk-btn-clear-xs'
+            onClick={() => copy(copyParse(value))}
+            style={{ padding: 0, width: 40, height: 32 }}>
+            <Icon name='Feather.Copy' size={14} />
+        </button>
+    );
+};
+
+export { Code, Code as default, CodeCopy };

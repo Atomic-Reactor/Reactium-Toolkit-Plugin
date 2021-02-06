@@ -199,7 +199,7 @@ class SDK {
                 output = str;
             }
 
-            return output;
+            return String(output).trim();
         };
     }
 
