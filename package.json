@@ -167,6 +167,7 @@
     "node-sass-functions-json": "^1.0.0",
     "nodemon": "^2.0.6",
     "ora": "^5.1.0",
+    "raw-loader": "^4.0.2",
     "readdir-recursive": "0.0.4",
     "slugify": "^1.4.5",
     "stylelint": "^13.7.2",
