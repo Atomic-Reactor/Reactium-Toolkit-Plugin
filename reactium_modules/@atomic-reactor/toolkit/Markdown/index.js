@@ -18,11 +18,6 @@ const parser = value => {
 
     // 0.0 - Internal replacers
     const replacers = [
-        {
-            match: /`{3}(.*?)`{3}/gs,
-            replace: "<Code className='block' readOnly value='$1' />",
-        },
-        { match: /`{1}(.*?)`{1}/g, replace: '<kbd>$1</kbd>' },
         { match: /-{3,}/g, replace: '<hr />' },
         { match: /={3,}/g, replace: '<hr />' },
     ];
@@ -35,8 +30,19 @@ const parser = value => {
     Reactium.Hook.runSync('markdown-string-parser', str, originalStr);
 
     // 2.0 - String to HTML
-    let html = marked(str);
+    let html = String(marked(str));
     const originalHTML = marked(str);
+
+    // 2.1 - Internal HTML replacers
+    html = String(html)
+        .replace(
+            /<pre><code>(.*?)<\/code><\/pre>/gms,
+            "<Code className='block' readOnly value={`$1`} />",
+        )
+        .replace(/&#39;/g, "'")
+        .replace(/&gt;/g, '>')
+        .replace(/&lt;/g, '<')
+        .replace(/<code>(.*?)<\/code>/g, '<kbd>$1</kbd>');
 
     // 3.0 - Run html hook
     Reactium.Hook.runSync('markdown-html-parser', html, originalHTML);
@@ -45,16 +51,28 @@ const parser = value => {
     return html;
 };
 
-let Markdown = ({ blacklistedAttrs, blacklistedTags, value, ...props }) => (
-    <JsxParser
-        bindings={props}
-        jsx={parser(value)}
-        renderInWrapper={false}
-        components={components()}
-        blacklistedTags={blacklistedTags}
-        blacklistedAttrs={blacklistedAttrs}
-    />
-);
+let Markdown = ({ blacklistedAttrs, blacklistedTags, value, ...props }) => {
+    let comps = components();
+
+    if (op.get(comps, 'ReactiumUI')) {
+        Object.entries(comps.ReactiumUI).forEach(([key, val]) => {
+            comps[key] = val;
+        });
+    }
+
+    Reactium.Hook.runSync('markdown-components', comps);
+
+    return (
+        <JsxParser
+            bindings={props}
+            components={comps}
+            jsx={parser(value)}
+            renderInWrapper={false}
+            blacklistedTags={blacklistedTags}
+            blacklistedAttrs={blacklistedAttrs}
+        />
+    );
+};
 
 Markdown.propTypes = {
     blacklistedAttrs: PropTypes.array,

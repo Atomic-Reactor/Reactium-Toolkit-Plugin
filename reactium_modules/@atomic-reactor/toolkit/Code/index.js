@@ -14,6 +14,7 @@ import cn from 'classnames';
 import op from 'object-path';
 import PropTypes from 'prop-types';
 import copy from 'copy-to-clipboard';
+import ReactDOMServer from 'react-dom/server';
 import React, { forwardRef, useImperativeHandle } from 'react';
 
 import Reactium, {
@@ -26,7 +27,14 @@ import Reactium, {
 } from 'reactium-core/sdk';
 
 let Code = (
-    { className, id, namespace, value: initialValue, ...initialProps },
+    {
+        className,
+        id,
+        namespace,
+        children,
+        value: initialValue,
+        ...initialProps
+    },
     ref,
 ) => {
     let props = { ...initialProps };
@@ -43,7 +51,11 @@ let Code = (
     const refs = useRefs();
 
     const [value, update] = useDerivedState({
-        current: Reactium.Toolkit.codeFormat(initialValue),
+        current: initialValue
+            ? Reactium.Toolkit.codeFormat(initialValue)
+            : Reactium.Toolkit.codeFormat(
+                  ReactDOMServer.renderToStaticMarkup(children),
+              ),
     });
 
     const setValue = newValue => {
@@ -103,8 +115,8 @@ let Code = (
                 {...events}
                 options={props}
                 onChange={_onChange}
+                value={value.current}
                 editorDidMount={_onMount}
-                value={Reactium.Toolkit.codeFormat(initialValue)}
             />
             <div className={`${namespace}-actions`}>
                 {id && <Zone zone={`${id}-actions`} {..._handle()} />}

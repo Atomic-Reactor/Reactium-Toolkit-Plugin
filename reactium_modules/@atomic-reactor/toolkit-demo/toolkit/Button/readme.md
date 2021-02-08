@@ -6,6 +6,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 Some **bold**, _italic_, ~~strike~~, and `code` text
 
-`<div>markup</div>`
+```
+import React from 'react';
+
+const MyComponent = () => (
+    <div>
+    <Button>
+        Test
+    </Button>
+    </div>
+);
+```
 
 > Block quote
