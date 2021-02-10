@@ -1,0 +1,24 @@
+import Element from '.';
+import Reactium{{#if sidebar}}, { __ }{{/if}} from 'reactium-core/sdk';
+
+Reactium.Hook.register('plugin-ready', () => {
+    {{#if sidebar}}
+    const MenuLink = Reactium.Component.get('RTKMENULINK');
+
+    // Sidebar Link
+    Reactium.Toolkit.Sidebar.register('{{id}}', {
+        order: {{order}},
+        component: MenuLink,
+        children: __('{{label}}'),
+        'aria-label': __('{{label}}'),
+        {{#if url}}url: '{{url}}',{{/if}}
+        {{#if group}}group: '{{group}}',{{~/if}}
+    });{{/if}}
+
+    // Element
+    Reactium.Toolkit.Elements.register('{{id}}-element', {
+        order: 0,
+        zone: '{{id}}',
+        component: Element,
+    });
+});

@@ -3,7 +3,7 @@ import cc from 'camelcase';
 import React, { useEffect, useState } from 'react';
 import Reactium, { __, useHandle, useHookComponent } from 'reactium-core/sdk';
 
-const MenuToggle = ({ zone, ...props }) => {
+const MenuToggle = ({ align, ...props }) => {
     const cx = Reactium.Toolkit.cx;
 
     const arrow = `Feather.Arrow${cc(
@@ -11,7 +11,7 @@ const MenuToggle = ({ zone, ...props }) => {
         { pascalCase: true },
     )}`;
 
-    const visible = Reactium.Toolkit.config.sidebar.position === zone;
+    const visible = Reactium.Toolkit.config.sidebar.position === align;
 
     const { Icon } = useHookComponent('RTK');
 
@@ -32,11 +32,11 @@ const MenuToggle = ({ zone, ...props }) => {
             collapsed === true ? __('expand sidebar') : __('collapse sidebar');
 
         switch (Reactium.Toolkit.os) {
-            case 'windows' :
+            case 'windows':
                 lbl = `ctrl+| ${lbl}`;
                 break;
 
-            case 'mac' :
+            case 'mac':
                 lbl = `⌘+| ${lbl}`;
                 break;
         }
@@ -56,9 +56,12 @@ const MenuToggle = ({ zone, ...props }) => {
         };
     }, [Sidebar]);
 
+    const bprops = { ...props };
+    delete bprops.zone;
+
     return _.isUndefined(collapsed) || !visible ? null : (
         <button
-            {...props}
+            {...bprops}
             title={label}
             aria-label={label}
             style={{ padding: 10 }}

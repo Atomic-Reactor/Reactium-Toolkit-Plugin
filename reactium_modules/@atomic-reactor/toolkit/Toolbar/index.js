@@ -40,11 +40,12 @@ const Toolbar = props => {
                             ...props
                         }) => (
                             <Component
-                                zone={align}
+                                {...props}
+                                align={align}
                                 data-order={order}
                                 data-align={align}
                                 key={`${align}-${id}`}
-                                {...props}
+                                zone={`toolbar-${align}`}
                             />
                         ),
                     )}

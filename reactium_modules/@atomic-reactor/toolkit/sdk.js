@@ -1,8 +1,8 @@
 import _ from 'underscore';
 import uuid from 'uuid/v4';
 import ENUMS from './enums';
-import op from 'object-path';
 import pkg from './package';
+import op from 'object-path';
 import slugify from 'slugify';
 import isHotkey from 'is-hotkey';
 import { useEffect } from 'react';
@@ -125,6 +125,9 @@ Hotkeys.search = async e => {
 
 class SDK {
     constructor() {
+        // debug
+        this.__debug = false;
+
         // default config
         this.__config = JSON.parse(JSON.stringify(defaultConfig));
 
@@ -181,7 +184,7 @@ class SDK {
             }
 
             this.__config = _config;
-            this.notify('config', this.__config);
+            this.notify('config', { value: this.__config });
 
             return this.__config;
         };
@@ -211,23 +214,34 @@ class SDK {
         return cx;
     }
 
+    get debug() {
+        return this.__debug;
+    }
+
+    get setDebug() {
+        return value => {
+            this.__debug = value;
+            this.notify('debug', { value });
+        };
+    }
+
     get fullscreen() {
         return this.__fs;
     }
 
     get setFullscreen() {
-        return val => {
-            this.__fs = val;
+        return value => {
+            this.__fs = value;
 
             if (typeof window !== 'undefined') {
-                if (val === true) {
-                    document.body.setAttribute('data-fullscreen', val);
+                if (value === true) {
+                    document.body.setAttribute('data-fullscreen', value);
                 } else {
                     document.body.removeAttribute('data-fullscreen');
                 }
             }
 
-            this.notify('fullscreen', { fullscreen: val });
+            this.notify('fullscreen', { value });
         };
     }
 
@@ -242,6 +256,7 @@ class SDK {
                 return obj;
             }, {});
     }
+
     get os() {
         if (typeof window === 'undefined') return null;
 
@@ -258,26 +273,47 @@ class SDK {
     }
 
     get subscribe() {
-        return (callback, id) => {
+        return (type, callback, id) => {
             id = id || uuid();
-            Pubsub.register(id, { callback });
+            Pubsub.register(id, { type, callback });
             return () => this.unsubscribe(id);
         };
     }
 
     get unsubscribe() {
-        return id => {
-            Pubsub.unregister(id);
+        return (...args) => {
+            if (args.length > 1) {
+                const type = args[0];
+                const callback = args[1];
+                if (typeof callback === 'function') {
+                    const sub = _.findWhere(Pubsub.sort(), { type, callback });
+                    if (sub) Pubsub.unregister(sub.id);
+                }
+            } else {
+                Pubsub.unregister(args[0]);
+            }
         };
     }
 
-    async notify(type, data = {}) {
+    notify(type, data = {}) {
         if (!type) return;
-        const _cbs = _.pluck(Pubsub.sort(), 'callback');
-        for (let i = 0; i < _cbs.length; i++) {
-            const callback = _cbs[i];
-            await callback({ type, ...data });
-        }
+
+        const evt = { type, target: this, ...data };
+        const _cbs = _.chain(Pubsub.sort())
+            .where({ type })
+            .pluck('callback')
+            .value();
+
+        _cbs.forEach(callback => {
+            try {
+                callback(evt);
+            } catch (err) {
+                if (this.debug === true) console.log('Toolkit', type, err);
+            }
+        });
+
+        Reactium.Hook.run(`toolkit-${type}`, evt);
+        Reactium.Hook.runSync(`toolkit-${type}`, evt);
     }
 
     get useLinks() {
@@ -406,6 +442,10 @@ class SDK {
         const zone = !group ? ['overview'] : _.compact([group, slug]);
 
         return slugify(zone.join('-'), { lower: true });
+    }
+
+    get version() {
+        return pkg.version;
     }
 }
 

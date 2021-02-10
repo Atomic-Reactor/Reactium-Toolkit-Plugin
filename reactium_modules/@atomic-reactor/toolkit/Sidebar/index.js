@@ -45,7 +45,7 @@ let Sidebar = (props, ref) => {
         update(newState, silent);
     };
 
-    const dispatch = async (eventType, event = {}) => {
+    const dispatch = (eventType, event = {}) => {
         if (unMounted()) return;
 
         eventType = String(eventType).toLowerCase();
@@ -53,20 +53,20 @@ let Sidebar = (props, ref) => {
         const evt = new ComponentEvent(eventType, event);
 
         handle.dispatchEvent(evt);
+
         Reactium.Hook.run(`rtk-${eventType}`, evt, handle);
-        await Reactium.Hook.runSync(`rtk-${eventType}`, evt, handle);
+        Reactium.Hook.runSync(`rtk-${eventType}`, evt, handle);
+        Reactium.Toolkit.notify(eventType, { target: handle, ...event });
     };
 
     const collapse = () =>
         new Promise(resolve => {
             dispatch('collapse');
-            document.body.setAttribute('data-collapse', true);
-
             const cont = refs.get('container');
 
+            cont.style.minWidth = 0;
             cont.style.display = 'block';
             cont.style.overflow = 'hidden';
-            cont.style.minWidth = 0;
             cont.classList.remove('collapsed');
 
             TweenMax.to(cont, state.speed, {
@@ -165,15 +165,14 @@ let Sidebar = (props, ref) => {
         setHandle(newHandle);
     }, [state.width]);
 
-    useEffect(() => {
-        const unsub = Reactium.Toolkit.subscribe(({ type, ...info }) => {
-            if (type !== 'config') return;
-            const { width } = info.sidebar;
-            if (width !== state.width) setState({ width: width });
-        });
-
-        return unsub;
-    }, []);
+    useEffect(
+        () =>
+            Reactium.Toolkit.subscribe('config', ({ value }) => {
+                const { width } = value.sidebar;
+                if (width !== state.width) setState({ width });
+            }),
+        [],
+    );
 
     useEffect(() => {
         if (state.collapsed === true) {

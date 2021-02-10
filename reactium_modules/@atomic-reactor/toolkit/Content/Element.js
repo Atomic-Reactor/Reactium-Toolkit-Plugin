@@ -2,12 +2,13 @@ import _ from 'underscore';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import React, { forwardRef, useEffect } from 'react';
-import Reactium, { Zone, useHookComponent } from 'reactium-core/sdk';
+import Reactium, { useHookComponent } from 'reactium-core/sdk';
 
 const propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
     fullscreen: PropTypes.bool,
+    title: PropTypes.node,
     xs: PropTypes.number,
     sm: PropTypes.number,
     md: PropTypes.number,
@@ -24,20 +25,22 @@ const defaultProps = {
  * -----------------------------------------------------------------------------
  */
 
-let Element = ({
-    children,
-    className,
-    fullscreen,
-    index,
-    title,
-    toolbar,
-    xs = 12,
-    sm,
-    md,
-    lg,
-    ...props
-}, ref) => {
-    const { cx, zone } = Reactium.Toolkit;
+let Element = (
+    {
+        children,
+        className,
+        fullscreen,
+        title,
+        toolbar,
+        xs = 12,
+        sm,
+        md,
+        lg,
+        ...props
+    },
+    ref,
+) => {
+    const { cx } = Reactium.Toolkit;
 
     const { ToolbarTitle } = useHookComponent('RTK');
 
@@ -84,15 +87,6 @@ let Element = ({
     return _.isUndefined(Reactium.Toolkit.fullscreen) ? null : (
         <div {...props} className={cname} ref={ref}>
             <div className={cx('element-content')}>{children}</div>
-            {index && (
-                <div
-                    className={cn(
-                        cx('element-toolbar'),
-                        cx(`element-toolbar-${index}`),
-                    )}>
-                    <Zone zone={`${zone}-toolbar-${index}`} />
-                </div>
-            )}
         </div>
     );
 };
