@@ -4,53 +4,30 @@
  * -----------------------------------------------------------------------------
  */
 
+const cwd = process.cwd();
 const path = require('path');
-const fs = require('fs-extra');
 const chalk = require('chalk');
 const _ = require('underscore');
 const op = require('object-path');
-const slugify = require('slugify');
-const globby = require('globby').sync;
-const camelcase = require('camelcase');
 const GENERATOR = require('./generator');
 const mod = path.dirname(require.main.filename);
 const { error, message } = require(`${mod}/lib/messenger`);
+
+const {
+    directoryName,
+    excludePath,
+    isEmpty,
+    mergeParams,
+    normalize,
+    resolve,
+    slug,
+} = require('../utils');
 
 const { arcli, Hook } = global;
 const prefix = arcli.prefix;
 const props = arcli.props;
 
 const { inquirer } = props;
-
-const isEmpty = dir => {
-    let files = [];
-
-    try {
-        files = fs.readdirSync(dir).filter(
-            file =>
-                !String(file)
-                    .toLowerCase()
-                    .endsWith('.ds_store'),
-        );
-    } catch (err) {}
-    return files.length < 1;
-};
-
-const normalize = (...args) => path.normalize(path.join(...args));
-
-const mergeParams = (params = {}, merge = {}) => {
-    Object.entries(merge).forEach(([key, val]) => {
-        val = _.chain([val])
-            .compact()
-            .isEmpty()
-            .value()
-            ? undefined
-            : val;
-        params[key] = val;
-    });
-
-    return params;
-};
 
 const NAME = 'toolkit <sidebar>';
 
@@ -75,7 +52,20 @@ const CONFORM = params => {
         switch (key) {
             case 'id':
             case 'group':
-                obj[key] = slugify(val, { lower: true });
+                obj[key] = slug(val);
+                break;
+
+            case 'url':
+                val = val === true ? FILTER.URL(val, params) : val;
+                if (val) {
+                    obj[key] = val;
+                }
+                break;
+
+            case 'order':
+                if (val) {
+                    obj[key] = Number(val);
+                }
                 break;
 
             default:
@@ -91,8 +81,14 @@ VALIDATE.REQUIRED = (key, val) =>
 
 FILTER.FORMAT = (key, val) => CONFORM({ [key]: val })[key];
 
-// prettier-ignore
-FILTER.URL = (val, params) => _.compact(['/toolkit', op.get(params, 'group'), op.get(params, 'id')]).join('/');
+FILTER.URL = (val, params, answers = {}) =>
+    val === true
+        ? _.compact([
+              '/toolkit',
+              op.get(params, 'group', op.get(answers, 'group')),
+              op.get(params, 'id'),
+          ]).join('/')
+        : null;
 
 PROMPT.TYPE = async params => {
     if (op.get(params, 'type')) return;
@@ -119,70 +115,36 @@ PROMPT.DIR = async params => {
     let { directory } = await inquirer.prompt([
         {
             prefix,
-            name: 'directory',
+            excludePath,
             depthLimit: 10,
             type: 'fuzzypath',
+            suggestOnly: true,
+            name: 'directory',
             message: 'Directory:',
             itemType: 'directory',
-            default: path.resolve(
-                normalize(
-                    process.cwd(),
-                    'src',
-                    'app',
-                    'components',
-                    'Toolkit',
-                    'Sidebar',
-                ),
+            rootPath: resolve(cwd),
+            default: resolve(
+                cwd,
+                'src',
+                'app',
+                'components',
+                'Toolkit',
+                'Sidebar',
             ),
-            rootPath: path.resolve(process.cwd()),
-            excludePath: p => {
-                // prettier-ignore;
-                if (p.startsWith(path.resolve(normalize(process.cwd(), 'src'))))
-                    return false;
-                if (
-                    p.startsWith(
-                        path.resolve(
-                            normalize(process.cwd(), 'reactium_modules'),
-                        ),
-                    )
-                )
-                    return false;
-
-                // prettier-ignore
-                return (
-                    p.endsWith('.tmp') ||
-                    p.includes('.Trash') ||
-                    p.startsWith('/Volumes/') ||
-                    p.includes('node_modules') ||
-                    p.startsWith(path.resolve(normalize(process.cwd(), '.git'))) ||
-                    p.startsWith(path.resolve(normalize(process.cwd(), '.cli'))) ||
-                    p.startsWith(path.resolve(normalize(process.cwd(), 'docs'))) ||
-                    p.startsWith(path.resolve(normalize(process.cwd(), '.core'))) ||
-                    p.startsWith(path.resolve(normalize(process.cwd(), 'build'))) ||
-                    p.startsWith(path.resolve(normalize(process.cwd(), 'public'))) ||
-                    p.startsWith(path.resolve(normalize(process.cwd(), 'markdown'))) ||
-                    p.startsWith(path.resolve(normalize(process.cwd(), 'flow-typed')))
-                );
-            },
         },
     ]);
 
     const parts = [directory];
+
     if (params.group) {
-        parts.push(
-            camelcase(slugify(params.group, { lower: true }), {
-                pascalCase: true,
-            }),
-        );
+        parts.push(directoryName(params.group));
     }
 
-    parts.push(
-        camelcase(slugify(params.id, { lower: true }), {
-            pascalCase: true,
-        }),
-    );
+    if (params.id) {
+        parts.push(directoryName(params.id));
+    }
 
-    directory = path.resolve(normalize(...parts));
+    directory = resolve(...parts);
 
     mergeParams(params, { directory });
 };
@@ -197,7 +159,7 @@ PROMPT.OVERWRITE = async params => {
                 name: 'overwrite',
                 message:
                     chalk.magenta('The selected directory is not empty!') +
-                    '\n\t' +
+                    '\n\t  ' +
                     chalk.cyan(params.directory) +
                     '\n\t  Overwrite?:',
             },
@@ -221,6 +183,7 @@ PROMPT.LINK = async params => {
             name: 'group',
             type: 'input',
             message: 'Group ID:',
+            filter: val => FILTER.FORMAT('group', val),
             validate: val => VALIDATE.REQUIRED('group', val),
         });
     }
@@ -231,8 +194,8 @@ PROMPT.LINK = async params => {
             name: 'id',
             type: 'input',
             message: 'Link ID:',
+            filter: val => FILTER.FORMAT('id', val),
             valiate: val => VALIDATE.REQUIRED('id', val),
-            filter: value => FILTER.FORMAT('id', value),
         });
     }
 
@@ -296,26 +259,47 @@ PROMPT.GROUP = async params => {
 PROMPT.PREFLIGHT = async params => {
     // Transform the preflight object instead of the params object
     const preflight = CONFORM({ ...params });
+    delete preflight.debug;
+
+    const isDebug = op.get(params, 'debug', false);
 
     // Output messge
-    message(
-        'A new toolkit element will be created using the following configuration:',
-    );
+
+    if (!isDebug) {
+        message(
+            'A new toolkit sidebar item will be created using the following configuration:',
+        );
+    } else {
+        message(
+            'A new toolkit sidebar item would be created using the following configuration:',
+        );
+    }
+
     console.log(JSON.stringify(preflight, null, 2));
     console.log('');
 
-    const { confirm } = await inquirer.prompt([
-        {
-            prefix,
-            name: 'confirm',
-            type: 'confirm',
-            message: 'Proceed?:',
-            default: false,
-        },
-    ]);
+    let confirm;
+
+    if (!isDebug) {
+        const answers = await inquirer.prompt([
+            {
+                prefix,
+                name: 'confirm',
+                type: 'confirm',
+                message: 'Proceed?:',
+                default: false,
+            },
+        ]);
+
+        confirm = op.get(answers, 'confirm');
+    }
 
     if (confirm !== true) {
-        message(CANCELED);
+        if (!isDebug) {
+            message(CANCELED);
+        } else {
+            message('Debug ' + chalk.cyan('complete!'));
+        }
         process.exit();
     }
 };
@@ -323,7 +307,7 @@ PROMPT.PREFLIGHT = async params => {
 const ACTION = async (action, initialParams) => {
     console.log('');
 
-    // props.command = action;
+    props.command = action;
 
     // 0.0 - prep params that came from flags
     let params = CONFORM(initialParams);
@@ -343,11 +327,13 @@ const ACTION = async (action, initialParams) => {
     // 4.0 - Check directory
     await PROMPT.OVERWRITE(params);
 
-    // 6.0 - Preflight
+    // 5.0 - Preflight
     await PROMPT.PREFLIGHT(params);
 
-    // 7.0 - Execute actions
-    await GENERATOR({ arcli: global, params, props });
+    // 6.0 - Execute actions
+    if (op.get(params, 'debug') !== true) {
+        await GENERATOR({ arcli: global, params, props });
+    }
 
     console.log('');
 };
@@ -372,6 +358,7 @@ const FLAGS = () => {
         'url',
         'label',
         'order',
+        'debug',
     ];
     Hook.runSync('toolkit-sidebar-flags', flags);
     return flags;
@@ -382,10 +369,29 @@ const COMMAND = ({ program, ...args }) =>
         .command(NAME)
         .description(DESC)
         .action((action, opt) => ACTION(action, FLAGS_TO_PARAMS(opt)))
+        .option(
+            '-d, --directory [directory]',
+            'The path to create the sidebar item',
+        )
+        .option('-i, --id [id]', 'The unique id of the sidebar item')
+        .option('-g, --group [group]', 'The sidebar link group')
+        .option('-l, --label [label]', 'The sidebar link label')
+        .option('-u, --url [url]', 'The sidebar link url')
+        .option('-o, --order [order]', 'The sidebar link order')
+        .option('-D, --debug [debug]', 'Debug mode')
+        .option(
+            '-O, --overwrite [overwrite]',
+            'Overwrite existing sidebar item',
+        )
         .on('--help', HELP);
 
 module.exports = {
     ACTION,
+    CANCELED,
     COMMAND,
+    CONFORM,
     ID: NAME,
+    FILTER,
+    VALIDATE,
+    PROMPT,
 };

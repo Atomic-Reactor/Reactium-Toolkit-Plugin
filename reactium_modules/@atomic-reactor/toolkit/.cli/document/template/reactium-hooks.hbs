@@ -1,4 +1,4 @@
-import Element from '.';
+import Document from '.';
 import Reactium{{#if sidebar}}, { __ }{{/if}} from 'reactium-core/sdk';
 
 Reactium.Hook.register('plugin-ready', () => {
@@ -15,10 +15,18 @@ Reactium.Hook.register('plugin-ready', () => {
         {{#if group}}group: '{{group}}',{{~/if}}
     });{{/if}}
 
-    // Element
-    Reactium.Toolkit.Elements.register('{{id}}-element', {
+    // Document
+    {{#if zone}}
+    Reactium.Toolkit.Elements.register('{{zone}}', {
         order: 0,
-        zone: '{{id}}',
-        component: Element,
+        zone: '{{zone}}',
+        component: Document,
     });
+    {{else}}
+    Reactium.Toolkit.Elements.register('{{id}}-document', {
+        order: 0,
+        zone: '{{#if group}}{{group}}-{{/if}}{{id}}',
+        component: Document,
+    });
+    {{/if}}
 });

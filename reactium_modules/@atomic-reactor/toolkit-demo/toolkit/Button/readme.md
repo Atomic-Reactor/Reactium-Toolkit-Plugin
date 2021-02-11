@@ -11,9 +11,9 @@ import React from 'react';
 
 const MyComponent = () => (
     <div>
-    <Button>
-        Test
-    </Button>
+        <Button>
+            Test
+        </Button>
     </div>
 );
 ```
