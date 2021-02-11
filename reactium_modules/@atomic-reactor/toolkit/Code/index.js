@@ -15,7 +15,7 @@ import op from 'object-path';
 import PropTypes from 'prop-types';
 import copy from 'copy-to-clipboard';
 import ReactDOMServer from 'react-dom/server';
-import React, { forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 
 import Reactium, {
     ComponentEvent,
@@ -58,9 +58,9 @@ let Code = (
               ),
     });
 
-    const setValue = newValue => {
+    const setValue = (newValue, silent) => {
         if (unMounted()) return;
-        update({ current: newValue });
+        update({ current: newValue }, silent);
     };
 
     const unMounted = () => !refs.get('container');
@@ -70,15 +70,23 @@ let Code = (
         const newValue = cm.doc.getValue();
         if (newValue === value.current) return;
 
-        update({ changed: true, current: newValue });
         handle.value = newValue;
         handle.editor = cm;
+
+        setValue(newValue, true);
         setHandle(handle);
 
         handle.dispatchEvent(new ComponentEvent('change', { value: newValue }));
 
         if (_.isFunction(op.get(events, 'onChange'))) {
             _.defer(() => events.onChange(...args, handle));
+        }
+    };
+
+    const _onBlur = (...args) => {
+        setValue(value.current);
+        if (_.isFunction(op.get(events, 'onBlur'))) {
+            _.defer(() => events.onBlur(...args, handle));
         }
     };
 
@@ -107,6 +115,15 @@ let Code = (
 
     useImperativeHandle(ref, () => handle);
 
+    useEffect(() => {
+        if (initialValue) {
+            const newValue = Reactium.Toolkit.codeFormat(initialValue);
+            if (value.current !== newValue) {
+                setValue(Reactium.Toolkit.codeFormat(initialValue));
+            }
+        }
+    }, [initialValue]);
+
     return (
         <div
             className={cn(namespace, className)}
@@ -114,6 +131,7 @@ let Code = (
             <CodeMirror
                 {...events}
                 options={props}
+                onBlur={_onBlur}
                 onChange={_onChange}
                 value={value.current}
                 editorDidMount={_onMount}
