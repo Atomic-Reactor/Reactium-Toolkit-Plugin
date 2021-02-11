@@ -48,7 +48,7 @@ module.exports = spinner => {
                     default: true,
                     name: 'inject',
                     type: 'confirm',
-                    message: 'Inject Toolkit styles?:',
+                    message: 'Inject Toolkit Demo styles?:',
                 },
             ]);
 
@@ -77,7 +77,7 @@ module.exports = spinner => {
             ]);
 
             let scss = fs.readFileSync(file);
-            scss += "@import '+@atomic-reactor/toolkit/style';";
+            scss += "@import '+@atomic-reactor/toolkit-demo/style';";
             scss += '\n';
 
             fs.writeFileSync(file, scss);
