@@ -139,6 +139,8 @@ PROMPT.DIR = async params => {
             itemType: 'directory',
             rootPath: resolve(cwd),
             default: resolve(cwd, 'src', 'app', 'components', 'Toolkit'),
+            validate: (val, answers) =>
+                VALIDATE.REQUIRED('directory', val, answers),
         },
     ]);
 
@@ -253,9 +255,28 @@ PROMPT.DOC = async params => {
         questions.push({
             prefix,
             name: 'doc',
-            default: false,
+            default: true,
             type: 'confirm',
             message: 'Documentation?:',
+        });
+    }
+
+    if (questions.length > 0) {
+        const answers = await inquirer.prompt(questions);
+        mergeParams(params, CONFORM(answers));
+    }
+};
+
+PROMPT.EDITOR = async params => {
+    const questions = [];
+
+    if (!op.get(params, 'editor')) {
+        questions.push({
+            prefix,
+            name: 'editor',
+            default: false,
+            type: 'confirm',
+            message: 'Live Editor?:',
         });
     }
 
@@ -335,13 +356,16 @@ const ACTION = async (action, initialParams) => {
     // 5.0 - Sidebar
     await PROMPT.SIDEBAR(params);
 
-    // 6.0 - documentation
+    // 6.0 - Documentation
     await PROMPT.DOC(params);
 
-    // 7.0 - Preflight
+    // 7.0 - Live editor
+    await PROMPT.EDITOR(params);
+
+    // 8.0 - Preflight
     await PROMPT.PREFLIGHT(params);
 
-    // 8.0 - Execute actions
+    // 9.0 - Execute actions
     if (op.get(params, 'debug') !== true) {
         await GENERATOR({ arcli: global, params, props });
     }
@@ -372,6 +396,7 @@ const FLAGS = () => {
         'order',
         'debug',
         'doc',
+        'editor',
     ];
     Hook.runSync('toolkit-element-flags', flags);
     return flags;
@@ -390,6 +415,7 @@ const COMMAND = ({ program, ...args }) =>
         .option('-l, --label [label]', 'The sidebar item label')
         .option('-u, --url [url]', 'The sidebar item url')
         .option('-o, --order [order]', 'The sidebar item order')
+        .option('-e, --editor [editor]', 'Create as Live Editor element')
         .option('-D, --debug [debug]', 'Debug mode')
         .option('-O, --overwrite [overwrite]', 'Overwrite existing element')
         .option('--doc [doc]', 'Add documentation element')

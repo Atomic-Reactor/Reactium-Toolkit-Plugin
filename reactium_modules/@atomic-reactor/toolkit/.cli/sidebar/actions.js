@@ -27,6 +27,8 @@ module.exports = ({ Spinner }) => {
 
     return {
         empty: ({ params }) => {
+            message('Creating sidebar', chalk.magenta(params.name) + '...');
+
             fs.emptyDirSync(params.directory);
         },
         hooks: ({ params, props }) => {

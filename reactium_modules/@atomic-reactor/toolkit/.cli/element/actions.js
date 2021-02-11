@@ -27,21 +27,25 @@ module.exports = ({ Spinner }) => {
 
     return {
         empty: ({ params }) => {
+            message('Creating element', chalk.magenta(params.name) + '...');
+
             fs.emptyDirSync(params.directory);
         },
-        element: ({ action, params, props }) => {
+        element: ({ params }) => {
             write({
                 content: template({ file: 'element.hbs', context: params }),
                 directory: params.directory,
                 file: 'index.js',
             });
         },
-        document: async ({ params }) => {
+        document: ({ params }) => {
             if (!op.get(params, 'doc')) return;
-            const { directory, id } = params;
-            const docActions = require('../document/actions')({ Spinner });
 
-            const docParams = {
+            const { directory, id } = params;
+
+            const actions = require('../document/actions')({ Spinner });
+
+            const args = {
                 params: {
                     ...params,
                     group: id,
@@ -56,15 +60,25 @@ module.exports = ({ Spinner }) => {
                 },
             };
 
-            docActions.empty(docParams);
-
-            await Promise.all([
-                docActions.element(docParams),
-                docActions.readme(docParams),
-                docActions.hooks(docParams),
-            ]);
+            Object.keys(actions).forEach((key, i) => actions[key](args));
         },
-        hooks: ({ params, props }) => {
+        sidebar: ({ params }) => {
+            if (!op.get(params, 'sidebar')) return;
+
+            const { directory } = params;
+
+            const actions = require('../sidebar/actions')({ Spinner });
+
+            const args = {
+                params: {
+                    ...params,
+                    directory: path.normalize(path.join(directory, 'Sidebar')),
+                },
+            };
+
+            Object.keys(actions).forEach((key, i) => actions[key](args));
+        },
+        hooks: ({ params }) => {
             write({
                 content: template({
                     file: 'reactium-hooks.hbs',

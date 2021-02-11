@@ -131,6 +131,8 @@ PROMPT.DIR = async params => {
                 'Toolkit',
                 'Sidebar',
             ),
+            validate: (val, answers) =>
+                VALIDATE.REQUIRED('directory', val, answers),
         },
     ]);
 
@@ -177,17 +179,6 @@ PROMPT.LINK = async params => {
 
     const questions = [];
 
-    if (!op.get(params, 'group')) {
-        questions.push({
-            prefix,
-            name: 'group',
-            type: 'input',
-            message: 'Group ID:',
-            filter: val => FILTER.FORMAT('group', val),
-            validate: val => VALIDATE.REQUIRED('group', val),
-        });
-    }
-
     if (!op.get(params, 'id')) {
         questions.push({
             prefix,
@@ -196,6 +187,17 @@ PROMPT.LINK = async params => {
             message: 'Link ID:',
             filter: val => FILTER.FORMAT('id', val),
             valiate: val => VALIDATE.REQUIRED('id', val),
+        });
+    }
+
+    if (!op.get(params, 'group')) {
+        questions.push({
+            prefix,
+            name: 'group',
+            type: 'input',
+            message: 'Group ID',
+            suffix: ' (optional):',
+            filter: val => FILTER.FORMAT('group', val),
         });
     }
 

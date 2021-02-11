@@ -140,6 +140,8 @@ PROMPT.DIR = async params => {
             itemType: 'directory',
             rootPath: resolve(cwd),
             default: resolve(cwd, 'src', 'app', 'components', 'Toolkit'),
+            validate: (val, answers) =>
+                VALIDATE.REQUIRED('directory', val, answers),
         },
     ]);
 
@@ -177,6 +179,7 @@ PROMPT.HOOK = async params => {
     if (!op.get(params.sidebar)) {
         questions.push({
             prefix,
+            default: true,
             name: 'sidebar',
             type: 'confirm',
             message: 'Sidebar?:',
@@ -199,9 +202,9 @@ PROMPT.SIDEBAR = async params => {
             prefix,
             name: 'group',
             type: 'input',
-            message: 'Sidebar Group ID:',
+            message: 'Sidebar Group ID',
+            suffix: ' (optional):',
             filter: val => FILTER.FORMAT('group', val),
-            validate: val => VALIDATE.REQUIRED('group', val),
         });
     }
 
@@ -210,7 +213,7 @@ PROMPT.SIDEBAR = async params => {
             prefix,
             name: 'label',
             type: 'input',
-            default: params.name,
+            default: 'Documentation',
             message: 'Sidebar Label:',
             validate: (val, answers) =>
                 VALIDATE.REQUIRED('label', val, answers),

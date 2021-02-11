@@ -27,6 +27,8 @@ module.exports = ({ Spinner }) => {
 
     return {
         empty: ({ params }) => {
+            message('Creating documentation', chalk.magenta(params.id) + '...');
+
             fs.emptyDirSync(params.directory);
         },
         element: ({ params }) => {
