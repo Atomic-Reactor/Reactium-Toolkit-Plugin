@@ -100,8 +100,13 @@ PROMPT.TYPE = async params => {
             name: 'type',
             message: 'Type:',
             choices: [
-                { name: 'Link', value: 'link', short: 'link', checked: true },
-                { name: 'Group', value: 'group', short: 'group' },
+                {
+                    name: 'Child Link',
+                    value: 'link',
+                    short: 'Child Link',
+                    checked: true,
+                },
+                { name: 'Top-Level', value: 'group', short: 'Top-Level' },
             ],
         },
     ]);
@@ -179,6 +184,17 @@ PROMPT.LINK = async params => {
 
     const questions = [];
 
+    if (!op.get(params, 'group')) {
+        questions.push({
+            prefix,
+            name: 'group',
+            type: 'input',
+            message: 'Parent ID:',
+            filter: val => FILTER.FORMAT('group', val),
+            valiate: val => VALIDATE.REQUIRED('id', val),
+        });
+    }
+
     if (!op.get(params, 'id')) {
         questions.push({
             prefix,
@@ -187,17 +203,6 @@ PROMPT.LINK = async params => {
             message: 'Link ID:',
             filter: val => FILTER.FORMAT('id', val),
             valiate: val => VALIDATE.REQUIRED('id', val),
-        });
-    }
-
-    if (!op.get(params, 'group')) {
-        questions.push({
-            prefix,
-            name: 'group',
-            type: 'input',
-            message: 'Group ID',
-            suffix: ' (optional):',
-            filter: val => FILTER.FORMAT('group', val),
         });
     }
 

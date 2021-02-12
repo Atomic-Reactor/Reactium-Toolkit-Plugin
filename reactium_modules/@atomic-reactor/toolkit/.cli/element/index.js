@@ -15,6 +15,7 @@ const { error, message } = require(`${mod}/lib/messenger`);
 const {
     directoryName,
     excludePath,
+    hasLiveEditor,
     isEmpty,
     mergeParams,
     normalize,
@@ -22,6 +23,7 @@ const {
     slug,
 } = require('../utils');
 
+const isLiveEditor = hasLiveEditor();
 const { arcli, Hook } = global;
 const prefix = arcli.prefix;
 const props = arcli.props;
@@ -93,18 +95,22 @@ FILTER.URL = (val, params, answers = {}) =>
           ]).join('/')
         : null;
 
-PROMPT.NAME = async params => {
+PROMPT.ID = async params => {
     const questions = [];
 
     if (!op.get(params, 'id')) {
-        questions.push({
-            prefix,
-            name: 'id',
-            type: 'input',
-            message: 'Element ID:',
-            filter: val => FILTER.FORMAT('id', val),
-            valiate: val => VALIDATE.REQUIRED('id', val),
-        });
+        const { id } = await inquirer.prompt([
+            {
+                prefix,
+                name: 'id',
+                type: 'input',
+                message: 'Element ID:',
+                filter: val => FILTER.FORMAT('id', val),
+                valiate: val => VALIDATE.REQUIRED('id', val),
+            },
+        ]);
+
+        mergeParams(params, CONFORM({ id }));
     }
 
     if (!op.get(params, 'name')) {
@@ -113,6 +119,7 @@ PROMPT.NAME = async params => {
             name: 'name',
             type: 'input',
             message: 'Element Name:',
+            default: directoryName(params.id),
             filter: val => FILTER.FORMAT('name', val),
             validate: val => VALIDATE.REQUIRED('name', val),
         });
@@ -159,8 +166,6 @@ PROMPT.OVERWRITE = async params => {
                 name: 'overwrite',
                 message:
                     chalk.magenta('The selected directory is not empty!') +
-                    '\n\t  ' +
-                    chalk.cyan(params.directory) +
                     '\n\t  Overwrite?:',
             },
         ]);
@@ -270,7 +275,7 @@ PROMPT.DOC = async params => {
 PROMPT.EDITOR = async params => {
     const questions = [];
 
-    if (!op.get(params, 'editor')) {
+    if (!op.get(params, 'editor') && isLiveEditor) {
         questions.push({
             prefix,
             name: 'editor',
@@ -342,7 +347,7 @@ const ACTION = async (action, initialParams) => {
     let params = CONFORM(initialParams);
 
     // 1.0 - Get name
-    await PROMPT.NAME(params);
+    await PROMPT.ID(params);
 
     // 2.0 - Get Directory
     await PROMPT.DIR(params);

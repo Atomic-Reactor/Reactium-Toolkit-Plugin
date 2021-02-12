@@ -63,6 +63,18 @@ SDK.excludePath = p => {
     );
 };
 
+SDK.hasLiveEditor = () =>
+    fs.existsSync(
+        SDK.resolve(
+            cwd,
+            'reactium_modules',
+            '@atomic-reactor',
+            'toolkit-demo',
+            'utils',
+            'ComponentDemo.js',
+        ),
+    );
+
 SDK.isEmpty = dir => {
     let files = [];
 
