@@ -5,12 +5,13 @@
  */
 
 import SDK from './sdk';
-import { Code, CodeCopy } from './Code';
+
 import { Icon } from './Icon';
 import { Logo } from './Logo';
 import { Toolkit } from './index';
 import Markdown from './Markdown';
 import Brand from './Sidebar/Brand';
+import { Code, CodeCopy } from './Code';
 import Element from './Content/Element';
 import Reactium from 'reactium-core/sdk';
 import MenuLink from './Sidebar/MenuLink';
